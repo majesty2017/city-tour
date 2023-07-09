@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed $photo
+ */
 class Category extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     public const IMAGE_PATH = 'assets/uploads/categories/';
     public const IMAGE_THUMB_PATH = 'assets/uploads/categories_thumb/';
 
-    protected $guarded = [];
+    protected $guarded = ['photo_preview'];
 
     public static $rules = [
         'name' => 'required|string|min:3|max:100',

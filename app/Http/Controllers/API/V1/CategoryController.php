@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\EditCategoryResource;
 use App\Manager\ImageManager;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
@@ -31,42 +33,71 @@ class CategoryController extends Controller
         $category = $request->except('photo');
         $category['user_id'] = auth()->id();
         if($request->has('photo')) {
-            $file = $request->input('photo');
-            $path = Category::IMAGE_PATH;
-            $path_thumb = Category::IMAGE_THUMB_PATH;
-            $width = 800;
-            $height = 800;
-            $width_thumb = 150;
-            $height_thumb = 150;
-            $name = Str::random(32);
-            $category['photo'] = ImageManager::uploadImage($name, $width, $height, $path, $file);
-            ImageManager::uploadImage($name, $width_thumb, $height_thumb, $path_thumb, $file);
+            $category['photo'] = $this->processImageUpload($request->input('photo'), Str::random());
         }
         (new Category())->storeCategory($category);
         return response()->json(['message' => 'Category saved successfully!']);
     }
 
     /**
-     * Display the specified resource.
+     * @param Category $category
+     * @return EditCategoryResource
      */
-    public function show(Category $category)
+    final public function show(Category $category): EditCategoryResource
     {
-        //
+        return new EditCategoryResource($category);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateCategoryRequest $request
+     * @param Category $category
+     * @return JsonResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    final public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        //
+        $category_data = $request->except('photo');
+
+        if($request->has('photo')) {
+            $category_data['photo'] = $this->processImageUpload($request->photo, Str::random(32), $category->photo);
+        }
+        $category->update($category_data);
+        return response()->json(['message' => 'Changes saved successfully!']);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Category $category
+     * @return JsonResponse
      */
-    public function destroy(Category $category)
+    final public function destroy(Category $category): JsonResponse
     {
-        //
+        if (!empty($category->photo)) {
+            ImageManager::deletePhoto(Category::IMAGE_PATH, $category->photo);
+            ImageManager::deletePhoto(Category::IMAGE_THUMB_PATH, $category->photo);
+        }
+        $category->delete();
+        return response()->json(['message' => 'Category deleted successfully!']);
+    }
+
+    /**
+     * @param string $file
+     * @param string $name
+     * @param string|null $existing_photo
+     * @return string
+     */
+    private function processImageUpload(string $file, string $name, string|null $existing_photo = null): string
+    {
+        $path = Category::IMAGE_PATH;
+        $path_thumb = Category::IMAGE_THUMB_PATH;
+        $width = 800;
+        $height = 800;
+        $width_thumb = 150;
+        $height_thumb = 150;
+        if (!empty($existing_photo)) {
+            ImageManager::deletePhoto(Category::IMAGE_PATH, $existing_photo);
+            ImageManager::deletePhoto(Category::IMAGE_THUMB_PATH, $existing_photo);
+        }
+        $filename = ImageManager::uploadImage($name, $width, $height, $path, $file);
+        ImageManager::uploadImage($name, $width_thumb, $height_thumb, $path_thumb, $file);
+        return $filename;
     }
 }

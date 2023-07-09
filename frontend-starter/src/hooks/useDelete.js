@@ -1,7 +1,9 @@
-import Swal from 'sweetalert2';
-import axiosClient from '../axios-client.js';
+import Swal from "sweetalert2";
+import axiosClient from "../axios-client.js";
+import {useState} from "react";
 
-const handleDelete = (url) => {
+const useDelete = (url) => {
+  const [data, setData] = useState([])
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn btn-success',
@@ -45,5 +47,4 @@ const handleDelete = (url) => {
   })
 }
 
-export default handleDelete
-
+export default useDelete

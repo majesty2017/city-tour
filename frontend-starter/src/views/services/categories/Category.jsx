@@ -1,11 +1,11 @@
 import {
   ActionButton,
-  CardHeader,
+  CardHeader, CategoryDetailsModal,
   CategoryPhotoModal,
   DataTables,
   DefaultLayout,
   Images,
-  Loader,
+  Loader, NoDataFound,
   Paginations,
   Search
 } from "../../../components";
@@ -14,6 +14,7 @@ import useFetch from "../../../hooks/useFetch";
 import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
+import Swal from "sweetalert2";
 
 const Category = () => {
   const [loading, setLoading] = useState(false)
@@ -24,7 +25,9 @@ const Category = () => {
   const [startFrom, setStartFrom] = useState(1)
   const [activePage, setActivePage] = useState(1)
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowDetails, setModalShowDetails] = useState(false);
   const [modalPhoto, setModalPhoto] = useState('');
+  const [category, setCategory] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -35,6 +38,11 @@ const Category = () => {
   const handlePhotoModal = (photo) => {
     setModalPhoto(photo)
     setModalShow(true)
+  }
+
+  const handleDetailsModal = (category) => {
+    setCategory(category)
+    setModalShowDetails(true)
   }
   const getCategories = async (pageNumber = 1) => {
     setLoading(true)
@@ -63,6 +71,51 @@ const Category = () => {
     }))
   }
 
+  const handleDelete = (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger mr-3'
+      },
+      buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true)
+        axiosClient.delete(`/categories/${id}`).then(res => {
+          setLoading(false)
+          swalWithBootstrapButtons.fire(
+            'Deleted!',
+            res.message,
+            'success'
+          )
+          getCategories()
+        }).catch(err => {
+          setLoading(false)
+          console.log(err)
+        })
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your record is safe :)',
+          'error'
+        )
+      }
+    })
+  }
+
   return (
     <DefaultLayout title='Categories'>
       <section className="content">
@@ -70,7 +123,7 @@ const Category = () => {
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Category' link='/categories/create' value={input} onChange={handleInput}/>
+                <CardHeader title='Category List' link='/categories/create' value={input} onChange={handleInput}/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -161,7 +214,7 @@ const Category = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {categories.map((category, index) => (
+                              {Object.keys(categories).length > 0 ? categories.map((category, index) => (
                                 <tr key={index}>
                                   <td>{activePage + index}</td>
                                   <td className="dtr-control" tabIndex={index}>
@@ -188,10 +241,17 @@ const Category = () => {
                                     </div>
                                   </td>
                                   <td>
-                                    <ActionButton view url='categories' id={category.id}/>
+                                    <ActionButton
+                                      url='categories'
+                                      id={category.id}
+                                      handleDelete={() => handleDelete(category.id)}
+                                      onClick={() => handleDetailsModal(category)}
+                                      view />
                                   </td>
                                 </tr>
-                              ))}
+                              )): (
+                                <NoDataFound title='Category' />
+                              )}
                               </tbody>
                               <tfoot>
                               <tr>
@@ -288,6 +348,13 @@ const Category = () => {
                     title="Category Photo"
                     size
                     photo={modalPhoto}
+                  />
+                  <CategoryDetailsModal
+                    show={modalShowDetails}
+                    onHide={() => setModalShowDetails(false)}
+                    title="Category Details"
+                    size
+                    category={category}
                   />
                 </div>
                 {/* /.card-body */}

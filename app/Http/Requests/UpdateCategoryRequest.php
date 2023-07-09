@@ -5,14 +5,17 @@ namespace App\Http\Requests;
 use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property mixed $photo
+ */
 class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    final public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +23,7 @@ class UpdateCategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    final public function rules(): array
     {
         return Category::$rules;
     }

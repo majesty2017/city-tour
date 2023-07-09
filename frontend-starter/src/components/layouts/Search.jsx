@@ -1,6 +1,10 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Search = ({value, onClick, onChange}) => {
+  const navigate = useNavigate()
+  const handleRefresh = () => {
+    window.location.reload()
+  }
   return (
     <div className="card-header">
       <div className='d-flex justify-content-between align-items-center'>
@@ -69,8 +73,12 @@ const Search = ({value, onClick, onChange}) => {
             placeholder="Type your keywords here..."
           />
         </div>
-
-        <button onClick={onClick} className='btn btn-outline-primary'><i className='fa fa-search'></i> Search</button>
+        <div className='d-flex justify-content-between align-items-center'>
+          <button onClick={onClick} className='btn btn-outline-primary'><i className='fa fa-search'></i> Search</button>
+          <Link to='' role='button' onClick={handleRefresh} className='btn btn-outline-primary ml-2'>
+            <i className='fas fa-reply-all'></i> Refresh
+          </Link>
+        </div>
       </div>
     </div>
   )

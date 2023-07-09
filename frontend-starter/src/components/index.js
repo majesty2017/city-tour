@@ -17,6 +17,7 @@ export { default as DataTables } from './elements/DataTables'
 export { default as CategoryCard } from './elements/CategoryCard'
 export { default as ProductCard } from './elements/ProductCard'
 export { default as Paginations } from './elements/Paginations'
+export { default as NoDataFound } from './elements/NoDataFound'
 
 // Buttons
 export { default as ActionButton } from './buttons/ActionButton'
