@@ -17,7 +17,7 @@ const Search = ({value, onClick, onChange}) => {
             defaultValue={value.order_by}
             onChange={onChange}
           >
-            <option>Order By</option>
+            <option value=''>Order By</option>
             <option value='name'>Name</option>
             <option value='created_at'>Created at</option>
             <option value='updated_at'>Updated at</option>
@@ -35,7 +35,7 @@ const Search = ({value, onClick, onChange}) => {
             defaultValue={value.direction}
             onChange={onChange}
           >
-            <option>Direction</option>
+            <option value=''>Direction</option>
             <option value='asc'>ASC</option>
             <option value='desc'>DESC</option>
           </select>
@@ -50,7 +50,7 @@ const Search = ({value, onClick, onChange}) => {
             defaultValue={value.per_page}
             onChange={onChange}
           >
-            <option>Per Page</option>
+            <option value=''>Per Page</option>
             <option value={10}>10</option>
             <option value={25}>25</option>
             <option value={50}>50</option>

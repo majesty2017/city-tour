@@ -27,8 +27,10 @@ class CategoryController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param StoreCategoryRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
         $category = $request->except('photo');
         $category['user_id'] = auth()->id();
@@ -36,7 +38,7 @@ class CategoryController extends Controller
             $category['photo'] = $this->processImageUpload($request->input('photo'), Str::random());
         }
         (new Category())->storeCategory($category);
-        return response()->json(['message' => 'Category saved successfully!']);
+        return response()->json(['message' => 'Brand saved successfully!']);
     }
 
     /**
@@ -64,6 +66,11 @@ class CategoryController extends Controller
         return response()->json(['message' => 'Changes saved successfully!']);
     }
 
+    final public function get_category_list()
+    {
+        return response()->json((new Category())->getCategoryIdAndName());
+    }
+
     /**
      * @param Category $category
      * @return JsonResponse
@@ -75,7 +82,7 @@ class CategoryController extends Controller
             ImageManager::deletePhoto(Category::IMAGE_THUMB_PATH, $category->photo);
         }
         $category->delete();
-        return response()->json(['message' => 'Category deleted successfully!']);
+        return response()->json(['message' => 'Brand deleted successfully!']);
     }
 
     /**

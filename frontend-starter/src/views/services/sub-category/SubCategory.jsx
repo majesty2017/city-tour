@@ -1,20 +1,24 @@
 import {
   ActionButton,
-  CardHeader, CategoryDetailsModal,
-  CategoryPhotoModal,
+  CardHeader,
+  SubCategoryDetailsModal,
+  SubCategoryPhotoModal,
   DataTables,
   DefaultLayout,
   Images,
-  Loader, NoDataFound,
+  Loader,
+  NoDataFound,
   Paginations,
   Search
-} from "../../components";
+} from "../../../components";
 import {Link} from "react-router-dom";
+import useFetch from "../../../hooks/useFetch";
+import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
+import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
-import axiosClient from "../../axios-client.js";
 
-const Users = () => {
+const SubCategory = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
 
@@ -45,7 +49,7 @@ const Users = () => {
   const getCategories = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`categories?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`sub-categories?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
       console.log(res.data)
       setCategories(res.data.data)
@@ -89,7 +93,7 @@ const Users = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/categories/${id}`).then(res => {
+        axiosClient.delete(`/sub-categories/${id}`).then(res => {
           setLoading(false)
           swalWithBootstrapButtons.fire(
             'Deleted!',
@@ -115,13 +119,13 @@ const Users = () => {
   }
 
   return (
-    <DefaultLayout title='Categories'>
+    <DefaultLayout title='Sub Categories'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Category List' link='/categories/create' value={input} onChange={handleInput}/>
+                <CardHeader title='Sub Category List' link='/sub-categories/create' value={input} onChange={handleInput}/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -157,7 +161,7 @@ const Users = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Name / Slug
+                                  Name / Slug / Category
                                 </th>
                                 <th
                                   className="sorting"
@@ -219,6 +223,7 @@ const Users = () => {
                                     <div>
                                       <div className='text-primary'>Name: {category.name}</div>
                                       <div className='text-info'>Slug: {category.slug}</div>
+                                      <div className='text-success'>Category: {category.category_name}</div>
                                     </div>
                                   </td>
                                   <td>
@@ -240,7 +245,7 @@ const Users = () => {
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='categories'
+                                      url='sub-categories'
                                       id={category.id}
                                       handleDelete={() => handleDelete(category.id)}
                                       onClick={() => handleDetailsModal(category)}
@@ -248,7 +253,7 @@ const Users = () => {
                                   </td>
                                 </tr>
                               )): (
-                                <NoDataFound title='Category' />
+                                <NoDataFound title='Sub category' />
                               )}
                               </tbody>
                               <tfoot>
@@ -329,7 +334,7 @@ const Users = () => {
                               </tfoot>
                             </table>
                           </>
-                        )}
+                          )}
                       </div>
                     </div>
                     <Paginations
@@ -340,17 +345,17 @@ const Users = () => {
                       startFrom={startFrom}
                     />
                   </div>
-                  <CategoryPhotoModal
+                  <SubCategoryPhotoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Category Photo"
+                    title="Sub Category Photo"
                     size
                     photo={modalPhoto}
                   />
-                  <CategoryDetailsModal
+                  <SubCategoryDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Category Details"
+                    title="Sub Category Details"
                     size
                     category={category}
                   />
@@ -367,4 +372,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default SubCategory

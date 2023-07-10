@@ -4,26 +4,26 @@ namespace App\Models;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * @property mixed $photo
  */
-class Category extends Model
+class SubCategory extends Model
 {
     use HasFactory;
 
-    public const IMAGE_PATH = 'assets/uploads/categories/';
-    public const IMAGE_THUMB_PATH = 'assets/uploads/categories_thumb/';
+    public const IMAGE_PATH = 'assets/uploads/sub_categories/';
+    public const IMAGE_THUMB_PATH = 'assets/uploads/sub_categories_thumb/';
 
     protected $guarded = ['photo_preview'];
 
-    public static $rules = [
+    public static array $rules = [
         'name' => 'required|string|min:3|max:100',
+        'category_id' => 'required|numeric',
         'slug' => 'required|string|min:3|max:100',
         'description' => 'string|max:200',
         'serial' => 'required|numeric',
@@ -34,7 +34,7 @@ class Category extends Model
      * @param array $input
      * @return Builder|Model
      */
-    final public function storeCategory(array $input): Model|Builder
+    final public function storeSubCategory(array $input): Model|Builder
     {
         return self::query()->create($input);
     }
@@ -48,17 +48,17 @@ class Category extends Model
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return BelongsTo
      */
-    final public function getCategoryIdAndName(): \Illuminate\Support\Collection
+    final public function category(): BelongsTo
     {
-        return self::query()->select('name', 'id')->get();
+        return $this->belongsTo(Category::class);
     }
 
     /**
      * @return LengthAwarePaginator
      */
-    final public function categories(array $input): LengthAwarePaginator
+    final public function sub_categories(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
         $query = self::query();
@@ -68,6 +68,6 @@ class Category extends Model
         if (!empty($input['order_by'])) {
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
         }
-        return $query->with('user:id,name')->paginate($per_page);
+        return $query->with(['user:id,name', 'category:id,name'])->paginate($per_page);
     }
 }

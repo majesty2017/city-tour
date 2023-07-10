@@ -25,3 +25,6 @@ export { default as ActionButton } from './buttons/ActionButton'
 // Modals
 export {default as CategoryPhotoModal} from './modals/category/CategoryPhotoModal'
 export {default as CategoryDetailsModal} from './modals/category/CategoryDetailsModal'
+
+export {default as SubCategoryPhotoModal} from './modals/sub_category/SubCategoryPhotoModal'
+export {default as SubCategoryDetailsModal} from './modals/sub_category/SubCategoryDetailsModal'

@@ -1,5 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import {
+  Brand, BrandForm,
   Category,
   CategoryForm,
   Dashboard,
@@ -14,7 +15,7 @@ import {
   Product,
   ProductForm,
   Profile,
-  Services,
+  Services, SubCategory, SubCategoryForm,
   Ticket,
   UserForm,
   Users,
@@ -56,6 +57,20 @@ const router = createBrowserRouter([
                 path: '/products/:id',
                 element: <ProductForm key="update"/>
             },
+
+            {
+                path: '/brands',
+                element: <Brand/>
+            },
+            {
+                path: '/brands/create',
+                element: <BrandForm key="create"/>
+            },
+            {
+                path: '/brands/:id',
+                element: <BrandForm key="update"/>
+            },
+
             {
                 path: '/categories',
                 element: <Category/>
@@ -67,6 +82,19 @@ const router = createBrowserRouter([
             {
                 path: '/categories/:id',
                 element: <CategoryForm key="update"/>
+            },
+
+            {
+                path: '/sub-categories',
+                element: <SubCategory/>
+            },
+            {
+                path: '/sub-categories/create',
+                element: <SubCategoryForm key="create"/>
+            },
+            {
+                path: '/sub-categories/:id',
+                element: <SubCategoryForm key="update"/>
             },
 
             {

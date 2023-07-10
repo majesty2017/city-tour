@@ -8,13 +8,15 @@ import {
   Loader, NoDataFound,
   Paginations,
   Search
-} from "../../components";
+} from "../../../components";
 import {Link} from "react-router-dom";
+import useFetch from "../../../hooks/useFetch";
+import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
+import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
-import axiosClient from "../../axios-client.js";
 
-const Users = () => {
+const Brand = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
 
@@ -329,7 +331,7 @@ const Users = () => {
                               </tfoot>
                             </table>
                           </>
-                        )}
+                          )}
                       </div>
                     </div>
                     <Paginations
@@ -367,4 +369,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default Brand

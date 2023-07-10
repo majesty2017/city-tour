@@ -18,8 +18,15 @@ export {default as Group} from './hr/groups/Group'
 export {default as GroupForm} from './hr/groups/GroupForm'
 
 export {default as Services} from './services/Services'
+
+export {default as Brand} from './services/brands/Brand'
+export {default as BrandForm} from './services/brands/BrandForm'
+
 export {default as Category} from './services/categories/Category'
 export {default as CategoryForm} from './services/categories/CategoryForm'
+
+export {default as SubCategory} from './services/sub-category/SubCategory'
+export {default as SubCategoryForm} from './services/sub-category/SubCategoryForm'
 
 export {default as Product} from './services/products/Product'
 export {default as ProductForm} from './services/products/ProductForm'

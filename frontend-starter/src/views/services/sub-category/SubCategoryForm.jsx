@@ -3,18 +3,20 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import toastAlert from "../../../data/toastAlert.js";
+import useFetch from "../../../hooks/useFetch.js";
 
-const CategoryForm = () => {
+const SubCategoryForm = () => {
   const navigate = useNavigate()
   const [input, setInput] = useState({status: 1})
   const [errors, setErrors] = useState([])
   const [category, setCategory] = useState([])
+  const {data: categories} = useFetch('/categories/list')
   const [loading, setLoading] = useState(false)
   const {id} = useParams()
 
   const getCategory = async () => {
     setLoading(true)
-    await axiosClient.get(`/categories/${id}`).then(res => {
+    await axiosClient.get(`/sub-categories/${id}`).then(res => {
       setLoading(false)
       setInput(res.data)
     }).catch(err => {
@@ -57,10 +59,10 @@ const CategoryForm = () => {
     e.preventDefault()
     const store = async () => {
       setLoading(true)
-      await axiosClient.post('/categories', input).then(res => {
+      await axiosClient.post('/sub-categories', input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/categories')
+        navigate('/sub-categories')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -70,10 +72,10 @@ const CategoryForm = () => {
     }
     const update = async () => {
       setLoading(true)
-      await axiosClient.put(`/categories/${id}`, input).then(res => {
+      await axiosClient.put(`/sub-categories/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/categories')
+        navigate('/sub-categories')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -90,13 +92,13 @@ const CategoryForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Category` : 'Add Brand'}>
+        <DefaultLayout title={id ? `Edit Sub Category` : 'Add Sub Brand'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? `Edit Category` : 'Add Brand'} link='/categories' />
+                    <CardHeader isForm title={id ? `Edit Sub Category` : 'Add Sub Brand'} link='/sub-categories' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">
@@ -108,6 +110,27 @@ const CategoryForm = () => {
                               <form onSubmit={handleSubmit}>
                                 <div className="card-body">
                                   <div className='row'>
+                                    <div className='col-sm-6'>
+                                      <div className="form-group">
+                                        <label htmlFor="category_id">Select Category</label>
+                                        <select
+                                          className={errors.category_id !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
+                                          id="category_id"
+                                          name="category_id"
+                                          defaultValue={input.category_id}
+                                          onChange={handleInput}
+                                        >
+                                          <option value=''>Select option</option>
+                                          {categories.map(category => (
+                                            <option value={category.id} key={category.id}>{category.name}</option>
+                                          ))}
+                                        </select>
+                                        <p className='text-danger'>
+                                          <small>{errors.category_id !== undefined ? errors.category_id[0] : null}</small>
+                                        </p>
+                                      </div>
+                                    </div>
+
                                     <div className='col-sm-6'>
                                       <div className="form-group">
                                         <label htmlFor="name">Name</label>
@@ -240,4 +263,4 @@ const CategoryForm = () => {
     )
 }
 
-export default CategoryForm
+export default SubCategoryForm

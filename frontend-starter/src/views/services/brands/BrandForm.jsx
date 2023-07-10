@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import toastAlert from "../../../data/toastAlert.js";
 
-const CategoryForm = () => {
+const BrandForm = () => {
   const navigate = useNavigate()
   const [input, setInput] = useState({status: 1})
   const [errors, setErrors] = useState([])
@@ -240,4 +240,4 @@ const CategoryForm = () => {
     )
 }
 
-export default CategoryForm
+export default BrandForm

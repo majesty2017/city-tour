@@ -53,7 +53,12 @@ const Sidebar = () => {
                         </ul>
                       </li>
                       <li className="nav-header text-uppercase">Management</li>
-                        <li className={`nav-item ${location.pathname === '/categories' || location.pathname === '/products' && 'menu-open'}`}>
+                        <li className={`nav-item ${
+                          location.pathname === '/categories' && 'menu-open' ||
+                          location.pathname === '/sub-categories' && 'menu-open' ||
+                          location.pathname === '/brands' && 'menu-open' ||
+                          location.pathname === '/products' && 'menu-open'}`
+                        }>
                             <a href="#" className="nav-link">
                                 <i className="nav-icon fas fa-edit" />
                                 <p>
@@ -63,9 +68,21 @@ const Sidebar = () => {
                             </a>
                             <ul className="nav nav-treeview">
                               <li className="nav-item">
+                                <li className="nav-item">
+                                  <Link to="/brands" className={`nav-link ${location.pathname === '/brands' && 'active'}`}>
+                                    <i className="far fa-circle nav-icon" />
+                                    <p>Brands</p>
+                                  </Link>
+                                </li>
                                 <Link to="/categories" className={`nav-link ${location.pathname === '/categories' && 'active'}`}>
                                   <i className="far fa-circle nav-icon" />
                                   <p>Categories</p>
+                                </Link>
+                              </li>
+                              <li className="nav-item">
+                                <Link to="/sub-categories" className={`nav-link ${location.pathname === '/sub-categories' && 'active'}`}>
+                                  <i className="far fa-circle nav-icon" />
+                                  <p>Sub Categories</p>
                                 </Link>
                               </li>
                               <li className="nav-item">

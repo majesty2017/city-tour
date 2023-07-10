@@ -159,7 +159,7 @@ const Category = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Serial / Status
+                                  Name / Slug
                                 </th>
                                 <th
                                   className="sorting"
