@@ -1,6 +1,6 @@
 import {Button, Modal} from "react-bootstrap";
 
-const CategoryPhotoModal = (props) => {
+const BrandLogoModal = (props) => {
     return (
       <Modal
         {...props}
@@ -15,10 +15,10 @@ const CategoryPhotoModal = (props) => {
           <span onClick={props.onHide} style={{cursor: "pointer"}}><i className='fa fa-times'></i></span>
         </Modal.Header>
         <Modal.Body>
-          <img src={props.logo} className='img-thumbnail rounded-lg' alt='Photo'/>
+          <img src={props.logo} className='img-thumbnail rounded-lg' alt='Logo'/>
         </Modal.Body>
       </Modal>
     )
 }
 
-export default CategoryPhotoModal
+export default BrandLogoModal

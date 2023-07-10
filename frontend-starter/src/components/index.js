@@ -23,6 +23,9 @@ export { default as NoDataFound } from './elements/NoDataFound'
 export { default as ActionButton } from './buttons/ActionButton'
 
 // Modals
+export {default as BrandLogoModal} from './modals/brand/BrandLogoModal'
+export {default as BrandDetailsModal} from './modals/brand/BrandDetailsModal'
+
 export {default as CategoryPhotoModal} from './modals/category/CategoryPhotoModal'
 export {default as CategoryDetailsModal} from './modals/category/CategoryDetailsModal'
 

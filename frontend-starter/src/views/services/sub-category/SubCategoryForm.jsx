@@ -92,13 +92,13 @@ const SubCategoryForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Sub Category` : 'Add Sub Brand'}>
+        <DefaultLayout title={id ? `Edit Sub Category` : 'Add Sub Supplier'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? `Edit Sub Category` : 'Add Sub Brand'} link='/sub-categories' />
+                    <CardHeader isForm title={id ? `Edit Sub Category` : 'Add Sub Supplier'} link='/sub-categories' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">

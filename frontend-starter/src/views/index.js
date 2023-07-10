@@ -2,8 +2,11 @@ export { default as Login } from './auth/Login'
 export { default as ForgotPassword } from './auth/ForgotPassword'
 export { default as Dashboard } from './Dashboard'
 
-export { default as Users } from './users/Users'
-export { default as UserForm } from './users/UserForm'
+export { default as Users } from './hr/users/Users'
+export { default as UserForm } from './hr/users/UserForm'
+
+export { default as Supplier } from './hr/suppliers/Supplier'
+export { default as SupplierForm } from './hr/suppliers/SupplierForm'
 
 export { default as Visitor } from './visitors/Visitor'
 export { default as VisitorForm } from './visitors/VisitorForm'
@@ -16,8 +19,6 @@ export {default as HumanResource} from './hr/HumanResource'
 export {default as Employee} from './hr/Employee'
 export {default as Group} from './hr/groups/Group'
 export {default as GroupForm} from './hr/groups/GroupForm'
-
-export {default as Services} from './services/Services'
 
 export {default as Brand} from './services/brands/Brand'
 export {default as BrandForm} from './services/brands/BrandForm'

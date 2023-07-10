@@ -17,7 +17,8 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @param Request $request
+     * @return AnonymousResourceCollection
      */
     final public function index(Request $request): AnonymousResourceCollection
     {
@@ -38,7 +39,7 @@ class CategoryController extends Controller
             $category['photo'] = $this->processImageUpload($request->input('photo'), Str::random());
         }
         (new Category())->storeCategory($category);
-        return response()->json(['message' => 'Brand saved successfully!']);
+        return response()->json(['message' => 'Category saved successfully!']);
     }
 
     /**
@@ -82,7 +83,7 @@ class CategoryController extends Controller
             ImageManager::deletePhoto(Category::IMAGE_THUMB_PATH, $category->photo);
         }
         $category->delete();
-        return response()->json(['message' => 'Brand deleted successfully!']);
+        return response()->json(['message' => 'Category deleted successfully!']);
     }
 
     /**

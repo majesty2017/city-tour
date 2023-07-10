@@ -5,7 +5,7 @@ const Sidebar = () => {
 
     return (
         <aside className="main-sidebar sidebar-dark-primary elevation-4">
-            {/* Brand Logo */}
+            {/* Supplier Logo */}
             <Link to="/" className="brand-link">
                 <img
                     src="/assets/dist/img/AdminLTELogo.png"

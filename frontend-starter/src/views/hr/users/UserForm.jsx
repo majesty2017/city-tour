@@ -1,8 +1,8 @@
-import {CardHeader, DefaultLayout, Loader, Search} from "../../components";
+import {CardHeader, DefaultLayout, Loader, Search} from "../../../components/index.js";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axiosClient from "../../axios-client.js";
-import toastAlert from "../../data/toastAlert.js";
+import axiosClient from "../../../axios-client.js";
+import toastAlert from "../../../data/toastAlert.js";
 
 const UserForm = () => {
   const navigate = useNavigate()
@@ -90,13 +90,13 @@ const UserForm = () => {
   }
 
   return (
-    <DefaultLayout title={id ? `Edit Category` : 'Add Brand'}>
+    <DefaultLayout title={id ? `Edit Category` : 'Add Supplier'}>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader isForm title={id ? `Edit Category` : 'Add Brand'} link='/categories' />
+                <CardHeader isForm title={id ? `Edit Category` : 'Add Supplier'} link='/categories' />
                 {/* /.card-header */}
                 <div className="card-body">
                   <div className="row">

@@ -1,26 +1,22 @@
 import {
   ActionButton,
-  BrandDetailsModal,
-  BrandLogoModal,
-  CardHeader,
+  CardHeader, CategoryDetailsModal,
+  CategoryPhotoModal,
   DataTables,
   DefaultLayout,
   Images,
-  Loader,
-  NoDataFound,
+  Loader, NoDataFound,
   Paginations,
   Search
-} from "../../../components";
+} from "../../../components/index.js";
 import {Link} from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
-import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
-import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
+import axiosClient from "../../../axios-client.js";
 
-const Brand = () => {
+const Users = () => {
   const [loading, setLoading] = useState(false)
-  const [brands, setBrands] = useState([])
+  const [categories, setCategories] = useState([])
 
   const [itemsCountPerPage, setItemsCountPerPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(1)
@@ -28,8 +24,8 @@ const Brand = () => {
   const [activePage, setActivePage] = useState(1)
   const [modalShow, setModalShow] = useState(false);
   const [modalShowDetails, setModalShowDetails] = useState(false);
-  const [modalLogo, setModalLogo] = useState('');
-  const [brand, setBrand] = useState([]);
+  const [modalPhoto, setModalPhoto] = useState('');
+  const [category, setCategory] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -37,22 +33,22 @@ const Brand = () => {
     search: ''
   })
 
-  const handleLogoModal = (logo) => {
-    setModalLogo(logo)
+  const handlePhotoModal = (photo) => {
+    setModalPhoto(photo)
     setModalShow(true)
   }
 
-  const handleDetailsModal = (brand) => {
-    setBrand(brand)
+  const handleDetailsModal = (category) => {
+    setCategory(category)
     setModalShowDetails(true)
   }
-  const getBrands = async (pageNumber = 1) => {
+  const getCategories = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`brands?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`categories?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
       console.log(res.data)
-      setBrands(res.data.data)
+      setCategories(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
       setTotalItemsCount(res.data.meta.total)
@@ -64,7 +60,7 @@ const Brand = () => {
   }
 
   useEffect(() => {
-    getBrands()
+    getCategories()
   }, [])
 
   const handleInput = (e) => {
@@ -93,14 +89,14 @@ const Brand = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/brands/${id}`).then(res => {
+        axiosClient.delete(`/categories/${id}`).then(res => {
           setLoading(false)
           swalWithBootstrapButtons.fire(
             'Deleted!',
             res.message,
             'success'
           )
-          getBrands()
+          getCategories()
         }).catch(err => {
           setLoading(false)
           console.log(err)
@@ -119,13 +115,13 @@ const Brand = () => {
   }
 
   return (
-    <DefaultLayout title='Brands'>
+    <DefaultLayout title='Categories'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Brand List' link='/brands/create' value={input} onChange={handleInput}/>
+                <CardHeader title='Category List' link='/categories/create' value={input} onChange={handleInput}/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -137,7 +133,7 @@ const Brand = () => {
                         {loading && (<Loader/>)}
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getBrands(1)} onChange={handleInput}/>
+                            <Search value={input} onClick={() => getCategories(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -181,7 +177,7 @@ const Brand = () => {
                                   colSpan={1}
                                   aria-label="Platform(s): activate to sort column ascending"
                                 >
-                                  Logo
+                                  Photo
                                 </th>
                                 <th
                                   className="sorting"
@@ -216,43 +212,43 @@ const Brand = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(brands).length > 0 ? brands.map((brand, index) => (
+                              {Object.keys(categories).length > 0 ? categories.map((category, index) => (
                                 <tr key={index}>
                                   <td>{activePage + index}</td>
                                   <td className="dtr-control" tabIndex={index}>
                                     <div>
-                                      <div className='text-primary'>Name: {brand.name}</div>
-                                      <div className='text-info'>Slug: {brand.slug}</div>
+                                      <div className='text-primary'>Name: {category.name}</div>
+                                      <div className='text-info'>Slug: {category.slug}</div>
                                     </div>
                                   </td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'>Serial: {brand.serial}</div>
-                                      <div className='text-info'>Status: {brand.status}</div>
+                                      <div className='text-primary'>Serial: {category.serial}</div>
+                                      <div className='text-info'>Status: {category.status}</div>
                                     </div>
                                   </td>
                                   <td>
-                                    <Images width={32} height={32} src={brand.logo} alt={brand.name}
-                                            onClick={() => handleLogoModal(brand.logo_full)}/>
+                                    <Images width={32} height={32} src={category.photo} alt={category.name}
+                                            onClick={() => handlePhotoModal(category.photo_full)}/>
                                   </td>
-                                  <td>{brand.created_by}</td>
+                                  <td>{category.created_by}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Created: {brand.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {brand.updated_at}</small></div>
+                                      <div className='text-primary'><small>Created: {category.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {category.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='brands'
-                                      id={brand.id}
-                                      handleDelete={() => handleDelete(brand.id)}
-                                      onClick={() => handleDetailsModal(brand)}
+                                      url='categories'
+                                      id={category.id}
+                                      handleDelete={() => handleDelete(category.id)}
+                                      onClick={() => handleDetailsModal(category)}
                                       view />
                                   </td>
                                 </tr>
                               )): (
-                                <NoDataFound title='Brand' />
+                                <NoDataFound title='Category' />
                               )}
                               </tbody>
                               <tfoot>
@@ -297,7 +293,7 @@ const Brand = () => {
                                   colSpan={1}
                                   aria-label="Platform(s): activate to sort column ascending"
                                 >
-                                  Logo
+                                  Photo
                                 </th>
                                 <th
                                   className="sorting"
@@ -333,30 +329,30 @@ const Brand = () => {
                               </tfoot>
                             </table>
                           </>
-                          )}
+                        )}
                       </div>
                     </div>
                     <Paginations
                       activePage={activePage}
                       itemsCountPerPage={itemsCountPerPage}
                       totalItemsCount={totalItemsCount}
-                      onChange={getBrands}
+                      onChange={getCategories}
                       startFrom={startFrom}
                     />
                   </div>
-                  <BrandLogoModal
+                  <CategoryPhotoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Brand Logo"
+                    title="Category Photo"
                     size
-                    logo={modalLogo}
+                    photo={modalPhoto}
                   />
-                  <BrandDetailsModal
+                  <CategoryDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Brand Details"
+                    title="Category Details"
                     size
-                    brand={brand}
+                    category={category}
                   />
                 </div>
                 {/* /.card-body */}
@@ -371,4 +367,4 @@ const Brand = () => {
   )
 }
 
-export default Brand
+export default Users

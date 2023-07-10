@@ -4,19 +4,19 @@ import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import toastAlert from "../../../data/toastAlert.js";
 
-const CategoryForm = () => {
+const SupplierForm = () => {
   const navigate = useNavigate()
   const [input, setInput] = useState({status: 1})
   const [errors, setErrors] = useState([])
-  const [category, setCategory] = useState([])
   const [loading, setLoading] = useState(false)
   const {id} = useParams()
 
-  const getCategory = async () => {
+  const getBrand = async () => {
     setLoading(true)
-    await axiosClient.get(`/categories/${id}`).then(res => {
+    await axiosClient.get(`/brands/${id}`).then(res => {
       setLoading(false)
       setInput(res.data)
+      console.log('brsnd', res.data)
     }).catch(err => {
       setLoading(false)
       console.log(err)
@@ -24,7 +24,7 @@ const CategoryForm = () => {
   }
 
   useEffect(() => {
-    getCategory()
+    getBrand()
   }, [])
 
   const handleInput = (e) => {
@@ -41,13 +41,13 @@ const CategoryForm = () => {
     }))
   }
 
-  const handlePhoto = (e) => {
+  const handleLogo = (e) => {
     const file = e.target.files[0]
 
     const reader = new FileReader()
     reader.onloadend = () => {
       setInput(prevState => ({
-        ...prevState, photo: reader.result
+        ...prevState, logo: reader.result
       }))
     }
     reader.readAsDataURL(file)
@@ -57,10 +57,10 @@ const CategoryForm = () => {
     e.preventDefault()
     const store = async () => {
       setLoading(true)
-      await axiosClient.post('/categories', input).then(res => {
+      await axiosClient.post('/brands', input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/categories')
+        navigate('/brands')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -70,10 +70,10 @@ const CategoryForm = () => {
     }
     const update = async () => {
       setLoading(true)
-      await axiosClient.put(`/categories/${id}`, input).then(res => {
+      await axiosClient.put(`/brands/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/categories')
+        navigate('/brands')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -90,13 +90,13 @@ const CategoryForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Category` : 'Add Supplier'}>
+        <DefaultLayout title={id ? `Edit Brand` : 'Add Supplier'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? `Edit Category` : 'Add Supplier'} link='/categories' />
+                    <CardHeader isForm title={id ? 'Edit Supplier' : 'Add Supplier'} link='/brands' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">
@@ -190,24 +190,24 @@ const CategoryForm = () => {
 
                                     <div className='col-sm-6'>
                                       <div className="form-group">
-                                        <label htmlFor="photo">Photo</label>
+                                        <label htmlFor="logo">Logo</label>
                                         <div className="input-group">
                                           <div className="custom-file">
                                             <input
                                               type="file"
                                               className="custom-file-input"
-                                              id="photo"
-                                              name="photo"
-                                              onChange={handlePhoto}
+                                              id="logo"
+                                              name="logo"
+                                              onChange={handleLogo}
                                             />
-                                            <label className="custom-file-label" htmlFor="photo">
+                                            <label className="custom-file-label" htmlFor="logo">
                                               Choose file
                                             </label>
                                           </div>
                                         </div>
-                                        {input.photo != undefined || input.photo_preview != undefined  ? (
+                                        {input.logo != undefined || input.logo_preview != undefined  ? (
                                           <div className='mt-3 p-1'>
-                                            <img src={input.photo == undefined ? input.photo_preview : input.photo} style={{width: 150, height: 200, objectFit: 'cover', borderRadius: 20}} alt="Photo" />
+                                            <img src={input.logo == undefined ? input.logo_preview : input.logo} style={{width: 150, height: 200, objectFit: 'cover', borderRadius: 20}} alt="Logo" />
                                           </div>
                                         ) : null}
                                       </div>
@@ -240,4 +240,4 @@ const CategoryForm = () => {
     )
 }
 
-export default CategoryForm
+export default SupplierForm

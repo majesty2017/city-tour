@@ -4,24 +4,25 @@ namespace App\Models;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property mixed $photo
+ * @property mixed $logo
  */
-class Category extends Model
+class Brand extends Model
 {
     use HasFactory;
 
-    public const IMAGE_PATH = 'assets/uploads/categories/';
-    public const IMAGE_THUMB_PATH = 'assets/uploads/categories_thumb/';
+    public const IMAGE_PATH = 'assets/uploads/brands/';
+    public const IMAGE_THUMB_PATH = 'assets/uploads/brands_thumb/';
 
-    protected $guarded = ['photo_preview'];
+    protected $guarded = ['logo_preview'];
 
+    /**
+     * @var string[]
+     */
     public static array $rules = [
         'name' => 'required|string|min:3|max:100',
         'slug' => 'required|string|min:3|max:100',
@@ -34,7 +35,7 @@ class Category extends Model
      * @param array $input
      * @return Builder|Model
      */
-    final public function storeCategory(array $input): Model|Builder
+    final public function storeBrand(array $input): Model|Builder
     {
         return self::query()->create($input);
     }
@@ -47,23 +48,17 @@ class Category extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    final public function getCategoryIdAndName(): \Illuminate\Support\Collection
-    {
-        return self::query()->select('name', 'id')->get();
-    }
 
     /**
+     * @param array $input
      * @return LengthAwarePaginator
      */
-    final public function categories(array $input): LengthAwarePaginator
+    final public function brands(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
         $query = self::query();
         if (!empty($input['search'])) {
-            $query->where('name', 'like', '%'.$input['search'].'%');
+            $query->where('name', 'like', '%' . $input['search'] . '%');
         }
         if (!empty($input['order_by'])) {
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
