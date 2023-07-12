@@ -9,7 +9,7 @@ import {
   Loader,
   NoDataFound,
   Paginations,
-  Search
+  Search, SupplierDetailsModal, SupplierLogoModal
 } from "../../../components";
 import {Link} from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 
 const Supplier = () => {
   const [loading, setLoading] = useState(false)
-  const [brands, setBrands] = useState([])
+  const [suppliers, setSuppliers] = useState([])
 
   const [itemsCountPerPage, setItemsCountPerPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(1)
@@ -29,7 +29,7 @@ const Supplier = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowDetails, setModalShowDetails] = useState(false);
   const [modalLogo, setModalLogo] = useState('');
-  const [brand, setBrand] = useState([]);
+  const [supplier, setSupplier] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -42,17 +42,18 @@ const Supplier = () => {
     setModalShow(true)
   }
 
-  const handleDetailsModal = (brand) => {
-    setBrand(brand)
+  const handleDetailsModal = (supplier) => {
+    setSupplier(supplier)
     setModalShowDetails(true)
   }
-  const getBrands = async (pageNumber = 1) => {
+
+  const getSuppliers = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`brands?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`suppliers?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
       console.log(res.data)
-      setBrands(res.data.data)
+      setSuppliers(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
       setTotalItemsCount(res.data.meta.total)
@@ -64,7 +65,7 @@ const Supplier = () => {
   }
 
   useEffect(() => {
-    getBrands()
+    getSuppliers()
   }, [])
 
   const handleInput = (e) => {
@@ -93,14 +94,14 @@ const Supplier = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/brands/${id}`).then(res => {
+        axiosClient.delete(`/suppliers/${id}`).then(res => {
           setLoading(false)
           swalWithBootstrapButtons.fire(
             'Deleted!',
             res.message,
             'success'
           )
-          getBrands()
+          getSuppliers()
         }).catch(err => {
           setLoading(false)
           console.log(err)
@@ -119,13 +120,13 @@ const Supplier = () => {
   }
 
   return (
-    <DefaultLayout title='Brands'>
+    <DefaultLayout title='Suppliers'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Brand List' link='/brands/create' value={input} onChange={handleInput}/>
+                <CardHeader title='Suppliers List' link='/suppliers/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -137,7 +138,7 @@ const Supplier = () => {
                         {loading && (<Loader/>)}
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getBrands(1)} onChange={handleInput}/>
+                            <Search value={input} onClick={() => getSuppliers(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -161,7 +162,7 @@ const Supplier = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Name / Slug
+                                  Name
                                 </th>
                                 <th
                                   className="sorting"
@@ -171,7 +172,37 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Browser: activate to sort column ascending"
                                 >
-                                  Serial / Status
+                                  Email
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Phone
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Company
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Status
                                 </th>
                                 <th
                                   className="sorting"
@@ -191,7 +222,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Engine version: activate to sort column ascending"
                                 >
-                                  Created By
+                                  By
                                 </th>
                                 <th
                                   className="sorting"
@@ -201,7 +232,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="CSS grade: activate to sort column ascending"
                                 >
-                                  Date Time
+                                  Date/Time
                                 </th>
                                 <th
                                   className="sorting"
@@ -216,38 +247,31 @@ const Supplier = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(brands).length > 0 ? brands.map((brand, index) => (
+                              {Object.keys(suppliers).length > 0 ? suppliers.map((supplier, index) => (
                                 <tr key={index}>
-                                  <td>{activePage + index}</td>
-                                  <td className="dtr-control" tabIndex={index}>
-                                    <div>
-                                      <div className='text-primary'>Name: {brand.name}</div>
-                                      <div className='text-info'>Slug: {brand.slug}</div>
-                                    </div>
+                                  <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
+                                  <td>{supplier.name}</td>
+                                  <td>{supplier.email}</td>
+                                  <td>{supplier.phone}</td>
+                                  <td>{supplier.company_name}</td>
+                                  <td>{supplier.status}</td>
+                                  <td>
+                                    <Images width={32} height={32} src={supplier.logo} alt={supplier.name}
+                                            onClick={() => handleLogoModal(supplier.logo_full)}/>
                                   </td>
+                                  <td>{supplier.created_by}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'>Serial: {brand.serial}</div>
-                                      <div className='text-info'>Status: {brand.status}</div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <Images width={32} height={32} src={brand.logo} alt={brand.name}
-                                            onClick={() => handleLogoModal(brand.logo_full)}/>
-                                  </td>
-                                  <td>{brand.created_by}</td>
-                                  <td>
-                                    <div>
-                                      <div className='text-primary'><small>Created: {brand.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {brand.updated_at}</small></div>
+                                      <div className='text-primary'><small>Created: {supplier.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {supplier.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='brands'
-                                      id={brand.id}
-                                      handleDelete={() => handleDelete(brand.id)}
-                                      onClick={() => handleDetailsModal(brand)}
+                                      url='suppliers'
+                                      id={supplier.id}
+                                      handleDelete={() => handleDelete(supplier.id)}
+                                      onClick={() => handleDetailsModal(supplier)}
                                       view />
                                   </td>
                                 </tr>
@@ -277,7 +301,7 @@ const Supplier = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Serial / Status
+                                  Name
                                 </th>
                                 <th
                                   className="sorting"
@@ -287,7 +311,37 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Browser: activate to sort column ascending"
                                 >
-                                  Serial / Status
+                                  Email
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Phone
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Company
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Status
                                 </th>
                                 <th
                                   className="sorting"
@@ -307,7 +361,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Engine version: activate to sort column ascending"
                                 >
-                                  Created By
+                                  By
                                 </th>
                                 <th
                                   className="sorting"
@@ -317,7 +371,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="CSS grade: activate to sort column ascending"
                                 >
-                                  Date Time
+                                  Date/Time
                                 </th>
                                 <th
                                   className="sorting"
@@ -340,23 +394,23 @@ const Supplier = () => {
                       activePage={activePage}
                       itemsCountPerPage={itemsCountPerPage}
                       totalItemsCount={totalItemsCount}
-                      onChange={getBrands}
+                      onChange={getSuppliers}
                       startFrom={startFrom}
                     />
                   </div>
-                  <BrandLogoModal
+                  <SupplierLogoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Brand Logo"
+                    title="Supplier Logo"
                     size
                     logo={modalLogo}
                   />
-                  <BrandDetailsModal
+                  <SupplierDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Brand Details"
+                    title="Supplier Details"
                     size
-                    brand={brand}
+                    supplier={supplier}
                   />
                 </div>
                 {/* /.card-body */}

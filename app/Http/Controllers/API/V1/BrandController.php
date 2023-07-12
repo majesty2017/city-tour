@@ -38,7 +38,7 @@ class BrandController extends Controller
             $brand['logo'] = $this->processImageUpload($request->input('logo'), Str::random());
         }
         (new Brand())->storeBrand($brand);
-        return response()->json(['message' => 'Supplier saved successfully!']);
+        return response()->json(['message' => 'Brand saved successfully!']);
     }
 
     /**
@@ -77,7 +77,7 @@ class BrandController extends Controller
             ImageManager::deletePhoto(Brand::IMAGE_THUMB_PATH, $brand->logo);
         }
         $brand->delete();
-        return response()->json(['message' => 'Supplier deleted successfully!']);
+        return response()->json(['message' => 'Brand deleted successfully!']);
     }
 
     /**

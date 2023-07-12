@@ -35,7 +35,10 @@ const Sidebar = () => {
                             </Link>
                         </li>
                       <li className="nav-header text-uppercase">Human Resources</li>
-                      <li className="nav-item">
+                      <li  className={`nav-item ${
+                        location.pathname === '/users' && 'menu-open' ||
+                        location.pathname === '/suppliers' && 'menu-open'
+                      }`}>
                         <a href="#" className="nav-link">
                           <i className="nav-icon fas fa-table" />
                           <p>
@@ -45,10 +48,16 @@ const Sidebar = () => {
                         </a>
                         <ul className="nav nav-treeview">
                           <li className="nav-item">
-                            <a href="/users" className="nav-link">
+                            <Link to="/users" className={`nav-link ${location.pathname === '/users' && 'active'}`}>
                               <i className="far fa-circle nav-icon" />
                               <p>Users</p>
-                            </a>
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link to="/suppliers" className={`nav-link ${location.pathname === '/suppliers' && 'active'}`}>
+                              <i className="far fa-circle nav-icon" />
+                              <p>Suppliers</p>
+                            </Link>
                           </li>
                         </ul>
                       </li>

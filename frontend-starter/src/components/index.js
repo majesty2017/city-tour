@@ -7,8 +7,9 @@ export { default as PublicLayout } from './layouts/PublicLayout'
 export { default as ProtectedLayout } from './layouts/ProtectedLayout'
 export { default as Search } from './layouts/Search'
 export { default as Breadcrumb } from './layouts/Breadcrumb'
-export { default as Loader } from './Loader'
 
+export { default as Loader } from './elements/Loader'
+export { default as ButtonLoader } from './elements/ButtonLoader'
 export { default as Images } from './elements/Images'
 export { default as Status } from './elements/Status'
 export { default as ImageCard } from './elements/ImageCard'
@@ -23,6 +24,9 @@ export { default as NoDataFound } from './elements/NoDataFound'
 export { default as ActionButton } from './buttons/ActionButton'
 
 // Modals
+export {default as SupplierLogoModal} from './modals/supplier/SupplierLogoModal'
+export {default as SupplierDetailsModal} from './modals/supplier/SupplierDetailsModal'
+
 export {default as BrandLogoModal} from './modals/brand/BrandLogoModal'
 export {default as BrandDetailsModal} from './modals/brand/BrandDetailsModal'
 

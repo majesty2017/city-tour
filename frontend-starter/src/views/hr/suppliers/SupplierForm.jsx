@@ -13,10 +13,9 @@ const SupplierForm = () => {
 
   const getBrand = async () => {
     setLoading(true)
-    await axiosClient.get(`/brands/${id}`).then(res => {
+    await axiosClient.get(`/suppliers/${id}`).then(res => {
       setLoading(false)
       setInput(res.data)
-      console.log('brsnd', res.data)
     }).catch(err => {
       setLoading(false)
       console.log(err)
@@ -27,19 +26,7 @@ const SupplierForm = () => {
     getBrand()
   }, [])
 
-  const handleInput = (e) => {
-    if (e.target.name === 'name') {
-      let slug = e.target.value
-      slug = slug.toLowerCase()
-      slug = slug.replaceAll(' ', '-')
-      setInput(prevState => ({
-        ...prevState, slug: slug
-      }))
-    }
-    setInput(prevState => ({
-      ...prevState, [e.target.name]: e.target.value
-    }))
-  }
+  const handleInput = (e) => setInput(prevState => ({...prevState, [e.target.name]: e.target.value}))
 
   const handleLogo = (e) => {
     const file = e.target.files[0]
@@ -57,10 +44,10 @@ const SupplierForm = () => {
     e.preventDefault()
     const store = async () => {
       setLoading(true)
-      await axiosClient.post('/brands', input).then(res => {
+      await axiosClient.post('/suppliers', input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/brands')
+        navigate('/suppliers')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -68,12 +55,13 @@ const SupplierForm = () => {
         }
       })
     }
+
     const update = async () => {
       setLoading(true)
-      await axiosClient.put(`/brands/${id}`, input).then(res => {
+      await axiosClient.put(`/suppliers/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/brands')
+        navigate('/suppliers')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -90,13 +78,13 @@ const SupplierForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Brand` : 'Add Supplier'}>
+        <DefaultLayout title={id ? `Edit Supplier` : 'Add Supplier'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? 'Edit Supplier' : 'Add Supplier'} link='/brands' />
+                    <CardHeader isForm title={id ? 'Edit Supplier' : 'Add Supplier'} link='/suppliers' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">
@@ -128,36 +116,54 @@ const SupplierForm = () => {
 
                                     <div className='col-sm-6'>
                                       <div className="form-group">
-                                        <label htmlFor="slug">Slug</label>
+                                        <label htmlFor="email">Email</label>
                                         <input
-                                          type="text"
-                                          className={errors.slug !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
-                                          id="slug"
-                                          name="slug"
-                                          value={input.slug}
+                                          type="email"
+                                          className={errors.email !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
+                                          id="email"
+                                          name="email"
+                                          value={input.email}
                                           onChange={handleInput}
-                                          placeholder="Enter slug"
+                                          placeholder="Enter email"
                                         />
                                         <p className='text-danger'>
-                                          <small>{errors.slug !== undefined ? errors.slug[0] : null}</small>
+                                          <small>{errors.email !== undefined ? errors.email[0] : null}</small>
                                         </p>
                                       </div>
                                     </div>
 
                                     <div className='col-sm-6'>
                                       <div className="form-group">
-                                        <label htmlFor="serial">Serial</label>
+                                        <label htmlFor="name">Phone</label>
                                         <input
-                                          type="number"
-                                          className={errors.serial !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
-                                          id="serial"
-                                          name="serial"
-                                          value={input.serial}
+                                          type="text"
+                                          className={errors.phone !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
+                                          id="phone"
+                                          name="phone"
+                                          value={input.phone}
                                           onChange={handleInput}
-                                          placeholder="Enter serial"
+                                          placeholder="Enter phone"
                                         />
                                         <p className='text-danger'>
-                                          <small>{errors.serial !== undefined ? errors.serial[0] : null}</small>
+                                          <small>{errors.phone !== undefined ? errors.phone[0] : null}</small>
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div className='col-sm-6'>
+                                      <div className="form-group">
+                                        <label htmlFor="company_name">Company name</label>
+                                        <input
+                                          type="text"
+                                          className={errors.company_name !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
+                                          id="company_name"
+                                          name="company_name"
+                                          value={input.company_name}
+                                          onChange={handleInput}
+                                          placeholder="Enter company name"
+                                        />
+                                        <p className='text-danger'>
+                                          <small>{errors.company_name !== undefined ? errors.company_name[0] : null}</small>
                                         </p>
                                       </div>
                                     </div>
@@ -183,8 +189,20 @@ const SupplierForm = () => {
 
                                     <div className="col-sm-6">
                                       <div className="form-group form-control-border border-width-2">
-                                        <label>Description</label>
-                                        <textarea className="form-control" value={input.description} onChange={handleInput} name='description' rows="3" placeholder="Enter ..."></textarea>
+                                        <label>Address</label>
+                                        <textarea
+                                          className={errors.address !== undefined ?
+                                            "form-control form-control-border border-width-2 is-invalid" :
+                                            "form-control form-control-border border-width-2"}
+                                          value={input.address}
+                                          onChange={handleInput}
+                                          name='address'
+                                          rows="3"
+                                          placeholder="Enter ..."
+                                        ></textarea>
+                                        <p className='text-danger'>
+                                          <small>{errors.address !== undefined ? errors.address[0] : null}</small>
+                                        </p>
                                       </div>
                                     </div>
 

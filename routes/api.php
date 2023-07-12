@@ -3,8 +3,11 @@
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
+use App\Http\Controllers\API\V1\DistrictController;
 use App\Http\Controllers\API\V1\SubCategoryController;
+use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
+use App\Manager\ScriptManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +31,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('categories/list', [CategoryController::class, 'get_category_list']);
 
     Route::apiResource('users', UserController::class);
+    Route::apiResource('suppliers', SupplierController::class);
     Route::apiResource('brands', BrandController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('sub-categories', SubCategoryController::class);

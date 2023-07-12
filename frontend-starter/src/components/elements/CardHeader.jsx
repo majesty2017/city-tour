@@ -1,7 +1,7 @@
 import {Search} from "../index.js";
 import {Link} from "react-router-dom";
 
-const CardHeader = ({title, link, isForm, onChange}) => {
+const CardHeader = ({title, link, isForm}) => {
     return (
       <>
         {isForm ? (

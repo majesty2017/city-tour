@@ -34,7 +34,6 @@ class UserController extends Controller
             $filename = time().'.'.$ext;
             $data['image'] = $filename;
         }
-        $data['uuid'] = uniqid();
         /** @var User $user */
         $user = User::create($data);
         return response(new UserResource($user), 201);

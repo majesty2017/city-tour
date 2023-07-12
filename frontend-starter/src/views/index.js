@@ -29,6 +29,9 @@ export {default as CategoryForm} from './services/categories/CategoryForm'
 export {default as SubCategory} from './services/sub-category/SubCategory'
 export {default as SubCategoryForm} from './services/sub-category/SubCategoryForm'
 
+export {default as ProductAttribute} from './services/product-attributes/ProductAttribute'
+export {default as ProductAttributeForm} from './services/product-attributes/ProductAttributeForm'
+
 export {default as Product} from './services/products/Product'
 export {default as ProductForm} from './services/products/ProductForm'
 

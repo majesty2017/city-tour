@@ -12,7 +12,7 @@ import {
   Invoice,
   Login,
   NotFound,
-  Product,
+  Product, ProductAttribute, ProductAttributeForm,
   ProductForm,
   Profile,
   SubCategory,
@@ -60,6 +60,7 @@ const router = createBrowserRouter([
         path: '/tickets',
         element: <Ticket/>
       },
+
       {
         path: '/products',
         element: <Product/>
@@ -71,6 +72,19 @@ const router = createBrowserRouter([
       {
         path: '/products/:id',
         element: <ProductForm key="update"/>
+      },
+
+      {
+        path: '/product-attributes',
+        element: <ProductAttribute/>
+      },
+      {
+        path: '/product-attributes/create',
+        element: <ProductAttributeForm key="create"/>
+      },
+      {
+        path: '/product-attributes/:id',
+        element: <ProductAttributeForm key="update"/>
       },
 
       {
