@@ -61,13 +61,14 @@ const Sidebar = () => {
                           </li>
                         </ul>
                       </li>
-                      <li className="nav-header text-uppercase">Management</li>
+                      <li className="nav-header text-uppercase">Products</li>
                         <li className={`nav-item ${
                           location.pathname === '/categories' && 'menu-open' ||
                           location.pathname === '/sub-categories' && 'menu-open' ||
                           location.pathname === '/brands' && 'menu-open' ||
-                          location.pathname === '/products' && 'menu-open'}`
-                        }>
+                          location.pathname === '/products' && 'menu-open' ||
+                          location.pathname === '/product-attributes' && 'menu-open'
+                        }`}>
                             <a href="#" className="nav-link">
                                 <i className="nav-icon fas fa-edit" />
                                 <p>
@@ -92,6 +93,12 @@ const Sidebar = () => {
                                 <Link to="/sub-categories" className={`nav-link ${location.pathname === '/sub-categories' && 'active'}`}>
                                   <i className="far fa-circle nav-icon" />
                                   <p>Sub Categories</p>
+                                </Link>
+                              </li>
+                              <li className="nav-item">
+                                <Link to="/product-attributes" className={`nav-link ${location.pathname === '/product-attributes' && 'active'}`}>
+                                  <i className="far fa-circle nav-icon" />
+                                  <p>Product Attributes</p>
                                 </Link>
                               </li>
                               <li className="nav-item">

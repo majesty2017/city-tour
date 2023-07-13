@@ -125,7 +125,7 @@ const SubCategory = () => {
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Sub Category List' link='/sub-categories/create' value={input} onChange={handleInput}/>
+                <CardHeader title='Sub Category List' link='/sub-categories/create' />
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">

@@ -90,13 +90,13 @@ const BrandForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Brand` : 'Add Supplier'}>
+        <DefaultLayout title={id ? `Edit Brand` : 'Add Brand'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? 'Edit Supplier' : 'Add Supplier'} link='/brands' />
+                    <CardHeader isForm title={id ? 'Edit Brand' : 'Add Brand'} link='/brands' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">
