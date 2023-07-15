@@ -272,7 +272,7 @@ const Supplier = () => {
                                       id={supplier.id}
                                       handleDelete={() => handleDelete(supplier.id)}
                                       onClick={() => handleDetailsModal(supplier)}
-                                      view />
+                                      modalView />
                                   </td>
                                 </tr>
                               )): (

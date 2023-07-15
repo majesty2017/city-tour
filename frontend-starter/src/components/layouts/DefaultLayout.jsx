@@ -1,5 +1,7 @@
 import {Breadcrumb, Footer, Header, Preloader, Sidebar} from "../";
 
+import '../../styles.scss'
+
 const DefaultLayout= ({title, previous, url, children}) => {
     return (
         <div className="wrapper">

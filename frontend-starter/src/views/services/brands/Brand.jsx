@@ -51,7 +51,6 @@ const Brand = () => {
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
     await axiosClient.get(`brands?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
-      console.log(res.data)
       setBrands(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
