@@ -1,6 +1,7 @@
 import {
   ActionButton,
-  CardHeader, CategoryDetailsModal,
+  CardHeader,
+  CategoryDetailsModal,
   CategoryPhotoModal,
   DataTables,
   DefaultLayout,

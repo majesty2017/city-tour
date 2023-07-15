@@ -35,6 +35,9 @@ export {default as ProductAttributeDetailsModal} from './modals/product-attribut
 export {default as BrandLogoModal} from './modals/brand/BrandLogoModal'
 export {default as BrandDetailsModal} from './modals/brand/BrandDetailsModal'
 
+export {default as ProductPhotoModal} from './modals/product/ProductPhotoModal'
+export {default as ProductDetailsModal} from './modals/product/ProductDetailsModal'
+
 export {default as CategoryPhotoModal} from './modals/category/CategoryPhotoModal'
 export {default as CategoryDetailsModal} from './modals/category/CategoryDetailsModal'
 

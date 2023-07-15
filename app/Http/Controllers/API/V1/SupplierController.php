@@ -27,6 +27,14 @@ class SupplierController extends Controller
     }
 
     /**
+     * @return JsonResponse
+     */
+    final public function get_supplierlist(): JsonResponse
+    {
+        return response()->json((new Supplier())->getSupplierIdAndName());
+    }
+
+    /**
      * @param StoreSupplierRequest $request
      * @return JsonResponse
      */

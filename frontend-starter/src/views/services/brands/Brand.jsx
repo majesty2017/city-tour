@@ -17,6 +17,7 @@ import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
+import toastAlert from "../../../data/toastAlert.js";
 
 const Brand = () => {
   const [loading, setLoading] = useState(false)
@@ -94,11 +95,7 @@ const Brand = () => {
         setLoading(true)
         axiosClient.delete(`/brands/${id}`).then(res => {
           setLoading(false)
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            res.message,
-            'success'
-          )
+          toastAlert(res.message)
           getBrands()
         }).catch(err => {
           setLoading(false)

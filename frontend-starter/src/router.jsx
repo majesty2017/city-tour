@@ -17,7 +17,7 @@ import {
   Profile,
   SubCategory,
   SubCategoryForm, Supplier, SupplierForm,
-  Ticket,
+  Ticket, Trash,
   UserForm,
   Users,
   Visitor,
@@ -72,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/products/:id',
         element: <ProductForm key="update"/>
+      },
+      {
+        path: '/trash',
+        element: <Trash/>
       },
 
       {

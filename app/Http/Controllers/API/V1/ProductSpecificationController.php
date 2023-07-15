@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductAttributeRequest;
-use App\Http\Requests\UpdateProductAttributeRequest;
-use App\Models\ProductAttribute;
+use App\Http\Requests\StoreProductSpecificationRequest;
+use App\Http\Requests\UpdateProductSpecificationRequest;
+use App\Models\ProductSpecification;
 
-class ProductAttributeController extends Controller
+class ProductSpecificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ProductAttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductAttributeRequest $request)
+    public function store(StoreProductSpecificationRequest $request)
     {
         //
     }
@@ -28,7 +28,7 @@ class ProductAttributeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductAttribute $productAttribute)
+    public function show(ProductSpecification $productSpecification)
     {
         //
     }
@@ -36,7 +36,7 @@ class ProductAttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductAttributeRequest $request, ProductAttribute $productAttribute)
+    public function update(UpdateProductSpecificationRequest $request, ProductSpecification $productSpecification)
     {
         //
     }
@@ -44,7 +44,7 @@ class ProductAttributeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductAttribute $productAttribute)
+    public function destroy(ProductSpecification $productSpecification)
     {
         //
     }

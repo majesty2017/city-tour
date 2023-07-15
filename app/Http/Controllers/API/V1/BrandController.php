@@ -27,6 +27,14 @@ class BrandController extends Controller
     }
 
     /**
+     * @return JsonResponse
+     */
+    final public function get_brand_list(): JsonResponse
+    {
+        return response()->json((new Brand())->getBrandIdAndName());
+    }
+
+    /**
      * @param StoreBrandRequest $request
      * @return JsonResponse
      */

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 class Supplier extends Model
 {
@@ -14,6 +15,7 @@ class Supplier extends Model
 
     public const IMAGE_PATH = 'assets/uploads/suppliers/';
     public const IMAGE_THUMB_PATH = 'assets/uploads/suppliers_thumb/';
+    const ACTIVE_STATUS = 1;
 
     protected $guarded = ['logo_preview'];
 
@@ -36,6 +38,17 @@ class Supplier extends Model
     final public function storeSupplier(array $input): Model|Builder
     {
         return self::query()->create($input);
+    }
+
+    /**
+     * @return Collection
+     */
+    final public function getSupplierIdAndName(): Collection
+    {
+        return self::query()
+            ->select('name', 'id', 'phone')
+            ->where('status', self::ACTIVE_STATUS)
+            ->get();
     }
 
     /**

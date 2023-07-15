@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 /**
  * @property mixed $logo
@@ -17,6 +18,7 @@ class Brand extends Model
 
     public const IMAGE_PATH = 'assets/uploads/brands/';
     public const IMAGE_THUMB_PATH = 'assets/uploads/brands_thumb/';
+    public const ACTIVE_STATUS = 1;
 
     protected $guarded = ['logo_preview'];
 
@@ -38,6 +40,14 @@ class Brand extends Model
     final public function storeBrand(array $input): Model|Builder
     {
         return self::query()->create($input);
+    }
+
+    /**
+     * @return Collection
+     */
+    final public function getBrandIdAndName(): Collection
+    {
+        return self::query()->select('name', 'id')->where('status', self::ACTIVE_STATUS)->get();
     }
 
     /**

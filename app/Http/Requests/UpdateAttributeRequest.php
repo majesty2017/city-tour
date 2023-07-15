@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Attribute;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductAttributeRequest extends FormRequest
+class UpdateAttributeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,6 @@ class StoreProductAttributeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return Attribute::$rules;
     }
 }

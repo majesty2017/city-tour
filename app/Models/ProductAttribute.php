@@ -2,48 +2,41 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductAttribute extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'status', 'user_id'];
 
-    public static array $rules = [
-        'name' => 'required|string|min:3|max:255',
-        'status' => 'required|numeric',
-    ];
+    protected $guarded = [];
 
     /**
-     * @return BelongsTo
+     * @param array $input
+     * @return array
      */
-    final public function user(): BelongsTo
+    private function prepareAttributeData(array $input, Product $product): array
     {
-        return $this->belongsTo(User::class);
+        $attribute_data = [];
+        foreach ($input as $value) {
+            $data['product_id'] = $product->id;
+            $data['attribute_id'] = $value['attribute_id'];
+            $data['attribute_value_id'] = $value['value_id'];
+            $attribute_data[] = $data;
+        }
+        return $attribute_data;
     }
 
     /**
-     * @return HasMany
+     * @param array $input
+     * @param Product $product
+     * @return void
      */
-    final public function value(): HasMany
+    final public function storeAttributeData(array $input, Product $product): void
     {
-        return $this->hasMany(AttributeValue::class, 'attribute_id', 'id');
-    }
-
-    /***
-     * @return LengthAwarePaginator
-     */
-    final public function getAttributeList(): LengthAwarePaginator
-    {
-        return self::query()
-            ->with(['user', 'value', 'value.user:id,name'])
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+        $attribute_data = $this->prepareAttributeData($input, $product);
+        foreach ($attribute_data as $attribute) {
+            self::create($attribute);
+        }
     }
 }

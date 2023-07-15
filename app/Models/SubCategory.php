@@ -40,6 +40,18 @@ class SubCategory extends Model
     }
 
     /**
+     * @param int $category_id
+     * @return Collection
+     */
+    final public function getSubCategoryIdAndName(int $category_id): Collection
+    {
+        return self::query()
+            ->select('name', 'id')
+            ->where('category_id', $category_id)
+            ->get();
+    }
+
+    /**
      * @return BelongsTo
      */
     final public function user(): BelongsTo

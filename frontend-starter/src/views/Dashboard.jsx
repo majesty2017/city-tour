@@ -2,7 +2,7 @@ import {DefaultLayout, Preloader} from "../components";
 
 const Dashboard = () => {
     return (
-        <DefaultLayout title={'Dashboard v1'}>
+        <DefaultLayout title={'Dashboard'}>
             <section className="content">
                 <div className="container-fluid">
                     {/* Small boxes (Stat box) */}

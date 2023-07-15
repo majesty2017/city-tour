@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ProductAttribute;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductAttributeRequest extends FormRequest
@@ -12,7 +11,7 @@ class UpdateProductAttributeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,6 +21,8 @@ class UpdateProductAttributeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return ProductAttribute::$rules;
+        return [
+            //
+        ];
     }
 }

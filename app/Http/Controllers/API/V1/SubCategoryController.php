@@ -28,6 +28,15 @@ class SubCategoryController extends Controller
     }
 
     /**
+     * @param int $category_id
+     * @return JsonResponse
+     */
+    final public function get_sub_category_list(int $category_id): JsonResponse
+    {
+        return response()->json((new SubCategory())->getSubCategoryIdAndName($category_id));
+    }
+
+    /**
      * Store a newly created resource in storage.
      * @param StoreSubCategoryRequest $request
      * @return JsonResponse
