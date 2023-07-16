@@ -1,5 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import {
+  AddProductPhoto,
   Brand, BrandForm,
   Category,
   CategoryForm,
@@ -12,11 +13,15 @@ import {
   Invoice,
   Login,
   NotFound,
-  Product, ProductAttribute, ProductAttributeForm,
+  Product,
+  ProductAttribute,
+  ProductAttributeForm,
   ProductForm,
   Profile,
   SubCategory,
-  SubCategoryForm, Supplier, SupplierForm,
+  SubCategoryForm,
+  Supplier,
+  SupplierForm,
   Ticket, Trash,
   UserForm,
   Users,
@@ -64,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: '/products',
         element: <Product/>
+      },
+      {
+        path: '/products/photo/:id',
+        element: <AddProductPhoto/>
       },
       {
         path: '/products/create',

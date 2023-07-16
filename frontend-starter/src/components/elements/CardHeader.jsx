@@ -1,7 +1,7 @@
 import {Search} from "../index.js";
 import {Link} from "react-router-dom";
 
-const CardHeader = ({title, link, isForm, isPopup, onClick}) => {
+const CardHeader = ({title, link, isForm, isPopup, onClick, trash, trashLink}) => {
     return (
       <>
         {isForm ? (
@@ -24,7 +24,14 @@ const CardHeader = ({title, link, isForm, isPopup, onClick}) => {
               {isPopup ? (
                 <button type='button' onClick={onClick} className='btn btn-outline-primary ml-4'><i className='fas fa-plus-circle'></i> Add New</button>
               ) : (
-                <Link to={link} className='btn btn-outline-primary ml-4'><i className='fas fa-plus-circle'></i> Add New</Link>
+                <>
+                  <div className='d-flex'>
+                    {trash && (
+                      <Link to={trashLink} className='btn btn-outline-primary ml-4'><i className='fas fa-trash'></i> Trash</Link>
+                    )}
+                    <Link to={link} className='btn btn-outline-primary ml-4'><i className='fas fa-plus-circle'></i> Add New</Link>
+                  </div>
+                </>
               )}
             </div>
           </div>

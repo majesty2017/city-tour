@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
+import index               from "../../../public/assets/plugins/popper/popper-utils.js";
 
-const Search = ({value, onClick, onChange}) => {
+const Search = ({value, onClick, onChange, hasExtra, extras}) => {
   const navigate = useNavigate()
   const handleRefresh = () => {
     window.location.reload()
@@ -21,7 +22,15 @@ const Search = ({value, onClick, onChange}) => {
             <option value='name'>Name</option>
             <option value='created_at'>Created at</option>
             <option value='updated_at'>Updated at</option>
-            <option value='serial'>Serial</option>
+            {hasExtra ? (
+              <>
+                {extras && extras.length > 0 && extras.map((extra, index) => (
+                  <option value={extra.value} key={index}>{extra.name}</option>
+                ))}
+              </>
+            ) : (
+               <option value='serial'>Serial</option>
+             )}
             <option value='status'>Status</option>
           </select>
         </div>

@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'settings' => [
+        'currency' => env('CURRENCY'),
+        'currency_symbol' => env('SYMBOL'),
+    ]
+
 ];

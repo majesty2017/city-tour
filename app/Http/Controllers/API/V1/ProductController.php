@@ -10,7 +10,6 @@ use App\Http\Resources\UpdateProductResource;
 use App\Manager\ImageManager;
 use App\Models\Product;
 use App\Models\ProductAttribute;
-use App\Models\ProductSpecification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -25,8 +24,7 @@ class ProductController extends Controller
      */
     final public function index(Request $request): AnonymousResourceCollection
     {
-        $product = (new Product())->getProducts($request->all());
-        return ProductResource::collection($product);
+        return ProductResource::collection((new Product())->getProducts($request->all()));
     }
 
     /**
@@ -36,14 +34,15 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-            $product = (new Product())->storeProduct($request->all(), auth()->id());
+            $product = (new Product())->storeProduct($request->all());
             if ($request->has('attributes')) {
                 (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
             }
             DB::commit();
 
-            return response()->json(['message' => 'Product saved successfully!']);
+            return response()->json(['message' => 'Product saved successfully!', 'product_id' => $product->id]);
         } catch (\Throwable $e) {
+            info('PRODUCT_SAVE_FAILED', ['data' => $request->all(), 'error' => $e->getMessage()]);
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()]);
         }
@@ -67,7 +66,7 @@ class ProductController extends Controller
     {
         $product_data = $request->except('photo');
 
-        if($request->has('photo')) {
+        if ($request->has('photo')) {
             $product_data['photo'] = $this->processImageUpload($request->photo, Str::random(32), $product->photo);
         }
         $product->update($product_data);

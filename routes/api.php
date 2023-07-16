@@ -5,12 +5,12 @@ use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\CountryController;
-use App\Http\Controllers\API\V1\DistrictController;
 use App\Http\Controllers\API\V1\AttributeController;
 use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
+use App\Http\Controllers\ProductPhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,13 +31,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post('/logout', [AuthController::class,'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('categories/list', [CategoryController::class, 'get_category_list']);
     Route::get('sub_categories/list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
     Route::get('brands/list', [BrandController::class, 'get_brand_list']);
     Route::get('attributes/list', [AttributeController::class, 'get_attribute_list']);
     Route::get('suppliers/list', [SupplierController::class, 'get_supplierlist']);
+    Route::post('product-photo-upload/{id}', [ProductPhotoController::class, 'store']);
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('countries', CountryController::class);

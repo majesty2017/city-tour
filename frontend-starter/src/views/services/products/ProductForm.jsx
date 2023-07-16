@@ -1,9 +1,9 @@
 import {CardHeader, DefaultLayout, Loader, Search} from "../../../components";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import axiosClient from "../../../axios-client";
-import toastAlert from "../../../data/toastAlert";
-import useFetch from "../../../hooks/useFetch.js";
+import {Link, useNavigate, useParams}              from "react-router-dom";
+import React, {useEffect, useState}                from "react";
+import axiosClient                                 from "../../../axios-client";
+import toastAlert                                  from "../../../data/toastAlert";
+import useFetch                                    from "../../../hooks/useFetch.js";
 
 const ProductForm = () => {
   const navigate = useNavigate()
@@ -94,7 +94,9 @@ const ProductForm = () => {
       await axiosClient.post('/products', input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/products')
+        if (res.data.product_id != undefined) {
+          navigate(`/products/photo/${res.data.product_id}`)
+        }
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -149,11 +151,11 @@ const ProductForm = () => {
       delete copy[id];
       return copy;
     })
-    setAttributeFieldId(attributeFieldId-1)
+    setAttributeFieldId(attributeFieldId - 1)
   }
 
   const handleAttributeFields = (id) => {
-    if (attributes.length >= attributeFieldId){
+    if (attributes.length >= attributeFieldId) {
       setAttributeFieldId(attributeFieldId + 1)
       setAttributeField(prevState => [...prevState, attributeFieldId])
     }
@@ -162,7 +164,7 @@ const ProductForm = () => {
   const handleSpecificationInput = (e, id) => {
     setSpecificationInput(prevState => ({
       ...prevState,
-      [id]:{
+      [id]: {
         ...prevState[id], [e.target.name]: e.target.value
       }
     }))
@@ -171,18 +173,18 @@ const ProductForm = () => {
   const handleAttributeInput = (e, id) => {
     setAttributeInput(prevState => ({
       ...prevState,
-      [id]:{
+      [id]: {
         ...prevState[id], [e.target.name]: e.target.value
       }
     }))
     setInput(prevState => ({...prevState, attributes: attributeInput}))
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setInput(prevState => ({...prevState, attributes: attributeInput}))
   }, [attributeInput])
 
-  useEffect(()=>{
+  useEffect(() => {
     setInput(prevState => ({...prevState, specifications: specificationInput}))
   }, [specificationInput])
 
@@ -331,7 +333,7 @@ const ProductForm = () => {
                                     <h5>Select Product Attribute</h5>
                                   </div>
                                   <div className='card-body'>
-                                    {attributeField.map((id, ind)=>(
+                                    {attributeField.map((id, ind) => (
                                       <div className='row my-2 align-items-baseline'>
                                         <div className='col-sm-5'>
                                           <div className="form-group">
@@ -344,10 +346,10 @@ const ProductForm = () => {
                                               name="attribute_id"
                                               defaultValue={attributeInput[id] != undefined ? attributeInput[id].attribute_id : null}
                                               placeholder='Select option'
-                                              onChange={(e)=>handleAttributeInput(e, id)}
+                                              onChange={(e) => handleAttributeInput(e, id)}
                                             >
                                               <option>Select option</option>
-                                              {attributes.map((value, index)=>(
+                                              {attributes.map((value, index) => (
                                                 <option value={value.id}>{value.name}</option>
                                               ))}
                                             </select>
@@ -364,23 +366,24 @@ const ProductForm = () => {
                                               name="value_id"
                                               defaultValue={attributeInput[id] != undefined ? attributeInput[id].value_id : null}
                                               placeholder='Select option'
-                                              onChange={(e)=>handleAttributeInput(e, id)}
+                                              onChange={(e) => handleAttributeInput(e, id)}
                                             >
                                               <option>Select option</option>
-                                              {attributes.map((value, index)=>(
+                                              {attributes.map((value, index) => (
                                                 <>
-                                                  {attributeInput[id] != undefined && value.id == attributeInput[id].attribute_id ? value.value.map((atr_value, value_ind)=>(
+                                                  {attributeInput[id] != undefined && value.id == attributeInput[id].attribute_id ? value.value.map((atr_value, value_ind) => (
                                                     <option value={atr_value.id}>{atr_value.name}</option>
-                                                  )):null}
+                                                  )) : null}
                                                 </>
                                               ))}
                                             </select>
                                           </div>
                                         </div>
                                         <div className='col-sm-2'>
-                                          {attributeField.length -1 == ind && (
-                                            <button type='button' className='btn btn-danger' onClick={()=>handleAttributeFieldsRemove(id)}>
-                                              <i className='fa fa-minus' />
+                                          {attributeField.length - 1 == ind && (
+                                            <button type='button' className='btn btn-danger'
+                                                    onClick={() => handleAttributeFieldsRemove(id)}>
+                                              <i className='fa fa-minus'/>
                                             </button>
                                           )}
                                         </div>
@@ -389,7 +392,8 @@ const ProductForm = () => {
 
                                     <div className="row">
                                       <div className="col-md-12 text-center">
-                                        <button type='button' className={'btn btn-success'} onClick={handleAttributeFields}>
+                                        <button type='button' className={'btn btn-success'}
+                                                onClick={handleAttributeFields}>
                                           <i className="fa fa-plus"/>
                                         </button>
                                       </div>
@@ -404,7 +408,7 @@ const ProductForm = () => {
                                     <h5>Product Specifications</h5>
                                   </div>
                                   <div className="card-body">
-                                    {specificationField.map((id, ind)=>(
+                                    {specificationField.map((id, ind) => (
                                       <div key={ind} className="row my-2 align-items-baseline">
                                         <div className="col-md-5">
                                           <label className={'w-100 mt-4'}>
@@ -414,7 +418,7 @@ const ProductForm = () => {
                                               type={'text'}
                                               name={'name'}
                                               value={specificationInput[id] != undefined ? specificationInput[id].name : null}
-                                              onChange={(e)=>handleSpecificationInput(e, id)}
+                                              onChange={(e) => handleSpecificationInput(e, id)}
                                               placeholder={'Enter Product Specification Name'}
                                             />
                                             <p className={'login-error-msg'}>
@@ -429,7 +433,7 @@ const ProductForm = () => {
                                               type={'text'}
                                               name={'value'}
                                               value={specificationInput[id] != undefined ? specificationInput[id].value : null}
-                                              onChange={(e)=>handleSpecificationInput(e, id)}
+                                              onChange={(e) => handleSpecificationInput(e, id)}
                                               placeholder={'Enter Product Specification Name'}
                                             />
                                             <p className={'login-error-msg'}>
@@ -437,10 +441,11 @@ const ProductForm = () => {
                                           </label>
                                         </div>
                                         <div className="col-md-2">
-                                          {specificationField.length -1 == ind ?
-                                            <button type='button' className={'btn btn-danger'} onClick={()=>handleSpecificationFieldRemove(id)}>
-                                              <i className="fa fa-minus"/>
-                                            </button> : null
+                                          {specificationField.length - 1 == ind ?
+                                           <button type='button' className={'btn btn-danger'}
+                                                   onClick={() => handleSpecificationFieldRemove(id)}>
+                                             <i className="fa fa-minus"/>
+                                           </button> : null
                                           }
 
                                         </div>
@@ -449,7 +454,8 @@ const ProductForm = () => {
 
                                     <div className="row">
                                       <div className="col-md-12 text-center">
-                                        <button type='button' className={'btn btn-success'} onClick={handleSpecificationFields}>
+                                        <button type='button' className={'btn btn-success'}
+                                                onClick={handleSpecificationFields}>
                                           <i className="fa fa-plus"/>
                                         </button>
                                       </div>
@@ -644,7 +650,7 @@ const ProductForm = () => {
                           {/* /.card-body */}
                           <div className="card-footer">
                             <button type="submit" className="btn btn-primary">
-                              {id ? 'Save Changes' : 'Save'}
+                              {id ? 'Save Changes' : 'Next'}
                             </button>
                           </div>
                         </form>

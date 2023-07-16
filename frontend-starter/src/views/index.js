@@ -35,6 +35,7 @@ export {default as ProductAttributeForm} from './services/product-attributes/Pro
 export {default as Product} from './services/products/Product'
 export {default as Trash} from './services/products/Trash'
 export {default as ProductForm} from './services/products/ProductForm'
+export {default as AddProductPhoto} from './services/products/AddProductPhoto'
 
 export {default as Ticket} from './tickets/Ticket'
 export {default as Invoice} from './invoices/Invoice'

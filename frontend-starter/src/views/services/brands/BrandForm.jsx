@@ -1,8 +1,8 @@
 import {CardHeader, DefaultLayout, Loader, Search} from "../../../components";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axiosClient from "../../../axios-client.js";
-import toastAlert from "../../../data/toastAlert.js";
+import axiosClient from "../../../axios-client";
+import toastAlert from "../../../data/toastAlert";
 
 const BrandForm = () => {
   const navigate = useNavigate()
