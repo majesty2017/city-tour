@@ -82,7 +82,7 @@ const Sidebar = () => {
                               <p>Products</p>
                             </Link>
                           </li>
-                          <li className="nav-item">
+                          <li className="nav-item d-none">
                             <Link to="/trash" className={`nav-link ${location.pathname === '/trash' && 'active'}`}>
                               <i className="fas fa-trash nav-icon" />
                               <p>Trash</p>
@@ -132,33 +132,23 @@ const Sidebar = () => {
                               </li>
                             </ul>
                         </li>
-                        <li className="nav-header">EXAMPLES</li>
-                        <li className="nav-item">
+                        <li className="nav-header">STORE MANAGAMENT</li>
+                        <li className={`nav-item ${
+                          location.pathname === '/shops' && 'menu-open'
+                        }`}>
                             <a href="#" className="nav-link">
-                                <i className="nav-icon far fa-envelope" />
+                                <i className="nav-icon fas fa-store" />
                                 <p>
-                                    Mailbox
+                                  Store
                                     <i className="fas fa-angle-left right" />
                                 </p>
                             </a>
                             <ul className="nav nav-treeview">
                                 <li className="nav-item">
-                                    <a href="pages/mailbox/mailbox.html" className="nav-link">
-                                        <i className="far fa-circle nav-icon" />
-                                        <p>Inbox</p>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a href="pages/mailbox/compose.html" className="nav-link">
-                                        <i className="far fa-circle nav-icon" />
-                                        <p>Compose</p>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a href="pages/mailbox/read-mail.html" className="nav-link">
-                                        <i className="far fa-circle nav-icon" />
-                                        <p>Read</p>
-                                    </a>
+                                  <Link to="/shops" className={`nav-link ${location.pathname === '/shops' && 'active'}`}>
+                                    <i className="far fa-circle nav-icon" />
+                                    <p>Shops</p>
+                                  </Link>
                                 </li>
                             </ul>
                         </li>

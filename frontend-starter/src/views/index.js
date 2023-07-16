@@ -5,6 +5,9 @@ export { default as Dashboard } from './Dashboard'
 export { default as Users } from './hr/users/Users'
 export { default as UserForm } from './hr/users/UserForm'
 
+export { default as Shop } from './shops/Shop'
+export { default as ShopForm } from './shops/ShopForm'
+
 export { default as Supplier } from './hr/suppliers/Supplier'
 export { default as SupplierForm } from './hr/suppliers/SupplierForm'
 

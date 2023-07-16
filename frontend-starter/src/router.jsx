@@ -18,6 +18,8 @@ import {
   ProductAttributeForm,
   ProductForm,
   Profile,
+  Shop,
+  ShopForm,
   SubCategory,
   SubCategoryForm,
   Supplier,
@@ -55,6 +57,19 @@ const router = createBrowserRouter([
       {
         path: '/suppliers/:id',
         element: <SupplierForm key="update"/>
+      },
+
+      {
+        path: '/shops',
+        element: <Shop/>
+      },
+      {
+        path: '/shops/create',
+        element: <ShopForm key="create"/>
+      },
+      {
+        path: '/shops/:id',
+        element: <ShopForm key="update"/>
       },
 
       {

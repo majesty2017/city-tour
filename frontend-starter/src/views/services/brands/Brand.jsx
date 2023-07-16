@@ -95,7 +95,7 @@ const Brand = () => {
         setLoading(true)
         axiosClient.delete(`/brands/${id}`).then(res => {
           setLoading(false)
-          toastAlert(res.message)
+          toastAlert(res.data.message)
           getBrands()
         }).catch(err => {
           setLoading(false)

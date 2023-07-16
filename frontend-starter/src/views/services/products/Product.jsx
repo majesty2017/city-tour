@@ -93,7 +93,7 @@ const Product = () => {
         setLoading(true)
         axiosClient.delete(`/products/${id}`).then(res => {
           setLoading(false)
-          toastAlert(res.message)
+          toastAlert(res.data.message)
           getProducts()
         }).catch(err => {
           setLoading(false)
@@ -119,7 +119,7 @@ const Product = () => {
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Product List' link='/products/create' trash trashLink='/trash'/>
+                <CardHeader title='Product List' link='/products/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">

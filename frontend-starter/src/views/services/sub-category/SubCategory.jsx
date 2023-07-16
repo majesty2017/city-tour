@@ -17,6 +17,7 @@ import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
+import toastAlert from "../../../data/toastAlert.js";
 
 const SubCategory = () => {
   const [loading, setLoading] = useState(false)
@@ -95,11 +96,7 @@ const SubCategory = () => {
         setLoading(true)
         axiosClient.delete(`/sub-categories/${id}`).then(res => {
           setLoading(false)
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            res.message,
-            'success'
-          )
+          toastAlert(res.data.message)
           getCategories()
         }).catch(err => {
           setLoading(false)

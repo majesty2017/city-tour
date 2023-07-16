@@ -17,6 +17,7 @@ import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
+import toastAlert from "../../../data/toastAlert.js";
 
 const Supplier = () => {
   const [loading, setLoading] = useState(false)
@@ -96,11 +97,7 @@ const Supplier = () => {
         setLoading(true)
         axiosClient.delete(`/suppliers/${id}`).then(res => {
           setLoading(false)
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            res.message,
-            'success'
-          )
+          toastAlert(res.data.message)
           getSuppliers()
         }).catch(err => {
           setLoading(false)
@@ -279,112 +276,6 @@ const Supplier = () => {
                                 <NoDataFound title='Brand' />
                               )}
                               </tbody>
-                              <tfoot>
-                              <tr>
-                                <th
-                                  className="sorting sorting_asc"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-sort="ascending"
-                                  aria-label="Rendering engine: activate to sort column descending"
-                                >
-                                  SL
-                                </th>
-                                <th
-                                  className="sorting sorting_asc"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-sort="ascending"
-                                  aria-label="Rendering engine: activate to sort column descending"
-                                >
-                                  Name
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Email
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Phone
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Company
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Status
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Platform(s): activate to sort column ascending"
-                                >
-                                  Logo
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Engine version: activate to sort column ascending"
-                                >
-                                  By
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="CSS grade: activate to sort column ascending"
-                                >
-                                  Date/Time
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="CSS grade: activate to sort column ascending"
-                                >
-                                  Action
-                                </th>
-                              </tr>
-                              </tfoot>
                             </table>
                           </>
                           )}
