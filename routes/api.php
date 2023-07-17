@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\API\V1\AttributeController;
 use App\Http\Controllers\API\V1\AttributeValueController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\CountryController;
-use App\Http\Controllers\API\V1\AttributeController;
 use App\Http\Controllers\API\V1\ProductController;
+use App\Http\Controllers\API\V1\ProductPhotoController;
+use App\Http\Controllers\API\V1\SaleManagerController;
+use App\Http\Controllers\API\V1\ShopController;
 use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
-use App\Http\Controllers\ProductPhotoController;
-use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/countries', [ScriptManager::class, 'getCountries']);
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/user', [UserController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('categories/list', [CategoryController::class, 'get_category_list']);
@@ -47,6 +46,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('attributes', AttributeController::class);
     Route::apiResource('value', AttributeValueController::class);
     Route::apiResource('suppliers', SupplierController::class);
+    Route::apiResource('sales-managers', SaleManagerController::class);
     Route::apiResource('brands', BrandController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);

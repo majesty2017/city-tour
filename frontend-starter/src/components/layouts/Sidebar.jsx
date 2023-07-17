@@ -37,7 +37,9 @@ const Sidebar = () => {
                       <li className="nav-header text-uppercase">Human Resources</li>
                       <li  className={`nav-item ${
                         location.pathname === '/users' && 'menu-open' ||
-                        location.pathname === '/suppliers' && 'menu-open'
+                        location.pathname === '/visitors' && 'menu-open' ||
+                        location.pathname === '/suppliers' && 'menu-open' ||
+                        location.pathname === '/sales-managers' && 'menu-open'
                       }`}>
                         <a href="#" className="nav-link">
                           <i className="nav-icon fas fa-table" />
@@ -51,6 +53,18 @@ const Sidebar = () => {
                             <Link to="/users" className={`nav-link ${location.pathname === '/users' && 'active'}`}>
                               <i className="far fa-circle nav-icon" />
                               <p>Users</p>
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link to="/sales-managers" className={`nav-link ${location.pathname === '/sales-managers' && 'active'}`}>
+                              <i className="far fa-circle nav-icon" />
+                              <p>Sales Managers</p>
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link to="/visitors" className={`nav-link ${location.pathname === '/visitors' && 'active'}`}>
+                              <i className="far fa-circle nav-icon" />
+                              <p>Visitors</p>
                             </Link>
                           </li>
                           <li className="nav-item">

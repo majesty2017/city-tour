@@ -28,7 +28,7 @@ const ProductForm = () => {
   const {data: brands} = useFetch('/brands/list')
   const {data: countries} = useFetch('/countries/list')
   const {data: attributes} = useFetch('/attributes/list')
-  const {data: suppliers} = useFetch('/suppliers/list')
+  const {data: suppliers} = useFetch('/sales-managers/list')
 
   const {id} = useParams()
 

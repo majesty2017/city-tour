@@ -1,7 +1,5 @@
 import {
   ActionButton,
-  BrandDetailsModal,
-  BrandLogoModal,
   CardHeader,
   DataTables,
   DefaultLayout,
@@ -9,7 +7,9 @@ import {
   Loader,
   NoDataFound,
   Paginations,
-  Search, SupplierDetailsModal, SupplierLogoModal
+  Search,
+  SalesManagerDetailsModal,
+  SalesManagerLogoModal
 } from "../../../components";
 import {Link} from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
@@ -19,9 +19,9 @@ import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
 import toastAlert from "../../../data/toastAlert.js";
 
-const Supplier = () => {
+const SaleManager = () => {
   const [loading, setLoading] = useState(false)
-  const [suppliers, setSuppliers] = useState([])
+  const [salesManagers, setSalesManagers] = useState([])
 
   const [itemsCountPerPage, setItemsCountPerPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(1)
@@ -29,8 +29,8 @@ const Supplier = () => {
   const [activePage, setActivePage] = useState(1)
   const [modalShow, setModalShow] = useState(false);
   const [modalShowDetails, setModalShowDetails] = useState(false);
-  const [modalLogo, setModalLogo] = useState('');
-  const [supplier, setSupplier] = useState([]);
+  const [modalPhoto, setModalPhoto] = useState('');
+  const [saleManager, setSaleManager] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -39,22 +39,21 @@ const Supplier = () => {
   })
 
   const handleLogoModal = (logo) => {
-    setModalLogo(logo)
+    setModalPhoto(logo)
     setModalShow(true)
   }
 
-  const handleDetailsModal = (supplier) => {
-    setSupplier(supplier)
+  const handleDetailsModal = (salesManager) => {
+    setSaleManager(salesManager)
     setModalShowDetails(true)
   }
 
-  const getSuppliers = async (pageNumber = 1) => {
+  const getSalesManagers = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`suppliers?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`sales-managers?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
-      console.log(res.data)
-      setSuppliers(res.data.data)
+      setSalesManagers(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
       setTotalItemsCount(res.data.meta.total)
@@ -66,7 +65,7 @@ const Supplier = () => {
   }
 
   useEffect(() => {
-    getSuppliers()
+    getSalesManagers()
   }, [])
 
   const handleInput = (e) => {
@@ -95,10 +94,10 @@ const Supplier = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/suppliers/${id}`).then(res => {
+        axiosClient.delete(`/sales-managers/${id}`).then(res => {
           setLoading(false)
           toastAlert(res.data.message)
-          getSuppliers()
+          getSalesManagers()
         }).catch(err => {
           setLoading(false)
           console.log(err)
@@ -117,13 +116,13 @@ const Supplier = () => {
   }
 
   return (
-    <DefaultLayout title='Suppliers'>
+    <DefaultLayout title='Sales Managers'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Suppliers List' link='/suppliers/create'/>
+                <CardHeader title='Sales Manager List' link='/sales-managers/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -135,7 +134,7 @@ const Supplier = () => {
                         {loading && (<Loader/>)}
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getSuppliers(1)} onChange={handleInput}/>
+                            <Search value={input} onClick={() => getSalesManagers(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -169,27 +168,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Browser: activate to sort column ascending"
                                 >
-                                  Email
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Phone
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Company
+                                  Phone / Email
                                 </th>
                                 <th
                                   className="sorting"
@@ -209,7 +188,7 @@ const Supplier = () => {
                                   colSpan={1}
                                   aria-label="Platform(s): activate to sort column ascending"
                                 >
-                                  Logo
+                                  Photo
                                 </th>
                                 <th
                                   className="sorting"
@@ -244,36 +223,44 @@ const Supplier = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(suppliers).length > 0 ? suppliers.map((supplier, index) => (
+                              {salesManagers && Object.keys(salesManagers).length > 0 ? salesManagers.map((salesManager, index) => (
                                 <tr key={index}>
                                   <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
-                                  <td>{supplier.name}</td>
-                                  <td>{supplier.email}</td>
-                                  <td>{supplier.phone}</td>
-                                  <td>{supplier.company_name}</td>
-                                  <td>{supplier.status}</td>
-                                  <td>
-                                    <Images width={32} height={32} src={supplier.logo} alt={supplier.name}
-                                            onClick={() => handleLogoModal(supplier.logo_full)}/>
-                                  </td>
-                                  <td>{supplier.created_by}</td>
+                                  <td>{salesManager.name}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Created: {supplier.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {supplier.updated_at}</small></div>
+                                      <div className='text-primary'><small>Phone: {salesManager.phone}</small></div>
+                                      <div className='text-info'><small>Email: {salesManager.email}</small></div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div>
+                                      <div className='text-primary'><small>Status: {salesManager.status}</small></div>
+                                      <div className='text-info'><small>Shop: {salesManager.shop}</small></div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <Images width={32} height={32} src={salesManager.photo} alt={salesManager.name}
+                                            onClick={() => handleLogoModal(salesManager.photo_full)}/>
+                                  </td>
+                                  <td>{salesManager.created_by}</td>
+                                  <td>
+                                    <div>
+                                      <div className='text-primary'><small>Created: {salesManager.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {salesManager.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='suppliers'
-                                      id={supplier.id}
-                                      handleDelete={() => handleDelete(supplier.id)}
-                                      onClick={() => handleDetailsModal(supplier)}
+                                      url='sales-managers'
+                                      id={salesManager.id}
+                                      handleDelete={() => handleDelete(salesManager.id)}
+                                      onClick={() => handleDetailsModal(salesManager)}
                                       modalView />
                                   </td>
                                 </tr>
                               )): (
-                                <NoDataFound title='Supplier' />
+                                <NoDataFound title='Sales Manager' />
                               )}
                               </tbody>
                             </table>
@@ -285,23 +272,23 @@ const Supplier = () => {
                       activePage={activePage}
                       itemsCountPerPage={itemsCountPerPage}
                       totalItemsCount={totalItemsCount}
-                      onChange={getSuppliers}
+                      onChange={getSalesManagers}
                       startFrom={startFrom}
                     />
                   </div>
-                  <SupplierLogoModal
+                  <SalesManagerLogoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Supplier Logo"
+                    title="Sales Manager Logo"
                     size
-                    logo={modalLogo}
+                    photo={modalPhoto}
                   />
-                  <SupplierDetailsModal
+                  <SalesManagerDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Supplier Details"
-                    size
-                    supplier={supplier}
+                    title="Sales Manager Details"
+                    size='lg'
+                    salesManager={saleManager}
                   />
                 </div>
                 {/* /.card-body */}
@@ -316,4 +303,4 @@ const Supplier = () => {
   )
 }
 
-export default Supplier
+export default SaleManager

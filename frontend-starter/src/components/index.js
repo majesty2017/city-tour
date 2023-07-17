@@ -29,6 +29,9 @@ export {default as DefaultModal} from './modals/DefaultModal'
 export {default as SupplierLogoModal} from './modals/supplier/SupplierLogoModal'
 export {default as SupplierDetailsModal} from './modals/supplier/SupplierDetailsModal'
 
+export {default as SalesManagerLogoModal} from './modals/sales-manager/SalesManagerLogoModal'
+export {default as SalesManagerDetailsModal} from './modals/sales-manager/SalesManagerDetailsModal'
+
 export {default as ShopLogoModal} from './modals/shop/ShopLogoModal'
 export {default as ShopDetailsModal} from './modals/shop/ShopDetailsModal'
 

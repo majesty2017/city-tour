@@ -227,7 +227,7 @@ const Shop = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(shops).length > 0 ? shops.map((shop, index) => (
+                              {shops && Object.keys(shops).length > 0 ? shops.map((shop, index) => (
                                 <tr key={index}>
                                   <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
                                   <td>{shop.name}</td>

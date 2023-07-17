@@ -17,7 +17,7 @@ import {
   ProductAttribute,
   ProductAttributeForm,
   ProductForm,
-  Profile,
+  Profile, SaleManager, SaleManagerForm,
   Shop,
   ShopForm,
   SubCategory,
@@ -44,6 +44,19 @@ const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: <Dashboard/>
+      },
+
+      {
+        path: '/sales-managers',
+        element: <SaleManager/>
+      },
+      {
+        path: '/sales-managers/create',
+        element: <SaleManagerForm key="create"/>
+      },
+      {
+        path: '/sales-managers/:id',
+        element: <SaleManagerForm key="update"/>
       },
 
       {

@@ -5,14 +5,17 @@ export { default as Dashboard } from './Dashboard'
 export { default as Users } from './hr/users/Users'
 export { default as UserForm } from './hr/users/UserForm'
 
+export { default as SaleManager } from './hr/sale-managers/SaleManager'
+export { default as SaleManagerForm } from './hr/sale-managers/SaleManagerForm'
+
 export { default as Shop } from './shops/Shop'
 export { default as ShopForm } from './shops/ShopForm'
 
 export { default as Supplier } from './hr/suppliers/Supplier'
 export { default as SupplierForm } from './hr/suppliers/SupplierForm'
 
-export { default as Visitor } from './visitors/Visitor'
-export { default as VisitorForm } from './visitors/VisitorForm'
+export { default as Visitor }     from './hr/visitors/Visitor'
+export { default as VisitorForm } from './hr/visitors/VisitorForm'
 
 export { default as NotFound } from './NotFound'
 export { default as ServerError } from './ServerError'

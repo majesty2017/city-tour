@@ -7,6 +7,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
@@ -37,6 +39,14 @@ class UserController extends Controller
         /** @var User $user */
         $user = User::create($data);
         return response(new UserResource($user), 201);
+    }
+
+    /**
+     * @return Builder|Model|null
+     */
+    final public function user(): Model|Builder|null
+    {
+        return (new User())->getUser();
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Manager\ImageManager;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -34,7 +36,7 @@ class UserResource extends JsonResource
             'is_admin' => $this->is_admin,
             'is_superadmin' => $this->is_superadmin,
             'status' => $this->status,
-            'image' => $this->image,
+            'photo' => ImageManager::prepareImageUrl(User::USER_IMAGE_PATH, $this->photo),
             'created_at' => $this->created_at->forHumans(),
         ];
     }
