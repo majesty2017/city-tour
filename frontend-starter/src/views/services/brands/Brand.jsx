@@ -244,7 +244,7 @@ const Brand = () => {
                                       id={brand.id}
                                       handleDelete={() => handleDelete(brand.id)}
                                       onClick={() => handleDetailsModal(brand)}
-                                      view />
+                                      modalView />
                                   </td>
                                 </tr>
                               )): (
