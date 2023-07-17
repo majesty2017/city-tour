@@ -75,10 +75,10 @@ class SaleManagerController extends Controller
             $sales_manager['password'] = bcrypt($request->password);
         }
         if ($request->has('photo')) {
-            $sales_manager_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
+            $sales_manager_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-sale-manager-photo');
         }
         if ($request->has('nid_photo')) {
-            $sales_manager_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
+            $sales_manager_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-sale-manager-nid_photo');
         }
         $sales_manager->update($sales_manager_data);
         return response()->json(['message' => 'Changes saved successfully!']);

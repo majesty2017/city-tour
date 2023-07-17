@@ -23,7 +23,8 @@ const Login = () => {
     axiosClient.post('/login', payload).then(({data}) => {
       setUser(data.user)
       setToken(data.token)
-      navigate('/')
+      // navigate('/')
+      window.location.reload()
     }).catch(err => {
       const res = err.response
       if (res.data.message) {

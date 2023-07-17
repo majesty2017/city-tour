@@ -103,15 +103,10 @@ class User extends Authenticatable
             'address'             => $input['address'] ?? '',
             'nid_number'          => $input['nid_number'] ?? '',
             'user_id'             => auth()->id(),
-            'shop_id'             => $input['shop_id'],
             'status'              => $input['status'],
             'password'            => bcrypt($input['password']),
-            'nationality_status'  => $input['nationality_status'] ?? null,
-            'next_place_of_visit' => $input['next_place_of_visit'] ?? null,
             'gender'              => $input['gender'] ?? null,
             'is_admin'            => 1,
-            'region'              => $input['region'] ?? null,
-            'city'                => $input['city'] ?? null,
         ];
     }
 

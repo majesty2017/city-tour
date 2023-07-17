@@ -131,6 +131,24 @@ const UserForm = () => {
                                       </div>
                                     </div>
 
+                                    <div className='col-sm-6 d-none'>
+                                      <div className="form-group">
+                                        <label htmlFor="designation">Designation</label>
+                                        <input
+                                          type="text"
+                                          className={errors.designation !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
+                                          id="designation"
+                                          name="designation"
+                                          value={input.designation}
+                                          onChange={handleInput}
+                                          placeholder="Enter designation"
+                                        />
+                                        <p className='text-danger'>
+                                          <small>{errors.designation !== undefined ? errors.designation[0] : null}</small>
+                                        </p>
+                                      </div>
+                                    </div>
+
                                     <div className='col-sm-6'>
                                       <div className="form-group">
                                         <label htmlFor="nid_number">NID/Passport/Driver License</label>
@@ -201,6 +219,25 @@ const UserForm = () => {
                                         <p className='text-danger'>
                                           <small>{errors.address !== undefined ? errors.address[0] : null}</small>
                                         </p>
+                                      </div>
+                                    </div>
+
+                                    <div className='col-sm-6'>
+                                      <div className="form-group">
+                                        <label htmlFor="gender">
+                                          Gender
+                                        </label>
+                                        <select
+                                          className="custom-select form-control-border border-width-2"
+                                          id="gender"
+                                          name="gender"
+                                          defaultValue={input.gender}
+                                          placeholder='Select option'
+                                          onChange={handleInput}
+                                        >
+                                          <option value='Male'>Male</option>
+                                          <option value='Female'>Female</option>
+                                        </select>
                                       </div>
                                     </div>
 

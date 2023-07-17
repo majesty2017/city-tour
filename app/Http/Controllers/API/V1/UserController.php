@@ -38,11 +38,14 @@ class UserController extends Controller
      */
     final public function store(StoreUserRequest $request): JsonResponse
     {
-        $sales_manager = $request->except('photo');
+        $user_data = $request->except('photo');
         if ($request->has('photo')) {
-            $sales_manager['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
+            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
         }
-        (new User())->storeUser($sales_manager);
+        if ($request->has('nid_photo')) {
+            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
+        }
+        (new User())->storeUser($user_data);
         return response()->json(['message' => 'Sales manager saved successfully!']);
     }
 
@@ -73,7 +76,10 @@ class UserController extends Controller
         $user_data = $request->except('photo');
         $user_data['user_id'] = auth()->id();
         if ($request->has('photo')) {
-            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
+            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-user-photo');
+        }
+        if ($request->has('nid_photo')) {
+            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-user-nid_photo');
         }
         $user->update($user_data);
         return response()->json(['message' => 'Changes saved successfully!']);
@@ -91,5 +97,28 @@ class UserController extends Controller
         }
         $user->delete();
         return response()->json(['message' => 'Sales manager deleted successfully!']);
+    }
+
+    /**
+     * @param string $file
+     * @param string $name
+     * @param string|null $existing_photo
+     * @return string
+     */
+    private function processImageUpload(string $file, string $name, string|null $existing_photo = null): string
+    {
+        $path = User::USER_IMAGE_PATH;
+        $path_thumb = User::USER_IMAGE_THUMB_PATH;
+        $width = 800;
+        $height = 800;
+        $width_thumb = 150;
+        $height_thumb = 150;
+        if (!empty($existing_photo)) {
+            ImageManager::deletePhoto(User::USER_IMAGE_PATH, $existing_photo);
+            ImageManager::deletePhoto(User::USER_IMAGE_THUMB_PATH, $existing_photo);
+        }
+        $filename = ImageManager::uploadImage($name, $width, $height, $path, $file);
+        ImageManager::uploadImage($name, $width_thumb, $height_thumb, $path_thumb, $file);
+        return $filename;
     }
 }

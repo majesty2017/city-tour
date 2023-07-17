@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('shop_id')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
             $table->string('region')->nullable();
@@ -34,7 +36,6 @@ return new class extends Migration
             $table->boolean('is_admin')->default(0)->comment('0=No,1=Yes');
             $table->boolean('is_superadmin')->default(0)->comment('0=No,1=Yes');
             $table->tinyInteger('status')->default(1)->comment('0=inactive,1=active');
-
             $table->rememberToken();
             $table->timestamps();
         });
