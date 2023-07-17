@@ -18,9 +18,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public const USER_IMAGE_PATH = 'assets/uploads/users/';
-
-    public const SALESMANAGER_IMAGE_PATH = 'assets/uploads/sales_managers/';
-    public const SALESMANAGER_IMAGE_THUMB_PATH = 'assets/uploads/sales_managers_thumb/';
+    public const USER_IMAGE_THUMB_PATH = 'assets/uploads/users_thumb/';
 
     public const ADMIN_IMAGE_PATH = 'assets/uploads/admins/';
     public const ADMIN_IMAGE_THUMB_PATH = 'assets/uploads/admins_thumb/';
@@ -76,7 +74,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password'          => 'hashed',
     ];
 
 
@@ -97,6 +95,84 @@ class User extends Authenticatable
     private function prepareData(array $input): array
     {
         return [
+            'name'                => $input['name'] ?? '',
+            'email'               => $input['email'] ?? '',
+            'phone'               => $input['phone'] ?? '',
+            'photo'               => $input['photo'] ?? '',
+            'nid_photo'           => $input['nid_photo'] ?? '',
+            'address'             => $input['address'] ?? '',
+            'nid_number'          => $input['nid_number'] ?? '',
+            'user_id'             => auth()->id(),
+            'shop_id'             => $input['shop_id'],
+            'status'              => $input['status'],
+            'password'            => bcrypt($input['password']),
+            'nationality_status'  => $input['nationality_status'] ?? null,
+            'next_place_of_visit' => $input['next_place_of_visit'] ?? null,
+            'gender'              => $input['gender'] ?? null,
+            'is_admin'            => 1,
+            'region'              => $input['region'] ?? null,
+            'city'                => $input['city'] ?? null,
+        ];
+    }
+
+
+    /**
+     * @param array $input
+     * @return Builder|Model
+     */
+    final public function storeVisitor(array $input): Model|Builder
+    {
+        return self::create($this->prepareVisitorData($input));
+    }
+
+    /**
+     * @param array $input
+     * @param int $auth_id
+     * @return array
+     */
+    private function prepareVisitorData(array $input): array
+    {
+        return [
+            'name'                => $input['name'] ?? '',
+            'email'               => $input['email'] ?? '',
+            'phone'               => $input['phone'] ?? '',
+            'photo'               => $input['photo'] ?? '',
+            'nid_photo'           => $input['nid_photo'] ?? '',
+            'address'             => $input['address'] ?? '',
+            'nid_number'          => $input['nid_number'] ?? '',
+            'user_id'             => auth()->id(),
+            'shop_id'             => $input['shop_id'],
+            'status'              => $input['status'],
+            'password'            => bcrypt($input['password']),
+            'nationality_status'  => $input['nationality_status'] ?? null,
+            'next_place_of_visit' => $input['next_place_of_visit'] ?? null,
+            'gender'              => $input['gender'] ?? null,
+            'is_lead'             => $input['is_lead'] ?? 0,
+            'is_visitor'          => 1,
+            'region'              => $input['region'] ?? null,
+            'city'                => $input['city'] ?? null,
+            'designation'         => $input['designation'] ?? null,
+        ];
+    }
+
+
+    /**
+     * @param array $input
+     * @return Builder|Model
+     */
+    final public function storeSalesManager(array $input): Model|Builder
+    {
+        return self::create($this->prepareSalesManagerData($input));
+    }
+
+    /**
+     * @param array $input
+     * @param int $auth_id
+     * @return array
+     */
+    private function prepareSalesManagerData(array $input): array
+    {
+        return [
             'name'       => $input['name'] ?? '',
             'email'      => $input['email'] ?? '',
             'phone'      => $input['phone'] ?? '',
@@ -108,16 +184,10 @@ class User extends Authenticatable
             'shop_id'    => $input['shop_id'],
             'status'     => $input['status'],
             'password'   => bcrypt($input['password']),
-            'nationality_status' => $input['nationality_status'] ?? null,
-            'next_place_of_visit' => $input['next_place_of_visit'] ?? null,
-            'gender' => $input['gender'] ?? null,
-            'is_lead' => $input['is_lead'] ?? 0,
-            'is_visitor' => $input['is_visitor'] ?? 0,
-            'is_manager' => $input['is_manager'] ?? 0,
-            'is_admin' => $input['is_admin'] ?? 0,
-            'region' => $input['region'] ?? null,
-            'city' => $input['city'] ?? null,
-            'designation' => $input['designation'] ?? null,
+            'is_lead'    => 0,
+            'is_visitor' => 0,
+            'is_manager' => 1,
+            'is_admin'   => 0,
         ];
     }
 
@@ -156,7 +226,8 @@ class User extends Authenticatable
     final public function salesManager(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
-        $query = self::query()->with('shop:id,name');
+        $query = self::query()->with('shop:id,name')
+            ->where('is_superadmin', 0);
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%' . $input['search'] . '%');
         }
@@ -164,5 +235,24 @@ class User extends Authenticatable
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
         }
         return $query->paginate($per_page);
+    }
+
+    /**
+     * @return Collection
+     */
+    final public function getSaleManagerIdAndName(): Collection
+    {
+        return self::query()
+            ->select('name', 'id', 'phone')
+            ->where('status', self::ACTIVE_STATUS)
+            ->get();
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    final public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

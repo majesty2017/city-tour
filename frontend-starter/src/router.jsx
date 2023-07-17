@@ -1,7 +1,8 @@
 import {createBrowserRouter} from "react-router-dom";
 import {
   AddProductPhoto,
-  Brand, BrandForm,
+  Brand,
+  BrandForm,
   Category,
   CategoryForm,
   Dashboard,
@@ -17,7 +18,9 @@ import {
   ProductAttribute,
   ProductAttributeForm,
   ProductForm,
-  Profile, SaleManager, SaleManagerForm,
+  Profile,
+  SaleManager,
+  SaleManagerForm,
   Shop,
   ShopForm,
   SubCategory,
@@ -188,6 +191,7 @@ const router = createBrowserRouter([
         path: '/employees',
         element: <Employee/>
       },
+
       {
         path: '/users',
         element: <Users/>
@@ -200,6 +204,7 @@ const router = createBrowserRouter([
         path: '/users/:id',
         element: <UserForm key="update"/>
       },
+
       {
         path: '/visitors',
         element: <Visitor/>

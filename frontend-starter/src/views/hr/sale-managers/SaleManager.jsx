@@ -198,7 +198,7 @@ const SaleManager = () => {
                                   colSpan={1}
                                   aria-label="Engine version: activate to sort column ascending"
                                 >
-                                  By
+                                  Created By
                                 </th>
                                 <th
                                   className="sorting"

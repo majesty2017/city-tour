@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('categories/list', [CategoryController::class, 'get_category_list']);
     Route::get('sub_categories/list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
     Route::get('brands/list', [BrandController::class, 'get_brand_list']);
+    Route::get('users/list', [UserController::class, 'get_user_list']);
     Route::get('shops/list', [ShopController::class, 'get_shop_list']);
     Route::get('attributes/list', [AttributeController::class, 'get_attribute_list']);
     Route::get('suppliers/list', [SupplierController::class, 'get_supplierlist']);

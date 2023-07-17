@@ -1,22 +1,22 @@
 import {
   ActionButton,
-  CardHeader, CategoryDetailsModal,
-  CategoryPhotoModal,
-  DataTables,
+  CardHeader,
   DefaultLayout,
   Images,
-  Loader, NoDataFound,
+  Loader,
+  NoDataFound,
   Paginations,
-  Search
-} from "../../../components/index.js";
-import {Link} from "react-router-dom";
+  Search,
+  SalesManagerDetailsModal,
+  SalesManagerLogoModal
+} from "../../../components";
 import {useEffect, useState} from "react";
+import axiosClient from "../../../axios-client";
 import Swal from "sweetalert2";
-import axiosClient from "../../../axios-client.js";
+import toastAlert from "../../../data/toastAlert";
 
 const Users = () => {
   const [loading, setLoading] = useState(false)
-  const [categories, setCategories] = useState([])
 
   const [itemsCountPerPage, setItemsCountPerPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(1)
@@ -25,7 +25,7 @@ const Users = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowDetails, setModalShowDetails] = useState(false);
   const [modalPhoto, setModalPhoto] = useState('');
-  const [category, setCategory] = useState([]);
+  const [users, setUsers] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -33,22 +33,22 @@ const Users = () => {
     search: ''
   })
 
-  const handlePhotoModal = (photo) => {
-    setModalPhoto(photo)
+  const handleLogoModal = (logo) => {
+    setModalPhoto(logo)
     setModalShow(true)
   }
 
-  const handleDetailsModal = (category) => {
-    setCategory(category)
+  const handleDetailsModal = (salesManager) => {
+    setUsers(salesManager)
     setModalShowDetails(true)
   }
-  const getCategories = async (pageNumber = 1) => {
+
+  const getUsers = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`categories?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`users?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
-      console.log(res.data)
-      setCategories(res.data.data)
+      setUsers(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
       setTotalItemsCount(res.data.meta.total)
@@ -60,7 +60,7 @@ const Users = () => {
   }
 
   useEffect(() => {
-    getCategories()
+    getUsers()
   }, [])
 
   const handleInput = (e) => {
@@ -89,14 +89,10 @@ const Users = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/categories/${id}`).then(res => {
+        axiosClient.delete(`/users/${id}`).then(res => {
           setLoading(false)
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            res.message,
-            'success'
-          )
-          getCategories()
+          toastAlert(res.data.message)
+          getUsers()
         }).catch(err => {
           setLoading(false)
           console.log(err)
@@ -115,13 +111,13 @@ const Users = () => {
   }
 
   return (
-    <DefaultLayout title='Categories'>
+    <DefaultLayout title='Users'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Category List' link='/categories/create' value={input} onChange={handleInput}/>
+                <CardHeader title='User List' link='/users/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -133,7 +129,7 @@ const Users = () => {
                         {loading && (<Loader/>)}
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getCategories(1)} onChange={handleInput}/>
+                            <Search value={input} onClick={() => getUsers(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -157,7 +153,7 @@ const Users = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Name / Slug
+                                  Name
                                 </th>
                                 <th
                                   className="sorting"
@@ -167,7 +163,17 @@ const Users = () => {
                                   colSpan={1}
                                   aria-label="Browser: activate to sort column ascending"
                                 >
-                                  Serial / Status
+                                  Phone / Email
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex={0}
+                                  aria-controls="example2"
+                                  rowSpan={1}
+                                  colSpan={1}
+                                  aria-label="Browser: activate to sort column ascending"
+                                >
+                                  Status
                                 </th>
                                 <th
                                   className="sorting"
@@ -197,7 +203,7 @@ const Users = () => {
                                   colSpan={1}
                                   aria-label="CSS grade: activate to sort column ascending"
                                 >
-                                  Date Time
+                                  Date/Time
                                 </th>
                                 <th
                                   className="sorting"
@@ -212,147 +218,72 @@ const Users = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(categories).length > 0 ? categories.map((category, index) => (
+                              {users && Object.keys(users).length > 0 ? users.map((salesManager, index) => (
                                 <tr key={index}>
-                                  <td>{activePage + index}</td>
-                                  <td className="dtr-control" tabIndex={index}>
+                                  <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
+                                  <td>{salesManager.name}</td>
+                                  <td>
                                     <div>
-                                      <div className='text-primary'>Name: {category.name}</div>
-                                      <div className='text-info'>Slug: {category.slug}</div>
+                                      <div className='text-primary'><small>Phone: {salesManager.phone}</small></div>
+                                      <div className='text-info'><small>Email: {salesManager.email}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'>Serial: {category.serial}</div>
-                                      <div className='text-info'>Status: {category.status}</div>
+                                      <div className='text-primary'><small>Status: {salesManager.status}</small></div>
+                                      <div className='text-info'><small>Shop: {salesManager.shop}</small></div>
                                     </div>
                                   </td>
                                   <td>
-                                    <Images width={32} height={32} src={category.photo} alt={category.name}
-                                            onClick={() => handlePhotoModal(category.photo_full)}/>
+                                    <Images width={32} height={32} src={salesManager.photo} alt={salesManager.name}
+                                            onClick={() => handleLogoModal(salesManager.photo_full)}/>
                                   </td>
-                                  <td>{category.created_by}</td>
+                                  <td>{salesManager.created_by}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Created: {category.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {category.updated_at}</small></div>
+                                      <div className='text-primary'><small>Created: {salesManager.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {salesManager.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='categories'
-                                      id={category.id}
-                                      handleDelete={() => handleDelete(category.id)}
-                                      onClick={() => handleDetailsModal(category)}
-                                      view />
+                                      url='users'
+                                      id={salesManager.id}
+                                      handleDelete={() => handleDelete(salesManager.id)}
+                                      onClick={() => handleDetailsModal(salesManager)}
+                                      modalView />
                                   </td>
                                 </tr>
                               )): (
-                                <NoDataFound title='Category' />
+                                <NoDataFound title='User' />
                               )}
                               </tbody>
-                              <tfoot>
-                              <tr>
-                                <th
-                                  className="sorting sorting_asc"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-sort="ascending"
-                                  aria-label="Rendering engine: activate to sort column descending"
-                                >
-                                  SL
-                                </th>
-                                <th
-                                  className="sorting sorting_asc"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-sort="ascending"
-                                  aria-label="Rendering engine: activate to sort column descending"
-                                >
-                                  Serial / Status
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Serial / Status
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Platform(s): activate to sort column ascending"
-                                >
-                                  Photo
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Engine version: activate to sort column ascending"
-                                >
-                                  Created By
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="CSS grade: activate to sort column ascending"
-                                >
-                                  Date Time
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="CSS grade: activate to sort column ascending"
-                                >
-                                  Action
-                                </th>
-                              </tr>
-                              </tfoot>
                             </table>
                           </>
-                        )}
+                          )}
                       </div>
                     </div>
                     <Paginations
                       activePage={activePage}
                       itemsCountPerPage={itemsCountPerPage}
                       totalItemsCount={totalItemsCount}
-                      onChange={getCategories}
+                      onChange={getUsers}
                       startFrom={startFrom}
                     />
                   </div>
-                  <CategoryPhotoModal
+                  <SalesManagerLogoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Category Photo"
+                    title="User Logo"
                     size
                     photo={modalPhoto}
                   />
-                  <CategoryDetailsModal
+                  <SalesManagerDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Category Details"
-                    size
-                    category={category}
+                    title="User Details"
+                    size='lg'
+                    salesManager={users}
                   />
                 </div>
                 {/* /.card-body */}

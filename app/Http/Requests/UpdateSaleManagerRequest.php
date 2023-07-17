@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\SaleManager;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -19,7 +20,7 @@ class UpdateSaleManagerRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -30,8 +31,7 @@ class UpdateSaleManagerRequest extends FormRequest
             'nid_number' => 'required|string',
             'email'      => 'required|email',
             'password'   => [
-                'required',
-                'string',
+                'nullable',
                 Password::min(8)
                     ->mixedCase()
                     ->numbers()

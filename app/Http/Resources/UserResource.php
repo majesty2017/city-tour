@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Manager\ImageManager;
+use App\Models\SaleManager;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -35,9 +36,16 @@ class UserResource extends JsonResource
             'is_visitor' => $this->is_visitor,
             'is_admin' => $this->is_admin,
             'is_superadmin' => $this->is_superadmin,
-            'status' => $this->status,
-            'photo' => ImageManager::prepareImageUrl(User::USER_IMAGE_PATH, $this->photo),
-            'created_at' => $this->created_at->forHumans(),
+            'nid_number'     => $this->nid_number,
+            'status'         => $this->status == 1 ? 'Active' : 'Inactive',
+            'photo'          => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->photo),
+            'photo_full'     => ImageManager::prepareImageUrl(User::USER_IMAGE_PATH, $this->photo),
+            'nid_photo'      => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->nid_photo),
+            'nid_photo_full' => ImageManager::prepareImageUrl(User::USER_IMAGE_PATH, $this->nid_photo),
+            'created_by'     => $this->user?->name,
+            'shop'           => $this->shop?->name,
+            'created_at'     => $this->created_at->toDayDateTimeString(),
+            'updated_at'     => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet',
         ];
     }
 }

@@ -1,9 +1,9 @@
 import {useEffect} from "react";
-import {useStateContext} from "../../contexts/ContextProvider.jsx";
-import axiosClient from "../../axios-client.js";
+import {useStateContext} from "../../contexts/ContextProvider";
+import axiosClient from "../../axios-client";
 import {Images} from "../";
-import endpoint from "../../data/server.js";
-import toastAlert from "../../data/toastAlert.js";
+import endpoint from "../../data/server";
+import toastAlert from "../../data/toastAlert";
 import {Link, Navigate} from "react-router-dom";
 
 const Header= () => {
@@ -205,7 +205,7 @@ const Header= () => {
                 </li>
               <li className="nav-item dropdown">
                 <a className="nav-link" data-toggle="dropdown" href="#">
-                  <Images src={user.photo} height={20} width={20} alt={user.name} />
+                  <Images src={`${endpoint.assets}/${user.photo}`} height={20} width={20} alt={user.name} />
                 </a>
                 <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                   <span className="dropdown-item dropdown-header">

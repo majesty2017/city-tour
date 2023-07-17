@@ -6,39 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Manager\ImageManager;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::query()
-            ->orderBy('id', 'desc')
-//            ->whereIn('name', 'Super Admin')
-            ->paginate(10));
+        return UserResource::collection((new User())->salesManager($request->all()));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @return JsonResponse
      */
-    public function store(StoreUserRequest $request)
+    final public function get_user_list(): JsonResponse
     {
-        $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time().'.'.$ext;
-            $data['image'] = $filename;
+        return response()->json((new User())->getUserIdAndName());
+    }
+
+    /**
+     * @param StoreUserRequest $request
+     * @return JsonResponse
+     */
+    final public function store(StoreUserRequest $request): JsonResponse
+    {
+        $sales_manager = $request->except('photo');
+        if ($request->has('photo')) {
+            $sales_manager['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
         }
-        /** @var User $user */
-        $user = User::create($data);
-        return response(new UserResource($user), 201);
+        (new User())->storeUser($sales_manager);
+        return response()->json(['message' => 'Sales manager saved successfully!']);
     }
 
     /**
@@ -50,38 +55,41 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param User $user
+     * @return UserResource
      */
-    public function show(User $user)
+    final public function show(User $user): UserResource
     {
         return new UserResource($user);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, User $user)
+    final public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $data = $request->validated();
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
+        $user_data = $request->except('photo');
+        $user_data['user_id'] = auth()->id();
+        if ($request->has('photo')) {
+            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
         }
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time().'.'.$ext;
-            $data['image'] = $filename;
-        }
-        $user->update($data);
-        return new UserResource($user);
+        $user->update($user_data);
+        return response()->json(['message' => 'Changes saved successfully!']);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param User $user
+     * @return JsonResponse
      */
-    public function destroy(User $user)
+    final public function destroy(User $user): JsonResponse
     {
+        if (!empty($user->photo)) {
+            ImageManager::deletePhoto(User::USER_IMAGE_PATH, $user->photo);
+            ImageManager::deletePhoto(User::USER_IMAGE_THUMB_PATH, $user->photo);
+        }
         $user->delete();
-        return response('', 204);
+        return response()->json(['message' => 'Sales manager deleted successfully!']);
     }
 }
