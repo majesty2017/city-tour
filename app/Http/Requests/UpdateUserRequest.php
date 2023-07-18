@@ -28,13 +28,6 @@ class UpdateUserRequest extends FormRequest
             'phone'    => 'required|string|max:12',
             'address'  => 'required|string',
             'gender'   => 'required',
-            'password' => [
-                Password::min(8)
-                    ->letters()
-                    ->symbols()
-                    ->mixedCase()
-                    ->uncompromised()
-            ],
         ];
     }
 }

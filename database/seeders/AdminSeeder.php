@@ -17,7 +17,6 @@ class AdminSeeder extends Seeder
             'email' => env('EMAIL'),
             'is_superadmin' => env('SUPERADMIN'),
             'is_visitor' => env('VISITOR'),
-            'image' => 'default.webp',
             'password' => bcrypt(env('PASSWORD')),
             'email_verified_at' => now(),
         ]);

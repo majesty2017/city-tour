@@ -38,6 +38,10 @@ const UserDetailsModal = (props) => {
               <td>{props.user.phone}</td>
             </tr>
             <tr>
+              <td>Role</td>
+              <td>{props.user.role}</td>
+            </tr>
+            <tr>
               <td>NID/Passport/Driver License</td>
               <td>{props.user.nid_number}</td>
             </tr>

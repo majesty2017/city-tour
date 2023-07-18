@@ -24,6 +24,7 @@ class UpdateUserResource extends JsonResource
             'address'    => $this->address,
             'gender'     => $this->gender,
             'nid_number' => $this->nid_number,
+            'role'       => $this->is_admin ? $this->is_admin = 'is_admin' : $this->is_manager = 'is_manager' ?? $this->is_manager ? $this->is_manager = 'is_manager' : $this->is_admin = 'is_admin',
             'status'     => $this->status,
             'photo'      => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->photo),
             'nid_photo'  => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->nid_photo),

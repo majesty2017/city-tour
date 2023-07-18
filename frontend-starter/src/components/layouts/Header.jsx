@@ -205,7 +205,7 @@ const Header= () => {
                 </li>
               <li className="nav-item dropdown">
                 <a className="nav-link" data-toggle="dropdown" href="#">
-                  <Images src={`${endpoint.assets}/${user.image}`} height={20} width={20} alt={user.name} />
+                  <Images src={user.image} height={20} width={20} alt={user.name} />
                 </a>
                 <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                   <span className="dropdown-item dropdown-header">

@@ -6,7 +6,6 @@ export { default as Users } from './hr/users/Users'
 export { default as UserForm } from './hr/users/UserForm'
 
 export { default as SaleManager } from './hr/sale-managers/SaleManager'
-export { default as SaleManagerForm } from './hr/sale-managers/SaleManagerForm'
 
 export { default as Shop } from './shops/Shop'
 export { default as ShopForm } from './shops/ShopForm'

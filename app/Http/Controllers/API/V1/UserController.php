@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\SaleManagerResource;
 use App\Http\Resources\UpdateUserResource;
 use App\Http\Resources\UserResource;
 use App\Manager\ImageManager;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -34,28 +36,39 @@ class UserController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return AnonymousResourceCollection
+     */
+    public function getSalesManages(Request $request): AnonymousResourceCollection
+    {
+        return UserResource::collection((new User())->getSalesManagers($request->all()));
+    }
+
+    /**
      * @param StoreUserRequest $request
      * @return JsonResponse
      */
     final public function store(StoreUserRequest $request): JsonResponse
     {
-        $user_data = $request->except(['photo', 'nid_photo']);
+        $user_data = $request->except(['photo', 'nid_photo', 'image']);
+
         if ($request->has('photo')) {
-            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
+            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random(32) . '-photo');
+            $user_data['image'] = $this->processImageUpload($request->input('photo'), Str::random(32) . '-image');
         }
         if ($request->has('nid_photo')) {
-            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
+            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random(32) . '-nid_photo');
         }
         (new User())->storeUser($user_data);
         return response()->json(['message' => 'User saved successfully!']);
     }
 
     /**
-     * @return Builder|Model|null
+     * @return UserResource
      */
-    final public function user(): Model|Builder|null
+    final public function user(): UserResource
     {
-        return (new User())->getAuthUser();
+        return new UserResource((new User())->getAuthUser());
     }
 
     /**
@@ -72,7 +85,7 @@ class UserController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, User $user): JsonResponse
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user_data = $request->except(['photo', 'nid_photo']);
         $user_data['user_id'] = auth()->id();
@@ -80,10 +93,10 @@ class UserController extends Controller
             $user_data['password'] = bcrypt($request->password);
         }
         if ($request->has('photo')) {
-            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
+            $user_data['photo'] = $this->processImageUpload($request->photo, Str::random(32) . '-photo', $user->photo);
         }
         if ($request->has('nid_photo')) {
-            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
+            $user_data['nid_photo'] = $this->processImageUpload($request->nid_photo, Str::random(32) . '-nid_photo', $user->nid_photo);
         }
         $user->update($user_data);
         return response()->json(['message' => 'Changes saved successfully!']);
@@ -98,10 +111,15 @@ class UserController extends Controller
         if (!empty($user->photo)) {
             ImageManager::deletePhoto(User::USER_IMAGE_PATH, $user->photo);
             ImageManager::deletePhoto(User::USER_IMAGE_THUMB_PATH, $user->photo);
+
+            ImageManager::deletePhoto(User::USER_IMAGE_PATH, $user->nid_photo);
+            ImageManager::deletePhoto(User::USER_IMAGE_THUMB_PATH, $user->nid_photo);
         }
         $user->delete();
         return response()->json(['message' => 'User deleted successfully!']);
     }
+
+
 
     /**
      * @param string $file

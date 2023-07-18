@@ -232,11 +232,11 @@ const Users = () => {
                                   <td>
                                     <div>
                                       <div className='text-primary'><small>Status: {user.status}</small></div>
-                                      <div className='text-info'><small>Shop: {user.shop}</small></div>
+                                      <div className='text-info'><small>Role: {user.role}</small></div>
                                     </div>
                                   </td>
                                   <td>
-                                    <Images width={32} height={32} src={user.photo} alt={user.name}
+                                    <Images width={32} height={32} src={user.photo_full} alt={user.name}
                                             onClick={() => handleLogoModal(user.photo_full)}/>
                                   </td>
                                   <td>{user.created_by}</td>

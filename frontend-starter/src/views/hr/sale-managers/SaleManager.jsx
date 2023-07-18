@@ -11,9 +11,6 @@ import {
   SalesManagerDetailsModal,
   SalesManagerLogoModal
 } from "../../../components";
-import {Link} from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
-import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
@@ -51,7 +48,7 @@ const SaleManager = () => {
   const getSalesManagers = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`sales-managers?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`sales-manager?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
       setSalesManagers(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
@@ -95,7 +92,7 @@ const SaleManager = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/sales-managers/${id}`).then(res => {
+        axiosClient.delete(`/users/${id}`).then(res => {
           setLoading(false)
           toastAlert(res.data.message)
           getSalesManagers()
@@ -123,7 +120,7 @@ const SaleManager = () => {
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Sales Manager List' link='/sales-managers/create'/>
+                <CardHeader title='Sales Manager List' link='/users/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -237,7 +234,7 @@ const SaleManager = () => {
                                   <td>
                                     <div>
                                       <div className='text-primary'><small>Status: {salesManager.status}</small></div>
-                                      <div className='text-info'><small>Shop: {salesManager.shop}</small></div>
+                                      <div className='text-info d-none'><small>Shop: {salesManager.shop}</small></div>
                                     </div>
                                   </td>
                                   <td>
@@ -253,7 +250,7 @@ const SaleManager = () => {
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='sales-managers'
+                                      url='users'
                                       id={salesManager.id}
                                       handleDelete={() => handleDelete(salesManager.id)}
                                       onClick={() => handleDetailsModal(salesManager)}

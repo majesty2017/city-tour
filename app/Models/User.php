@@ -90,17 +90,21 @@ class User extends Authenticatable
     private function prepareData(array $input): array
     {
         return [
-            'name'                => $input['name'] ?? '',
-            'email'               => $input['email'] ?? '',
-            'phone'               => $input['phone'] ?? '',
-            'photo'               => $input['photo'] ?? '',
-            'nid_photo'           => $input['nid_photo'] ?? '',
-            'address'             => $input['address'] ?? '',
-            'nid_number'          => $input['nid_number'] ?? '',
-            'user_id'             => auth()->id(),
-            'status'              => $input['status'],
-            'password'            => bcrypt($input['password']),
-            'gender'              => $input['gender'] ?? null,
+            'name'       => $input['name'] ?? '',
+            'email'      => $input['email'] ?? '',
+            'phone'      => $input['phone'] ?? '',
+            'photo'      => $input['photo'] ?? '',
+            'nid_photo'  => $input['nid_photo'] ?? '',
+            'address'    => $input['address'] ?? '',
+            'nid_number' => $input['nid_number'] ?? '',
+            'user_id'    => auth()->id(),
+            'status'     => $input['status'],
+//            'shop_id'     => $input['shop_id'],
+            'password'   => bcrypt($input['password']),
+            'gender'     => $input['gender'] ?? null,
+            'is_visitor' => 0,
+            'is_admin'   => $input['role'] == 'is_admin' ? 1 : 0,
+            'is_manager' => $input['role'] == 'is_manager' ? 1 : 0,
         ];
     }
 
@@ -144,40 +148,6 @@ class User extends Authenticatable
         ];
     }
 
-
-    /**
-     * @param array $input
-     * @return Builder|Model
-     */
-    final public function storeSalesManager(array $input): Model|Builder
-    {
-        return self::create($this->prepareSalesManagerData($input));
-    }
-
-    /**
-     * @param array $input
-     * @param int $auth_id
-     * @return array
-     */
-    private function prepareSalesManagerData(array $input): array
-    {
-        return [
-            'name'       => $input['name'] ?? '',
-            'email'      => $input['email'] ?? '',
-            'phone'      => $input['phone'] ?? '',
-            'photo'      => $input['photo'] ?? '',
-            'nid_photo'  => $input['nid_photo'] ?? '',
-            'address'    => $input['address'] ?? '',
-            'nid_number' => $input['nid_number'] ?? '',
-            'user_id'    => auth()->id(),
-            'shop_id'    => $input['shop_id'],
-            'status'     => $input['status'],
-            'password'   => bcrypt($input['password']),
-            'is_visitor' => 0,
-            'is_manager' => 1,
-        ];
-    }
-
     /**
      * @return Model|Builder|null
      */
@@ -198,14 +168,6 @@ class User extends Authenticatable
             ->get();
     }
 
-    /**
-     * @return BelongsTo
-     */
-    final public function shop(): BelongsTo
-    {
-        return $this->belongsTo(Shop::class);
-    }
-
 
     /**
      * @param array $input
@@ -214,7 +176,7 @@ class User extends Authenticatable
     final public function getUsers(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
-        $query = self::query()->where('is_admin', self::ACTIVE_STATUS)
+        $query = self::query()->where('is_admin', self::ACTIVE_STATUS)->orWhere('is_manager', self::ACTIVE_STATUS)
             ->where('is_superadmin', 0);
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%' . $input['search'] . '%');
@@ -230,10 +192,10 @@ class User extends Authenticatable
      * @param array $input
      * @return LengthAwarePaginator
      */
-    final public function salesManager(array $input): LengthAwarePaginator
+    final public function getSalesManagers(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
-        $query = self::query()->with('shop:id,name')->where('is_manager', self::ACTIVE_STATUS)
+        $query = self::query()->where('is_manager', self::ACTIVE_STATUS)
             ->where('is_superadmin', 0);
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%' . $input['search'] . '%');
@@ -242,24 +204,5 @@ class User extends Authenticatable
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
         }
         return $query->paginate($per_page);
-    }
-
-    /**
-     * @return Collection
-     */
-    final public function getSaleManagerIdAndName(): Collection
-    {
-        return self::query()
-            ->select('name', 'id', 'phone')
-            ->where('status', self::ACTIVE_STATUS)
-            ->get();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    final public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

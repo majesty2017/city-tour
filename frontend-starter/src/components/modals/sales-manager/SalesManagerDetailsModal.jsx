@@ -37,7 +37,7 @@ const SalesManagerDetailsModal = (props) => {
               <td>Phone</td>
               <td>{props.salesManager.phone}</td>
             </tr>
-            <tr>
+            <tr className='d-none'>
               <td>Shop</td>
               <td>{props.salesManager.shop}</td>
             </tr>

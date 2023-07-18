@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('gender')->nullable();
             $table->boolean('is_lead')->default(0)->comment('0=No,1=Yes');
-            $table->boolean('is_visitor')->default(1)->comment('0=No,1=Yes');
+            $table->boolean('is_visitor')->default(0)->comment('0=No,1=Yes');
             $table->boolean('is_manager')->default(0)->comment('0=No,1=Yes');
             $table->boolean('is_admin')->default(0)->comment('0=No,1=Yes');
             $table->boolean('is_superadmin')->default(0)->comment('0=No,1=Yes');

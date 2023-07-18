@@ -9,7 +9,23 @@ const UserForm = () => {
   const [input, setInput] = useState({status: 1})
   const [errors, setErrors] = useState([])
   const [loading, setLoading] = useState(false)
+  const [shops, setShops] = useState([])
+  const [hasShop, setHasShop] = useState(false)
   const {id} = useParams()
+
+  useEffect(() => {
+    const getShops = async () => {
+      setLoading(true)
+      await axiosClient.get(`/shops/list`).then(res => {
+        setLoading(false)
+        setShops(res.data)
+      }).catch(err => {
+        setLoading(false)
+        console.log(err)
+      })
+    }
+    getShops()
+  }, [])
 
   if (id) {
     useEffect(() => {const getUser = async () => {
@@ -34,9 +50,7 @@ const UserForm = () => {
 
     const reader = new FileReader()
     reader.onloadend = () => {
-      setInput(prevState => ({
-        ...prevState, [e.target.name]: reader.result
-      }))
+      setInput(prevState => ({...prevState, [e.target.name]: reader.result}))
     }
     reader.readAsDataURL(file)
   }
@@ -62,7 +76,7 @@ const UserForm = () => {
       await axiosClient.put(`/users/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        // navigate('/users')
+        navigate('/users')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -133,20 +147,26 @@ const UserForm = () => {
                                       </div>
                                     </div>
 
-                                    <div className='col-sm-6 d-none'>
+                                    <div className='col-sm-6'>
                                       <div className="form-group">
-                                        <label htmlFor="designation">Designation</label>
-                                        <input
-                                          type="text"
-                                          className={errors.designation !== undefined ? "form-control form-control-border border-width-2 is-invalid" : "form-control form-control-border border-width-2"}
-                                          id="designation"
-                                          name="designation"
-                                          value={input.designation}
+                                        <label htmlFor="role">
+                                          Role
+                                        </label>
+                                        <select
+                                          className="custom-select form-control-border border-width-2"
+                                          id="role"
+                                          name="role"
+                                          defaultValue={input.role}
+                                          value={input.role}
+                                          placeholder='Select option'
                                           onChange={handleInput}
-                                          placeholder="Enter designation"
-                                        />
+                                        >
+                                          <option>Select option</option>
+                                          <option value='is_admin'>Admin</option>
+                                          <option value='is_manager'>Sales Manager</option>
+                                        </select>
                                         <p className='text-danger'>
-                                          <small>{errors.designation !== undefined ? errors.designation[0] : null}</small>
+                                          <small>{errors.role !== undefined ? errors.role[0] : null}</small>
                                         </p>
                                       </div>
                                     </div>
@@ -168,6 +188,33 @@ const UserForm = () => {
                                         </p>
                                       </div>
                                     </div>
+
+                                    {hasShop && (
+                                      <div className='col-sm-6'>
+                                        <div className="form-group">
+                                          <label htmlFor="shop_id">
+                                            Shop
+                                          </label>
+                                          <select
+                                            className="custom-select form-control-border border-width-2"
+                                            id="shop_id"
+                                            name="shop_id"
+                                            defaultValue={input.shop_id}
+                                            value={input.shop_id}
+                                            placeholder='Select option'
+                                            onChange={handleInput}
+                                          >
+                                            <option>Select option</option>
+                                            {shops.map((shop, index) => (
+                                              <option value={shop.id} key={index}>{shop.name}</option>
+                                            ))}
+                                          </select>
+                                          <p className='text-danger'>
+                                            <small>{errors.email !== undefined ? errors.email[0] : null}</small>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
 
                                     <div className='col-sm-6'>
                                       <div className="form-group">
@@ -210,8 +257,8 @@ const UserForm = () => {
                                         <label>Address</label>
                                         <textarea
                                           className={errors.address !== undefined ?
-                                                     "form-control form-control-border border-width-2 is-invalid" :
-                                                     "form-control form-control-border border-width-2"}
+                                            "form-control form-control-border border-width-2 is-invalid" :
+                                            "form-control form-control-border border-width-2"}
                                           value={input.address}
                                           onChange={handleInput}
                                           name='address'
@@ -234,12 +281,17 @@ const UserForm = () => {
                                           id="gender"
                                           name="gender"
                                           defaultValue={input.gender}
+                                          value={input.gender}
                                           placeholder='Select option'
                                           onChange={handleInput}
                                         >
+                                          <option>Select option</option>
                                           <option value='Male'>Male</option>
                                           <option value='Female'>Female</option>
                                         </select>
+                                        <p className='text-danger'>
+                                          <small>{errors.gender !== undefined ? errors.gender[0] : null}</small>
+                                        </p>
                                       </div>
                                     </div>
 
@@ -261,7 +313,8 @@ const UserForm = () => {
                                         </select>
                                       </div>
                                     </div>
-
+                                  </div>
+                                  <div className='row'>
                                     <div className='col-sm-6'>
                                       <div className="form-group">
                                         <label htmlFor="photo">Photo</label>
