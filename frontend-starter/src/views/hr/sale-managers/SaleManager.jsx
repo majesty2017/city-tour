@@ -74,6 +74,7 @@ const SaleManager = () => {
     }))
   }
 
+
   const handleDelete = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {

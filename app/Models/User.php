@@ -20,11 +20,6 @@ class User extends Authenticatable
     public const USER_IMAGE_PATH = 'assets/uploads/users/';
     public const USER_IMAGE_THUMB_PATH = 'assets/uploads/users_thumb/';
 
-    public const ADMIN_IMAGE_PATH = 'assets/uploads/admins/';
-    public const ADMIN_IMAGE_THUMB_PATH = 'assets/uploads/admins_thumb/';
-
-    public const VISIOR_IMAGE_PATH = 'assets/uploads/visitors/';
-    public const VISIOR_IMAGE_THUMB_PATH = 'assets/uploads/visitors_thumb/';
     const ACTIVE_STATUS = 1;
     const INACTIVE_STATUS = 0;
 
@@ -106,7 +101,6 @@ class User extends Authenticatable
             'status'              => $input['status'],
             'password'            => bcrypt($input['password']),
             'gender'              => $input['gender'] ?? null,
-            'is_admin'            => 1,
         ];
     }
 
@@ -179,17 +173,15 @@ class User extends Authenticatable
             'shop_id'    => $input['shop_id'],
             'status'     => $input['status'],
             'password'   => bcrypt($input['password']),
-            'is_lead'    => 0,
             'is_visitor' => 0,
             'is_manager' => 1,
-            'is_admin'   => 0,
         ];
     }
 
     /**
      * @return Model|Builder|null
      */
-    final public function getUser(): Model|Builder|null
+    final public function getAuthUser(): Model|Builder|null
     {
         return self::query()->where('id', auth()->id())->first();
     }
@@ -201,6 +193,7 @@ class User extends Authenticatable
     {
         return self::query()
             ->select('name', 'id', 'phone')
+            ->where('is_admin', self::ACTIVE_STATUS)
             ->where('status', self::ACTIVE_STATUS)
             ->get();
     }
@@ -218,10 +211,29 @@ class User extends Authenticatable
      * @param array $input
      * @return LengthAwarePaginator
      */
+    final public function getUsers(array $input): LengthAwarePaginator
+    {
+        $per_page = $input['per_page'] ?? 10;
+        $query = self::query()->where('is_admin', self::ACTIVE_STATUS)
+            ->where('is_superadmin', 0);
+        if (!empty($input['search'])) {
+            $query->where('name', 'like', '%' . $input['search'] . '%');
+        }
+        if (!empty($input['order_by'])) {
+            $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
+        }
+        return $query->paginate($per_page);
+    }
+
+
+    /**
+     * @param array $input
+     * @return LengthAwarePaginator
+     */
     final public function salesManager(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
-        $query = self::query()->with('shop:id,name')
+        $query = self::query()->with('shop:id,name')->where('is_manager', self::ACTIVE_STATUS)
             ->where('is_superadmin', 0);
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%' . $input['search'] . '%');

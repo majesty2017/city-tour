@@ -245,7 +245,9 @@ const Product = () => {
                                   </td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'>Price: {product.price}</div>
+                                      <div className='text-primary'><strong>Selling Price:
+                                        {product.selling_price.currency}{product.selling_price.price} | Discount: {product.selling_price.discount}
+                                      </strong> </div>
                                       <div className='text-info'>Discount: {product.discount_percent} + {product.discount_fixed}</div>
                                       <div className='text-primary'>Cost: {product.cost}</div>
                                       <div className='text-info'>Discount Start: {product.discount_start}</div>

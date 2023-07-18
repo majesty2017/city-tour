@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UpdateUserResource;
 use App\Http\Resources\UserResource;
 use App\Manager\ImageManager;
 use App\Models\User;
@@ -21,7 +22,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return UserResource::collection((new User())->salesManager($request->all()));
+        return UserResource::collection((new User())->getUsers($request->all()));
     }
 
     /**
@@ -38,7 +39,7 @@ class UserController extends Controller
      */
     final public function store(StoreUserRequest $request): JsonResponse
     {
-        $user_data = $request->except('photo');
+        $user_data = $request->except(['photo', 'nid_photo']);
         if ($request->has('photo')) {
             $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
         }
@@ -46,7 +47,7 @@ class UserController extends Controller
             $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
         }
         (new User())->storeUser($user_data);
-        return response()->json(['message' => 'Sales manager saved successfully!']);
+        return response()->json(['message' => 'User saved successfully!']);
     }
 
     /**
@@ -54,16 +55,16 @@ class UserController extends Controller
      */
     final public function user(): Model|Builder|null
     {
-        return (new User())->getUser();
+        return (new User())->getAuthUser();
     }
 
     /**
      * @param User $user
-     * @return UserResource
+     * @return UpdateUserResource
      */
-    final public function show(User $user): UserResource
+    final public function show(User $user): UpdateUserResource
     {
-        return new UserResource($user);
+        return new UpdateUserResource($user);
     }
 
     /**
@@ -71,15 +72,18 @@ class UserController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    final public function update(UpdateUserRequest $request, User $user): JsonResponse
+    public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $user_data = $request->except('photo');
+        $user_data = $request->except(['photo', 'nid_photo']);
         $user_data['user_id'] = auth()->id();
+        if ($request->password) {
+            $user_data['password'] = bcrypt($request->password);
+        }
         if ($request->has('photo')) {
-            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-user-photo');
+            $user_data['photo'] = $this->processImageUpload($request->input('photo'), Str::random() . '-photo');
         }
         if ($request->has('nid_photo')) {
-            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-user-nid_photo');
+            $user_data['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random() . '-nid_photo');
         }
         $user->update($user_data);
         return response()->json(['message' => 'Changes saved successfully!']);
@@ -96,7 +100,7 @@ class UserController extends Controller
             ImageManager::deletePhoto(User::USER_IMAGE_THUMB_PATH, $user->photo);
         }
         $user->delete();
-        return response()->json(['message' => 'Sales manager deleted successfully!']);
+        return response()->json(['message' => 'User deleted successfully!']);
     }
 
     /**

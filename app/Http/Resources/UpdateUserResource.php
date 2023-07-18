@@ -17,22 +17,16 @@ class UpdateUserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'                  => $this->id,
-            'name'                => $this->name,
-            'email'               => $this->email,
-            'group'               => $this->group,
-            'phone'               => $this->phone,
-            'region'              => $this->region,
-            'city'                => $this->city,
-            'address'             => $this->address,
-            'nationality_status'  => $this->nationality_status,
-            'passport_id'         => $this->passport_id,
-            'next_place_of_visit' => $this->next_place_of_visit,
-            'designation'         => $this->designation,
-            'gender'              => $this->gender,
-            'nid_number'          => $this->nid_number,
-            'status'              => $this->status,
-            'photo'               => ImageManager::prepareImageUrl(User::SALESMANAGER_IMAGE_THUMB_PATH, $this->photo),
+            'id'         => $this->id,
+            'name'       => $this->name,
+            'email'      => $this->email,
+            'phone'      => $this->phone,
+            'address'    => $this->address,
+            'gender'     => $this->gender,
+            'nid_number' => $this->nid_number,
+            'status'     => $this->status,
+            'photo'      => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->photo),
+            'nid_photo'  => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->nid_photo),
         ];
     }
 }

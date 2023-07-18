@@ -7,8 +7,8 @@ import {
   NoDataFound,
   Paginations,
   Search,
-  SalesManagerDetailsModal,
-  SalesManagerLogoModal
+  UserDetailsModal,
+  UserLogoModal
 } from "../../../components";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client";
@@ -26,6 +26,7 @@ const Users = () => {
   const [modalShowDetails, setModalShowDetails] = useState(false);
   const [modalPhoto, setModalPhoto] = useState('');
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -38,8 +39,8 @@ const Users = () => {
     setModalShow(true)
   }
 
-  const handleDetailsModal = (salesManager) => {
-    setUsers(salesManager)
+  const handleDetailsModal = (user) => {
+    setUser(user)
     setModalShowDetails(true)
   }
 
@@ -218,39 +219,39 @@ const Users = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {users && Object.keys(users).length > 0 ? users.map((salesManager, index) => (
+                              {users && Object.keys(users).length > 0 ? users.map((user, index) => (
                                 <tr key={index}>
                                   <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
-                                  <td>{salesManager.name}</td>
+                                  <td>{user.name}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Phone: {salesManager.phone}</small></div>
-                                      <div className='text-info'><small>Email: {salesManager.email}</small></div>
+                                      <div className='text-primary'><small>Phone: {user.phone}</small></div>
+                                      <div className='text-info'><small>Email: {user.email}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Status: {salesManager.status}</small></div>
-                                      <div className='text-info'><small>Shop: {salesManager.shop}</small></div>
+                                      <div className='text-primary'><small>Status: {user.status}</small></div>
+                                      <div className='text-info'><small>Shop: {user.shop}</small></div>
                                     </div>
                                   </td>
                                   <td>
-                                    <Images width={32} height={32} src={salesManager.photo} alt={salesManager.name}
-                                            onClick={() => handleLogoModal(salesManager.photo_full)}/>
+                                    <Images width={32} height={32} src={user.photo} alt={user.name}
+                                            onClick={() => handleLogoModal(user.photo_full)}/>
                                   </td>
-                                  <td>{salesManager.created_by}</td>
+                                  <td>{user.created_by}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Created: {salesManager.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {salesManager.updated_at}</small></div>
+                                      <div className='text-primary'><small>Created: {user.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {user.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
                                       url='users'
-                                      id={salesManager.id}
-                                      handleDelete={() => handleDelete(salesManager.id)}
-                                      onClick={() => handleDetailsModal(salesManager)}
+                                      id={user.id}
+                                      handleDelete={() => handleDelete(user.id)}
+                                      onClick={() => handleDetailsModal(user)}
                                       modalView />
                                   </td>
                                 </tr>
@@ -271,19 +272,19 @@ const Users = () => {
                       startFrom={startFrom}
                     />
                   </div>
-                  <SalesManagerLogoModal
+                  <UserLogoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                     title="User Logo"
                     size
                     photo={modalPhoto}
                   />
-                  <SalesManagerDetailsModal
+                  <UserDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
                     title="User Details"
                     size='lg'
-                    salesManager={users}
+                    user={user}
                   />
                 </div>
                 {/* /.card-body */}

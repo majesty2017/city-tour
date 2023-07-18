@@ -11,19 +11,21 @@ const UserForm = () => {
   const [loading, setLoading] = useState(false)
   const {id} = useParams()
 
-  useEffect(() => {const getSupplier = async () => {
-    setLoading(true)
-    await axiosClient.get(`/users/${id}`).then(res => {
-      setLoading(false)
-      console.log(res.data)
-      setInput(res.data)
-    }).catch(err => {
-      setLoading(false)
-      console.log(err)
-    })
+  if (id) {
+    useEffect(() => {const getUser = async () => {
+      setLoading(true)
+      await axiosClient.get(`/users/${id}`).then(res => {
+        setLoading(false)
+        console.log(res.data)
+        setInput(res.data.data)
+      }).catch(err => {
+        setLoading(false)
+        console.log(err)
+      })
+    }
+      getUser()
+    }, [id])
   }
-    getSupplier()
-  }, [id])
 
   const handleInput = (e) => setInput(prevState => ({...prevState, [e.target.name]: e.target.value}))
 
@@ -60,7 +62,7 @@ const UserForm = () => {
       await axiosClient.put(`/users/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/users')
+        // navigate('/users')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {

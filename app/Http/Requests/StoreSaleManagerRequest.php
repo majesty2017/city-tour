@@ -29,7 +29,7 @@ class StoreSaleManagerRequest extends FormRequest
             'address'    => 'string|max:200',
             'phone'      => 'required|string',
             'nid_number' => 'required|string',
-            'email'      => 'required|email',
+            'email'      => 'required|email|unique:sale_managers,email',
             'password'   => [
                 'required',
                 'string',

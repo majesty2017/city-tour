@@ -27,6 +27,13 @@ class ProductResource extends JsonResource
             'sku'              => $this->sku,
             'cost'             => PriceManager::CURRENCY . $this->cost,
             'price'            => PriceManager::CURRENCY . $this->price,
+            'selling_price'            => PriceManager::calculate_selling_price(
+                    $this->price,
+                    $this->discount_percent,
+                    $this->discount_fixed,
+                    $this->discount_start,
+                    $this->discount_end
+                ),
             'discount_start'   => $this->discount_start != null ? Carbon::create($this->discount_start)->toDayDateTimeString() : null,
             'discount_end'     => $this->discount_end != null ? Carbon::create($this->discount_end)->toDayDateTimeString() : null,
             'discount_percent' => $this->discount_percent . '%',
