@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V1\ShopController;
 use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
+use App\Http\Controllers\VisitorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,11 +45,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('product-photo-upload/{id}', [ProductPhotoController::class, 'store']);
 
     Route::apiResource('users', UserController::class);
+    Route::apiResource('visitors', VisitorController::class);
     Route::apiResource('countries', CountryController::class);
     Route::apiResource('attributes', AttributeController::class);
     Route::apiResource('value', AttributeValueController::class);
     Route::apiResource('suppliers', SupplierController::class);
-    Route::apiResource('sales-managers', SaleManagerController::class);
     Route::apiResource('brands', BrandController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);

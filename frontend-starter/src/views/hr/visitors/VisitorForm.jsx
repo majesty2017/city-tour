@@ -1,5 +1,5 @@
 import {CardHeader, DefaultLayout, Loader, Search} from "../../../components";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import toastAlert from "../../../data/toastAlert.js";
@@ -12,9 +12,10 @@ const VisitorForm = () => {
   const {id} = useParams()
 
 
-  useEffect(() => {const getVisitor = async () => {
+  useEffect(() => {
+    const getVisitor = async () => {
     setLoading(true)
-    await axiosClient.get(`/suppliers/${id}`).then(res => {
+    await axiosClient.get(`/visitors/${id}`).then(res => {
       setLoading(false)
       setInput(res.data)
     }).catch(err => {
@@ -57,10 +58,10 @@ const VisitorForm = () => {
 
     const update = async () => {
       setLoading(true)
-      await axiosClient.put(`/suppliers/${id}`, input).then(res => {
+      await axiosClient.put(`/visitors/${id}`, input).then(res => {
         setLoading(false)
         toastAlert(res.data.message)
-        navigate('/suppliers')
+        navigate('/visitors')
       }).catch(err => {
         setLoading(false)
         if (err.response.status === 422) {
@@ -77,13 +78,13 @@ const VisitorForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Supplier` : 'Add Supplier'}>
+        <DefaultLayout title={id ? `Edit Visitor` : 'Add Visitor'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? 'Edit Supplier' : 'Add Supplier'} link='/suppliers' />
+                    <CardHeader isForm title={id ? 'Edit Visitor' : 'Add Visitor'} link='/visitors' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">

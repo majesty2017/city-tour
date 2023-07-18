@@ -1,19 +1,15 @@
 import {
   ActionButton,
-  BrandDetailsModal,
-  BrandLogoModal,
   CardHeader,
-  DataTables,
   DefaultLayout,
   Images,
   Loader,
   NoDataFound,
   Paginations,
-  Search, SupplierDetailsModal, SupplierLogoModal
+  Search,
+  VisitorDetailsModal,
+  VisitorLogoModal
 } from "../../../components";
-import {Link} from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
-import endpoint from "../../../data/server";
 import {useEffect, useState} from "react";
 import axiosClient from "../../../axios-client.js";
 import Swal from "sweetalert2";
@@ -21,7 +17,7 @@ import toastAlert from "../../../data/toastAlert.js";
 
 const Visitor = () => {
   const [loading, setLoading] = useState(false)
-  const [suppliers, setSuppliers] = useState([])
+  const [visitors, setVisitors] = useState([])
 
   const [itemsCountPerPage, setItemsCountPerPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(1)
@@ -30,7 +26,8 @@ const Visitor = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowDetails, setModalShowDetails] = useState(false);
   const [modalLogo, setModalLogo] = useState('');
-  const [supplier, setSupplier] = useState([]);
+
+  const [visitor, setVisitor] = useState([]);
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -43,18 +40,18 @@ const Visitor = () => {
     setModalShow(true)
   }
 
-  const handleDetailsModal = (supplier) => {
-    setSupplier(supplier)
+  const handleDetailsModal = (visitor) => {
+    setVisitor(visitor)
     setModalShowDetails(true)
   }
 
-  const getSuppliers = async (pageNumber = 1) => {
+  const getVisitors = async (pageNumber = 1) => {
     setLoading(true)
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-    await axiosClient.get(`suppliers?page=${pageNumber}${searchQuery}`).then(res => {
+    await axiosClient.get(`visitors?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
       console.log(res.data)
-      setSuppliers(res.data.data)
+      setVisitors(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
       setTotalItemsCount(res.data.meta.total)
@@ -66,7 +63,7 @@ const Visitor = () => {
   }
 
   useEffect(() => {
-    getSuppliers()
+    getVisitors()
   }, [])
 
   const handleInput = (e) => {
@@ -95,10 +92,10 @@ const Visitor = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true)
-        axiosClient.delete(`/suppliers/${id}`).then(res => {
+        axiosClient.delete(`/visitors/${id}`).then(res => {
           setLoading(false)
           toastAlert(res.data.message)
-          getSuppliers()
+          getVisitors()
         }).catch(err => {
           setLoading(false)
           console.log(err)
@@ -117,13 +114,13 @@ const Visitor = () => {
   }
 
   return (
-    <DefaultLayout title='Suppliers'>
+    <DefaultLayout title='Visitors'>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Suppliers List' link='/suppliers/create'/>
+                <CardHeader title='Visitors List' link='/visitors/create'/>
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">
@@ -135,7 +132,7 @@ const Visitor = () => {
                         {loading && (<Loader/>)}
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getSuppliers(1)} onChange={handleInput}/>
+                            <Search value={input} onClick={() => getVisitors(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -244,36 +241,36 @@ const Visitor = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {Object.keys(suppliers).length > 0 ? suppliers.map((supplier, index) => (
+                              {Object.keys(visitors).length > 0 ? visitors.map((visitor, index) => (
                                 <tr key={index}>
                                   <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
-                                  <td>{supplier.name}</td>
-                                  <td>{supplier.email}</td>
-                                  <td>{supplier.phone}</td>
-                                  <td>{supplier.company_name}</td>
-                                  <td>{supplier.status}</td>
+                                  <td>{visitor.name}</td>
+                                  <td>{visitor.email}</td>
+                                  <td>{visitor.phone}</td>
+                                  <td>{visitor.company_name}</td>
+                                  <td>{visitor.status}</td>
                                   <td>
-                                    <Images width={32} height={32} src={supplier.logo} alt={supplier.name}
-                                            onClick={() => handleLogoModal(supplier.logo_full)}/>
+                                    <Images width={32} height={32} src={visitor.logo_full} alt={visitor.name}
+                                            onClick={() => handleLogoModal(visitor.logo_full)}/>
                                   </td>
-                                  <td>{supplier.created_by}</td>
+                                  <td>{visitor.created_by}</td>
                                   <td>
                                     <div>
-                                      <div className='text-primary'><small>Created: {supplier.created_at}</small></div>
-                                      <div className='text-info'><small>Updated: {supplier.updated_at}</small></div>
+                                      <div className='text-primary'><small>Created: {visitor.created_at}</small></div>
+                                      <div className='text-info'><small>Updated: {visitor.updated_at}</small></div>
                                     </div>
                                   </td>
                                   <td>
                                     <ActionButton
-                                      url='suppliers'
-                                      id={supplier.id}
-                                      handleDelete={() => handleDelete(supplier.id)}
-                                      onClick={() => handleDetailsModal(supplier)}
+                                      url='visitors'
+                                      id={visitor.id}
+                                      handleDelete={() => handleDelete(visitor.id)}
+                                      onClick={() => handleDetailsModal(visitor)}
                                       modalView />
                                   </td>
                                 </tr>
                               )): (
-                                <NoDataFound title='Supplier' />
+                                <NoDataFound title='Visitor' />
                               )}
                               </tbody>
                             </table>
@@ -285,23 +282,23 @@ const Visitor = () => {
                       activePage={activePage}
                       itemsCountPerPage={itemsCountPerPage}
                       totalItemsCount={totalItemsCount}
-                      onChange={getSuppliers}
+                      onChange={getVisitors}
                       startFrom={startFrom}
                     />
                   </div>
-                  <SupplierLogoModal
+                  <VisitorLogoModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    title="Supplier Logo"
+                    title="Visitor Logo"
                     size
                     logo={modalLogo}
                   />
-                  <SupplierDetailsModal
+                  <VisitorDetailsModal
                     show={modalShowDetails}
                     onHide={() => setModalShowDetails(false)}
-                    title="Supplier Details"
+                    title="Visitor Details"
                     size
-                    supplier={supplier}
+                    visitor={visitor}
                   />
                 </div>
                 {/* /.card-body */}

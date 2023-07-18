@@ -26,8 +26,11 @@ export { default as ActionButton } from './buttons/ActionButton'
 // Modals
 export {default as DefaultModal} from './modals/DefaultModal'
 
-export {default as SupplierLogoModal} from './modals/supplier/SupplierLogoModal'
-export {default as SupplierDetailsModal} from './modals/supplier/SupplierDetailsModal'
+export {default as SupplierLogoModal} from './modals/supplier/VisitorLogoModal'
+export {default as SupplierDetailsModal} from './modals/supplier/VisitorDetailsModal'
+
+export {default as VisitorLogoModal} from './modals/supplier/VisitorLogoModal'
+export {default as VisitorDetailsModal} from './modals/supplier/VisitorDetailsModal'
 
 export {default as UserLogoModal} from './modals/user/UserLogoModal'
 export {default as UserDetailsModal} from './modals/user/UserDetailsModal'

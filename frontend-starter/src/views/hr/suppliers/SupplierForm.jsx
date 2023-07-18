@@ -12,7 +12,8 @@ const SupplierForm = () => {
   const {id} = useParams()
 
 
-  useEffect(() => {const getSupplier = async () => {
+  useEffect(() => {
+    const getSupplier = async () => {
     setLoading(true)
     await axiosClient.get(`/suppliers/${id}`).then(res => {
       setLoading(false)
