@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import index               from "../../../public/assets/plugins/popper/popper-utils.js";
 
-const Search = ({value, onClick, onChange, hasExtra, extras}) => {
+const Search = ({value, onClick, onChange, hasExtra, extras, onKeyUp, onKeyDown}) => {
   const navigate = useNavigate()
   const handleRefresh = () => {
     window.location.reload()
@@ -79,6 +79,8 @@ const Search = ({value, onClick, onChange, hasExtra, extras}) => {
             name="search"
             value={value.search}
             onChange={onChange}
+            onKeyUp={onKeyUp}
+            onKeyDown={onKeyDown}
             placeholder="Type your keywords here..."
           />
         </div>

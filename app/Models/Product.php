@@ -129,7 +129,7 @@ class Product extends Model
      */
     final public function getProductById(int $id): Builder|Collection|Model|null
     {
-        return self::query()->findOrFail($id);
+        return self::query()->with('primary_photo')->findOrFail($id);
     }
 
     /**
@@ -152,6 +152,8 @@ class Product extends Model
         ]);
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%' . $input['search'] . '%');
+            $query->orWhere('sku', 'like', '%' . $input['search'] . '%');
+            $query->orWhere('price', 'like', '%' . $input['search'] . '%');
         }
         if (!empty($input['order_by'])) {
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');

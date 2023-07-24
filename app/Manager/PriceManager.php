@@ -45,6 +45,6 @@ class PriceManager
             $discount += $discount_fixed;
         }
 
-        return ['price' => $price - $discount, 'discount' => $discount, 'currency' => self::CURRENCY];
+        return ['price' => number_format($price - $discount, 2), 'discount' => $discount, 'currency' => self::CURRENCY];
     }
 }

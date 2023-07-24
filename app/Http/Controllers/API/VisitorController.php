@@ -1,27 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVisitorRequest;
 use App\Http\Requests\UpdateVisitorRequest;
 use App\Http\Resources\UpdateVisitorResource;
-use App\Http\Resources\VisitorResource;
 use App\Manager\ImageManager;
 use App\Models\Visitor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class VisitorController extends Controller
 {
     /**
      * @param Request $request
-     * @return AnonymousResourceCollection
+     * @return JsonResponse
      */
-    final public function index(Request $request): AnonymousResourceCollection
+    final public function index(Request $request): JsonResponse
     {
-        return VisitorResource::collection((new Visitor())->visitors($request->all()));
+        return response()->json((new Visitor())->getVisitors($request->all()));
     }
 
     /**
@@ -29,13 +28,16 @@ class VisitorController extends Controller
      */
     public function store(StoreVisitorRequest $request)
     {
-        $visitor = $request->except('photo');
+        $visitor = $request->except(['photo', 'nid_photo']);
         $visitor['user_id'] = auth()->id();
         if($request->has('photo')) {
             $visitor['photo'] = $this->processImageUpload($request->input('photo'), Str::random());
         }
+        if($request->has('nid_photo')) {
+            $visitor['nid_photo'] = $this->processImageUpload($request->input('nid_photo'), Str::random());
+        }
         (new Visitor())->storeVisitor($visitor);
-        return response()->json(['message' => 'Supplier saved successfully!']);
+        return response()->json(['message' => 'Visitor saved successfully!']);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PaymentMethodController;
 use App\Http\Controllers\API\V1\AttributeController;
 use App\Http\Controllers\API\V1\AttributeValueController;
 use App\Http\Controllers\API\V1\AuthController;
@@ -13,8 +15,7 @@ use App\Http\Controllers\API\V1\ShopController;
 use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
-use App\Http\Controllers\VisitorController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\VisitorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,7 +55,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('shops', ShopController::class);
+    Route::apiResource('orders', OrderController::class);
     Route::apiResource('sub-categories', SubCategoryController::class);
+    Route::apiResource('payment-methods', PaymentMethodController::class);
 });
 
 Route::prefix('v1')->controller(AuthController::class)->group(function () {

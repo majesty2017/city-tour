@@ -9,6 +9,7 @@ export { default as Search } from './layouts/Search'
 export { default as Breadcrumb } from './layouts/Breadcrumb'
 
 export { default as Loader } from './elements/Loader'
+export { default as Button } from './elements/Button'
 export { default as ButtonLoader } from './elements/ButtonLoader'
 export { default as Images } from './elements/Images'
 export { default as Status } from './elements/Status'
@@ -26,11 +27,12 @@ export { default as ActionButton } from './buttons/ActionButton'
 // Modals
 export {default as DefaultModal} from './modals/DefaultModal'
 
-export {default as SupplierLogoModal} from './modals/supplier/VisitorLogoModal'
-export {default as SupplierDetailsModal} from './modals/supplier/VisitorDetailsModal'
+export {default as SupplierLogoModal} from './modals/visitor/VisitorLogoModal'
+export {default as SupplierDetailsModal} from './modals/visitor/VisitorDetailsModal'
 
-export {default as VisitorLogoModal} from './modals/supplier/VisitorLogoModal'
-export {default as VisitorDetailsModal} from './modals/supplier/VisitorDetailsModal'
+export {default as AddVisitorModal} from './modals/visitor/AddVisitorModal'
+export {default as VisitorLogoModal} from './modals/visitor/VisitorLogoModal'
+export {default as VisitorDetailsModal} from './modals/visitor/VisitorDetailsModal'
 
 export {default as UserLogoModal} from './modals/user/UserLogoModal'
 export {default as UserDetailsModal} from './modals/user/UserDetailsModal'
@@ -38,7 +40,10 @@ export {default as UserDetailsModal} from './modals/user/UserDetailsModal'
 export {default as SalesManagerLogoModal} from './modals/sales-manager/SalesManagerLogoModal'
 export {default as SalesManagerDetailsModal} from './modals/sales-manager/SalesManagerDetailsModal'
 
+export {default as ShowOrderConfirmationModal} from './modals/order/ShowOrderConfirmationModal'
+
 export {default as ShopLogoModal} from './modals/shop/ShopLogoModal'
+
 export {default as ShopDetailsModal} from './modals/shop/ShopDetailsModal'
 
 export {default as ProductAttributeLogoModal} from './modals/product-attribute/ProductAttributeLogoModal'

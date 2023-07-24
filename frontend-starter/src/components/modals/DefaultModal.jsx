@@ -10,7 +10,7 @@ const DefaultModal = (props) => {
       >
         <Modal.Header style={{display: "flex", justifyContent: 'space-between'}}>
           <Modal.Title id="contained-modal-title-vcenter">
-            {props.title}
+            {props.title || props.label}
           </Modal.Title>
           <span onClick={props.onHide} style={{cursor: "pointer"}}><i className='fa fa-times'></i></span>
         </Modal.Header>

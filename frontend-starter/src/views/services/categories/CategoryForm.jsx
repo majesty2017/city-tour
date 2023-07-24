@@ -90,13 +90,13 @@ const CategoryForm = () => {
   }
 
     return (
-        <DefaultLayout title={id ? `Edit Category` : 'Add Supplier'}>
+        <DefaultLayout title={id ? `Edit Category` : 'Add Category'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={id ? `Edit Category` : 'Add Supplier'} link='/categories' />
+                    <CardHeader isForm title={id ? `Edit Category` : 'Add Category'} link='/categories' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">

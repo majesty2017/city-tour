@@ -33,6 +33,8 @@ import {
   VisitorForm
 } from "./views";
 import {ProtectedLayout, PublicLayout} from "./components";
+import Order from "./views/orders/Order.jsx";
+import OrderForm from "./views/orders/OrderForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +66,19 @@ const router = createBrowserRouter([
       {
         path: '/suppliers/:id',
         element: <SupplierForm key="update"/>
+      },
+
+      {
+        path: '/orders',
+        element: <Order/>
+      },
+      {
+        path: '/orders/create',
+        element: <OrderForm key="create"/>
+      },
+      {
+        path: '/orders/:id',
+        element: <OrderForm key="update"/>
       },
 
       {
