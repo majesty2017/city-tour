@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
 
 class Visitor extends Model
@@ -30,6 +31,14 @@ class Visitor extends Model
         'email' => 'required|email',
         'status' => 'required|numeric',
     ];
+
+    /**
+     * @return MorphOne
+     */
+    final public function transaction(): MorphOne
+    {
+        return $this->morphOne(Transaction::class, 'transactionable');
+    }
 
     /**
      * @param array $input

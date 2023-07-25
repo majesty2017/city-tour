@@ -82,7 +82,7 @@ const OrderForm = () => {
 
   const getCategory = async () => {
     setLoading(true)
-    await axiosClient.get(`/categories/${id}`).then(res => {
+    await axiosClient.get(`/orders/${id}`).then(res => {
       setLoading(false)
       setInput(res.data)
     }).catch(err => {
@@ -159,10 +159,12 @@ const OrderForm = () => {
     e.preventDefault()
     setLoading(true)
     await axiosClient.post('/orders', {carts, 'order_summary': orderSummary}).then(res => {
+      setModalShowOrderConfirmation(false)
       setLoading(false)
-      console.log(res.data)
+      toastAlert(res.data.message)
     }).catch(err => {
       setLoading(false)
+      toastAlert('Check Ticket Availabity')
       console.log(err)
     })
   }

@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('trx_id')->nullable();
-            $table->foreignId('visitor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('visitor_id')->nullable();
             $table->foreignId('payment_method_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('order_id')->nullable();
             $table->morphs('transactionable');
             $table->decimal('amount')->nullable();
-            $table->tinyInteger('transaction_type')->comment('1=crdit 2=debit
-            ');
+            $table->tinyInteger('transaction_type')->comment('1=crdit 2=debit');
+            $table->tinyInteger('status')->comment('1=success 2=failed');
             $table->timestamps();
         });
     }

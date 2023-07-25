@@ -12,11 +12,12 @@ class OrderManager
     /**
      * @param int $min
      * @param int $max
+     * @param string|null $prefix
      * @return string
      */
-    public static function generateOrderNumber(int $min = 100000, int $max = 999999): string
+    public static function generateOrderNumber(int $min = 100000, int $max = 999999, string $prefix = null): string
     {
-        return self::ORDER__PREFIX . mt_rand($min, $max);
+        return $prefix . mt_rand($min, $max) ?? self::ORDER__PREFIX . mt_rand($min, $max);
     }
 
     public static function handle_order_data(array $input)

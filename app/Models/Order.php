@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Manager\OrderManager;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -17,18 +19,55 @@ class Order extends Model
     public const STATUS_PROCESSED = 2;
     public const STATUS_COMPLETED = 3;
 
+    public const PAYMENT_STATUS_PAID = 1;
+    public const PAYMENT_STATUS_PARTIALLY_PAID = 2;
+    public const PAYMENT_STATUS_UNPAID = 3;
+
     /**
-     * @param array $input
-     * @return Builder|Model|array
+     * @return LengthAwarePaginator
      */
-    final public function placeOrder(array $input): Builder|Model|array
+    final public function getOrders(): LengthAwarePaginator
+    {
+        $per_page = $input['per_page'] ?? 10;
+        $query = self::query()->with(['user:id,name', 'visitor:id,name,phone', 'payment_method:id,name']);
+        if (!empty($input['search'])) {
+            $query->where('order_number', 'like', '%' . $input['search'] . '%')
+            ->orWhere('user:name', 'like', '%' . $input['search'] . '%')
+            ->orWhere('visitor:name', 'like', '%' . $input['search'] . '%');
+        }
+        if (!empty($input['order_by'])) {
+            $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
+        }
+        return $query->paginate($per_page);
+    }
+
+    final public function visitor(): BelongsTo
+    {
+        return $this->belongsTo(Visitor::class);
+    }
+
+    public function payment_method(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     *
+     */
+    final public function placeOrder(array $input)
     {
         $order_data = $this->prepareData($input);
         if (isset($order_data['error_description'])) {
             return $order_data;
         }
         $order = self::query()->create($order_data['order_data']);
-        return (new OrderDetail())->storeOrderDetail($order_data['order_details'], $order);
+        (new OrderDetail())->storeOrderDetail($order_data['order_details'], $order);
+        (new Transaction())->storeTransaction($input, $order);
     }
 
     /**
@@ -44,7 +83,7 @@ class Order extends Model
             $order_data = [
                 'visitor_id'        => $input['order_summary']['visitor_id'] ?? 0,
                 'user_id'           => auth()->id(),
-                'quantity'          => $price['quantity'],
+                'quantity'          => $price['quantity'] ?? 0,
                 'order_status'      => self::STATUS_COMPLETED,
                 'paid_amount'       => $input['order_summary']['paid_amount'],
                 'due_amount'        => $input['order_summary']['due_amount'],

@@ -1,6 +1,7 @@
 import {Button, DefaultModal}       from "../../";
 import React, {useEffect, useState} from "react";
 import moment                       from "moment";
+import useNumberFormat              from "../../../hooks/useNumberFormat.js";
 
 const ShowOrderConfirmationModal = ({handlePlaceOrder, handleOrderSummaryInput, ...props}) => {
   const [date, setDate] = useState(null)
@@ -68,15 +69,15 @@ const ShowOrderConfirmationModal = ({handlePlaceOrder, handleOrderSummaryInput, 
             <tbody>
             <tr>
               <th><span>Sub Total:</span></th>
-              <td><span>GHS{new Intl.NumberFormat('us').format(props.orderSummary.amount)}</span></td>
+              <td><span>{useNumberFormat(props.orderSummary.amount)}</span></td>
             </tr>
             <tr>
               <th><span>Discount:</span></th>
-              <td><span className='text-danger'>-GHS{new Intl.NumberFormat('us').format(props.orderSummary.discount)}</span></td>
+              <td><span className='text-danger'>-{useNumberFormat(props.orderSummary.discount)}</span></td>
             </tr>
             <tr>
               <th><span>Total:</span></th>
-              <td><span>GHS{new Intl.NumberFormat('us').format(props.orderSummary.payable)}</span></td>
+              <td><span>{useNumberFormat(props.orderSummary.payable)}</span></td>
             </tr>
             <tr>
               <th className='align-middle'><span>Paid Amount:</span></th>
@@ -97,7 +98,7 @@ const ShowOrderConfirmationModal = ({handlePlaceOrder, handleOrderSummaryInput, 
             </tr>
             <tr>
               <th><span>Due Amount:</span></th>
-              <td><span>GHS{new Intl.NumberFormat('us').format(props.orderSummary.due_amount)}</span></td>
+              <td><span>{useNumberFormat(props.orderSummary.due_amount)}</span></td>
             </tr>
             <tr>
               <th className='align-middle'><span>Payment Method:</span></th>

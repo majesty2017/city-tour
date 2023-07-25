@@ -182,10 +182,10 @@ const Sidebar = () => {
                                 <li className="nav-item">
                                   <Link to="/orders" className={`nav-link ${location.pathname === '/orders' && 'active'}`}>
                                     <i className="far fa-circle nav-icon" />
-                                    <p>Orders</p>
+                                    <p>Tickets</p>
                                   </Link>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item d-none">
                                   <Link to="/tickets" className={`nav-link ${location.pathname === '/tickets' && 'active'}`}>
                                     <i className="far fa-circle nav-icon" />
                                     <p>Tickets</p>
