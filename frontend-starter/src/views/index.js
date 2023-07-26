@@ -5,6 +5,10 @@ export { default as Dashboard } from './Dashboard'
 export { default as Users } from './hr/users/Users'
 export { default as UserForm } from './hr/users/UserForm'
 
+export {default as Order} from "./orders/Order";
+export {default as OrderDetails} from "./orders/OrderDetails";
+export {default as OrderForm} from "./orders/OrderForm";
+
 export { default as SaleManager } from './hr/sale-managers/SaleManager'
 
 export { default as Shop } from './shops/Shop'

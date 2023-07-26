@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVisitorRequest;
 use App\Http\Requests\UpdateVisitorRequest;
 use App\Http\Resources\UpdateVisitorResource;
+use App\Http\Resources\VisitorResource;
 use App\Manager\ImageManager;
 use App\Models\Visitor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class VisitorController extends Controller
 {
     /**
-     * @param Request $request
-     * @return JsonResponse
+     *
      */
-    final public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
-        return response()->json((new Visitor())->getVisitors($request->all()));
+        return VisitorResource::collection((new Visitor())->visitors($request->all()));
     }
 
     /**

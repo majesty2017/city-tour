@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\PaymentMethodController;
 use App\Http\Controllers\API\V1\AttributeController;
 use App\Http\Controllers\API\V1\AttributeValueController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\CountryController;
+use App\Http\Controllers\API\V1\OrderController;
+use App\Http\Controllers\API\V1\PaymentMethodController;
 use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\ProductPhotoController;
 use App\Http\Controllers\API\V1\SaleManagerController;
@@ -15,7 +15,7 @@ use App\Http\Controllers\API\V1\ShopController;
 use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
-use App\Http\Controllers\API\VisitorController;
+use App\Http\Controllers\API\V1\VisitorController;
 use Illuminate\Support\Facades\Route;
 
 /*

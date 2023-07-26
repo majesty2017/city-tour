@@ -210,14 +210,14 @@ const Order = () => {
                                       </td>
                                       <td>
                                         <ActionButton
-                                          url='shops'
+                                          url='orders'
                                           id={order.id}
-                                          handleDelete={() => handleDelete(order.id)}
+                                          webView
                                         />
                                       </td>
                                     </tr>
                                   )) : (
-                                     <NoDataFound title='Shop'/>
+                                     <NoDataFound title='Ticket'/>
                                    )}
                                   </tbody>
                                 </table>

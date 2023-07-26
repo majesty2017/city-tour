@@ -246,7 +246,7 @@ const SubCategory = () => {
                                       id={category.id}
                                       handleDelete={() => handleDelete(category.id)}
                                       onClick={() => handleDetailsModal(category)}
-                                      view />
+                                      modalView />
                                   </td>
                                 </tr>
                               )): (

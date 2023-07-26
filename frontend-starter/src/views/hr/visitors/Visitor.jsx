@@ -28,6 +28,7 @@ const Visitor = () => {
   const [modalLogo, setModalLogo] = useState('');
 
   const [visitor, setVisitor] = useState([]);
+
   const [input, setInput] = useState({
     order_by: 'id',
     per_page: 10,
@@ -206,7 +207,7 @@ const Visitor = () => {
                                   colSpan={1}
                                   aria-label="Platform(s): activate to sort column ascending"
                                 >
-                                  Logo
+                                  Photo
                                 </th>
                                 <th
                                   className="sorting"
@@ -250,8 +251,8 @@ const Visitor = () => {
                                   <td>{visitor.company_name}</td>
                                   <td>{visitor.status}</td>
                                   <td>
-                                    <Images width={32} height={32} src={visitor.logo_full} alt={visitor.name}
-                                            onClick={() => handleLogoModal(visitor.logo_full)}/>
+                                    <Images width={32} height={32} src={visitor.photo_full} alt={visitor.name}
+                                            onClick={() => handleLogoModal(visitor.photo_full)}/>
                                   </td>
                                   <td>{visitor.created_by}</td>
                                   <td>
@@ -266,6 +267,7 @@ const Visitor = () => {
                                       id={visitor.id}
                                       handleDelete={() => handleDelete(visitor.id)}
                                       onClick={() => handleDetailsModal(visitor)}
+                                      webEdit
                                       modalView />
                                   </td>
                                 </tr>

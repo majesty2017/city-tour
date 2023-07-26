@@ -14,6 +14,8 @@ import {
   Invoice,
   Login,
   NotFound,
+  Order, OrderDetails,
+  OrderForm,
   Product,
   ProductAttribute,
   ProductAttributeForm,
@@ -33,8 +35,6 @@ import {
   VisitorForm
 } from "./views";
 import {ProtectedLayout, PublicLayout} from "./components";
-import Order from "./views/orders/Order.jsx";
-import OrderForm from "./views/orders/OrderForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: '/orders',
         element: <Order/>
+      },
+      {
+        path: '/orders/:id/details',
+        element: <OrderDetails/>
       },
       {
         path: '/orders/create',

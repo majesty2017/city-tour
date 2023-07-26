@@ -18,7 +18,7 @@ class Visitor extends Model
     public const IMAGE_THUMB_PATH = 'assets/uploads/visitors_thumb/';
     const ACTIVE_STATUS = 1;
 
-    protected $guarded = ['photo_preview'];
+    protected $guarded = ['photo_full', 'nid_photo_full'];
 
     /**
      * @var string[]
@@ -89,22 +89,21 @@ class Visitor extends Model
 
 
     /**
-     * @param array $input
+     * @param $input
      * @return LengthAwarePaginator
      */
-    final public function visitors(array $input): LengthAwarePaginator
+    final public function visitors($input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
-        $query = self::query();
+        $query = self::query()->with(['user:id,name']);
         if (!empty($input['search'])) {
-            $query->where('name', 'like', '%' . $input['search'] . '%');
-            $query->orWhere('phone', 'like', '%' . $input['search'] . '%');
-            $query->orWhere('email', 'like', '%' . $input['search'] . '%');
+            $query->where('name', 'like', '%' . $input['search'] . '%')
+                ->orWhere('phone', 'like', '%' . $input['search'] . '%');
         }
         if (!empty($input['order_by'])) {
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
         }
-        return $query->with('user:id,name')->paginate($per_page);
+        return $query->paginate($per_page);
     }
 
 

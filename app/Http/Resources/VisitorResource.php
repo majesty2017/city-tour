@@ -9,6 +9,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class VisitorResource extends JsonResource
 {
+    public static $wrap = false;
+
     /**
      * Transform the resource into an array.
      *
@@ -17,30 +19,28 @@ class VisitorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            [
-                'id'                  => $this->id,
-                'name'                => $this->name,
-                'email'               => $this->email,
-                'group'               => $this->group,
-                'phone'               => $this->phone,
-                'region'              => $this->region,
-                'city'                => $this->city,
-                'address'             => $this->address,
-                'nationality_status'  => $this->nationality_status,
-                'next_place_of_visit' => $this->next_place_of_visit,
-                'designation'         => $this->designation,
-                'gender'              => $this->gender,
-                'nid_number'          => $this->nid_number,
-                'status'              => $this->status == 1 ? 'Active' : 'Inactive',
-                'image'               => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->image),
-                'photo'               => ImageManager::prepareImageUrl(Visitor::IMAGE_THUMB_PATH, $this->photo),
-                'photo_full'          => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->photo),
-                'nid_photo'           => ImageManager::prepareImageUrl(Visitor::IMAGE_THUMB_PATH, $this->nid_photo),
-                'nid_photo_full'      => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->nid_photo),
-                'created_by'          => $this->user?->name,
-                'created_at'          => $this->created_at->toDayDateTimeString(),
-                'updated_at'          => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet',
-            ]
+            'id'                  => $this->id,
+            'name'                => $this->name,
+            'email'               => $this->email,
+            'group'               => $this->group,
+            'phone'               => $this->phone,
+            'region'              => $this->region,
+            'city'                => $this->city,
+            'address'             => $this->address,
+            'nationality_status'  => $this->nationality_status,
+            'next_place_of_visit' => $this->next_place_of_visit,
+            'designation'         => $this->designation,
+            'gender'              => $this->gender,
+            'nid_number'          => $this->nid_number,
+            'status'              => $this->status == 1 ? 'Active' : 'Inactive',
+            'image'               => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->image),
+            'photo'               => ImageManager::prepareImageUrl(Visitor::IMAGE_THUMB_PATH, $this->photo),
+            'photo_full'          => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->photo),
+            'nid_photo'           => ImageManager::prepareImageUrl(Visitor::IMAGE_THUMB_PATH, $this->nid_photo),
+            'nid_photo_full'      => ImageManager::prepareImageUrl(Visitor::IMAGE_PATH, $this->nid_photo),
+            'created_by'          => $this->user?->name,
+            'created_at'          => $this->created_at->toDayDateTimeString(),
+            'updated_at'          => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet',
         ];
     }
 }

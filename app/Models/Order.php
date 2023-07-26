@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -26,7 +27,7 @@ class Order extends Model
     /**
      * @return LengthAwarePaginator
      */
-    final public function getOrders(): LengthAwarePaginator
+    final public function getOrders(array $input): LengthAwarePaginator
     {
         $per_page = $input['per_page'] ?? 10;
         $query = self::query()->with(['user:id,name', 'visitor:id,name,phone', 'payment_method:id,name']);
@@ -54,6 +55,11 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function order_details(): HasMany
+    {
+        return $this->hasMany(OrderDetail::class);
     }
 
     /**

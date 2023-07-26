@@ -9,7 +9,9 @@ import {
   Loader,
   NoDataFound,
   Paginations,
-  Search, SupplierDetailsModal, SupplierLogoModal
+  Search,
+  SupplierDetailsModal,
+  SupplierLogoModal
 } from "../../../components";
 import {Link} from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
@@ -133,9 +135,13 @@ const Supplier = () => {
                     <div className="row">
                       <div className="col-sm-12">
                         {loading && (<Loader/>)}
+                        <Search value={input}
+                                onClick={() => getSuppliers(1)}
+                                onKeyDown={() => getSuppliers(1)}
+                                onKeyUp={() => getSuppliers(1)}
+                                onChange={handleInput}/>
                         {!loading && (
                           <>
-                            <Search value={input} onClick={() => getSuppliers(1)} onChange={handleInput}/>
                             <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
                               <thead>
                               <tr>
@@ -159,17 +165,7 @@ const Supplier = () => {
                                   aria-sort="ascending"
                                   aria-label="Rendering engine: activate to sort column descending"
                                 >
-                                  Name
-                                </th>
-                                <th
-                                  className="sorting"
-                                  tabIndex={0}
-                                  aria-controls="example2"
-                                  rowSpan={1}
-                                  colSpan={1}
-                                  aria-label="Browser: activate to sort column ascending"
-                                >
-                                  Email
+                                  Name / Email
                                 </th>
                                 <th
                                   className="sorting"
@@ -247,8 +243,12 @@ const Supplier = () => {
                               {Object.keys(suppliers).length > 0 ? suppliers.map((supplier, index) => (
                                 <tr key={index}>
                                   <td className="dtr-control" tabIndex={index}>{activePage + index}</td>
-                                  <td>{supplier.name}</td>
-                                  <td>{supplier.email}</td>
+                                  <td>
+                                    <div>
+                                      <div className='text-primary'><small>Name: {supplier.name}</small></div>
+                                      <div className='text-info'><small>Email: {supplier.email}</small></div>
+                                    </div>
+                                  </td>
                                   <td>{supplier.phone}</td>
                                   <td>{supplier.company_name}</td>
                                   <td>{supplier.status}</td>
@@ -269,6 +269,7 @@ const Supplier = () => {
                                       id={supplier.id}
                                       handleDelete={() => handleDelete(supplier.id)}
                                       onClick={() => handleDetailsModal(supplier)}
+                                      webEdit
                                       modalView />
                                   </td>
                                 </tr>

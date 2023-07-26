@@ -18,7 +18,7 @@ const VisitorDetailsModal = (props) => {
           <table className="table table-borderless table-hover dataTable dtr-inline table-striped">
             <tbody>
             <tr>
-              <td><img src={props.visitor.logo} className='img-thumbnail rounded-lg' alt='Logo'/></td>
+              <td><img src={props.visitor.photo} className='img-thumbnail rounded-lg' alt='Logo'/></td>
             </tr>
             <tr>
               <td>ID</td>

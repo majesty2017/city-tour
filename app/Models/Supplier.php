@@ -61,15 +61,16 @@ class Supplier extends Model
 
 
     /**
-     * @param array $input
-     * @return LengthAwarePaginator
+     *
      */
-    final public function suppliers(array $input): LengthAwarePaginator
+    final public function suppliers(array $input)
     {
         $per_page = $input['per_page'] ?? 10;
         $query = self::query();
         if (!empty($input['search'])) {
-            $query->where('name', 'like', '%' . $input['search'] . '%');
+            $query->where('name', 'like', '%' . $input['search'] . '%')
+            ->orWhere('phone', 'like', '%' . $input['search'] . '%')
+            ->orWhere('email', 'like', '%' . $input['search'] . '%');
         }
         if (!empty($input['order_by'])) {
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');

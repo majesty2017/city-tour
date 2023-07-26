@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PaymentMethodResource extends JsonResource
 {
+    public static $wrap = false;
+
     /**
      * Transform the resource into an array.
      *
@@ -15,8 +17,9 @@ class PaymentMethodResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'             => $this->id,
+            'name'           => $this->name,
+            'account_number' => $this->account_number,
         ];
     }
 }

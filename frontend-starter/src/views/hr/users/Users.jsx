@@ -252,6 +252,7 @@ const Users = () => {
                                       id={user.id}
                                       handleDelete={() => handleDelete(user.id)}
                                       onClick={() => handleDetailsModal(user)}
+                                      webEdit
                                       modalView />
                                   </td>
                                 </tr>

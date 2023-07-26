@@ -208,24 +208,24 @@ const VisitorForm = () => {
 
                                     <div className='col-sm-6'>
                                       <div className="form-group">
-                                        <label htmlFor="logo">Logo</label>
+                                        <label htmlFor="photo">Photo</label>
                                         <div className="input-group">
                                           <div className="custom-file">
                                             <input
                                               type="file"
                                               className="custom-file-input"
-                                              id="logo"
-                                              name="logo"
+                                              id="photo"
+                                              name="photo"
                                               onChange={handleLogo}
                                             />
-                                            <label className="custom-file-label" htmlFor="logo">
+                                            <label className="custom-file-label" htmlFor="photo">
                                               Choose file
                                             </label>
                                           </div>
                                         </div>
-                                        {input.logo != undefined || input.logo_preview != undefined  ? (
+                                        {input.photo != undefined || input.logo_preview != undefined  ? (
                                           <div className='mt-3 p-1'>
-                                            <img src={input.logo == undefined ? input.logo_preview : input.logo} style={{width: 150, height: 200, objectFit: 'cover', borderRadius: 20}} alt="Logo" />
+                                            <img src={input.photo == undefined ? input.logo_preview : input.photo} style={{width: 150, height: 200, objectFit: 'cover', borderRadius: 20}} alt="Logo" />
                                           </div>
                                         ) : null}
                                       </div>
