@@ -7,8 +7,8 @@ const Search = ({value, onClick, onChange, hasExtra, extras, onKeyUp, onKeyDown}
     window.location.reload()
   }
   return (
-    <div className="card-header">
-      <div className='d-flex justify-content-between align-items-center'>
+    <div className="card-header ">
+      <div className='d-flex justify-content-sm-between justify-content-between align-items-center'>
         <div className="form-group">
           <label htmlFor="direction">Order By</label>
           <select

@@ -19,6 +19,7 @@ import {
   Product,
   ProductAttribute,
   ProductAttributeForm,
+  ProductDetails,
   ProductForm,
   Profile, Report,
   SaleManager,
@@ -28,7 +29,7 @@ import {
   SubCategoryForm,
   Supplier,
   SupplierForm,
-  Ticket, Trash,
+  Ticket,
   UserForm,
   Users,
   Visitor,
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
         element: <Product/>
       },
       {
+        path: '/products/:id/details',
+        element: <ProductDetails/>
+      },
+      {
         path: '/products/photo/:id',
         element: <AddProductPhoto/>
       },
@@ -127,10 +132,6 @@ const router = createBrowserRouter([
       {
         path: '/products/:id',
         element: <ProductForm key="update"/>
-      },
-      {
-        path: '/trash',
-        element: <Trash/>
       },
 
       {

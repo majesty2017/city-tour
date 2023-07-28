@@ -168,6 +168,11 @@ class Product extends Model
         return $query->paginate($per_page);
     }
 
+    public function photos()
+    {
+        return $this->hasMany(ProductPhoto::class)->where('is_primary', 0);
+    }
+
     /**
      * @return BelongsTo
      */

@@ -43,7 +43,7 @@ export {default as ProductAttribute} from './services/product-attributes/Product
 export {default as ProductAttributeForm} from './services/product-attributes/ProductAttributeForm'
 
 export {default as Product} from './services/products/Product'
-export {default as Trash} from './services/products/Trash'
+export {default as ProductDetails} from './services/products/ProductDetails'
 export {default as ProductForm} from './services/products/ProductForm'
 export {default as AddProductPhoto} from './services/products/AddProductPhoto'
 

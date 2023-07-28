@@ -54,6 +54,19 @@ class ProductController extends Controller
      */
     final public function show(Product $product): UpdateProductResource
     {
+        $product->load([
+            'created_by:id,name',
+            'updated_by:id,name',
+            'category:id,name',
+            'photos:id,photo,product_id',
+            'sub_category:id,name',
+            'brand:id,name',
+            'supplier:id,name,phone',
+            'primary_photo',
+            'product_attribute',
+            'product_attribute.attributes',
+            'product_attribute.attribute_value',
+        ]);
         return new UpdateProductResource($product);
     }
 

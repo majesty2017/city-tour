@@ -260,7 +260,7 @@ const OrderForm = () => {
 
     return (
         <DefaultLayout title={'Sell Ticket'}>
-          <section className="content">
+          <section className="content align-content-sm-around">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">

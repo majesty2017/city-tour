@@ -17,7 +17,7 @@ const ActionButton = ({url, id, webView, webEdit, modalView, modalEdit, onClick,
             )}
 
           {webView && (
-            <Link className="text-warning mr-2" to={`/${url}/${id}/details`}>
+            <Link className="text-info mr-2" to={`/${url}/${id}/details`}>
               <i className="fas fa-eye font-weight-bold"/>
             </Link>
           )}

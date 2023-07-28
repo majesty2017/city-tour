@@ -8,6 +8,7 @@ export { default as ProtectedLayout } from './layouts/ProtectedLayout'
 export { default as Search } from './layouts/Search'
 export { default as Breadcrumb } from './layouts/Breadcrumb'
 
+export { default as Card } from './elements/Card'
 export { default as Loader } from './elements/Loader'
 export { default as Button } from './elements/Button'
 export { default as ButtonLoader } from './elements/ButtonLoader'

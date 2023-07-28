@@ -288,7 +288,7 @@ const Product = () => {
                                       url='products'
                                       id={product.id}
                                       handleDelete={() => handleDelete(product.id)}
-                                      modalView
+                                      webView
                                     />
                                   </td>
                                 </tr>

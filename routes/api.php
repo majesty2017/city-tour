@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('attributes/list', [AttributeController::class, 'get_attribute_list']);
     Route::get('suppliers/list', [SupplierController::class, 'get_supplierlist']);
     Route::post('product-photo-upload/{id}', [ProductPhotoController::class, 'store']);
+    Route::get('get-report', [ReportController::class, 'index']);
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('visitors', VisitorController::class);
@@ -62,7 +63,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->controller(AuthController::class)->group(function () {
-    Route::get('get-report', [ReportController::class, 'index']);
     Route::post('/register', 'register');
     Route::post('/login', 'login');
 });
