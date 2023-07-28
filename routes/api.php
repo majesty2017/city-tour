@@ -16,6 +16,7 @@ use App\Http\Controllers\API\V1\SubCategoryController;
 use App\Http\Controllers\API\V1\SupplierController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\VisitorController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->controller(AuthController::class)->group(function () {
+    Route::get('get-report', [ReportController::class, 'index']);
     Route::post('/register', 'register');
     Route::post('/login', 'login');
 });

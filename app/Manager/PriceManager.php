@@ -47,4 +47,13 @@ class PriceManager
 
         return ['price' => number_format($price - $discount, 2), 'discount' => $discount, 'currency' => self::CURRENCY];
     }
+
+    /**
+     * @param int $price
+     * @return string
+     */
+    public static function priceFormat(int $price): string
+    {
+        return self::CURRENCY.number_format($price, 2);
+    }
 }

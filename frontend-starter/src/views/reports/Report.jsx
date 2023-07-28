@@ -44,7 +44,7 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Total Sales</h6>
-                                    <h4>123,000</h4>
+                                    <h4>{report?.total_sale}</h4>
                                   </div>
                                 </div>
                               </div>
@@ -60,14 +60,14 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Total Purchase</h6>
-                                    <h4>23,000</h4>
+                                    <h4>{report?.total_purchase}</h4>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className='col-sm-3'>
+                          <div className='col-sm-3 d-none'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -83,7 +83,7 @@ const Report = () => {
                             </div>
                           </div>
 
-                          <div className='col-sm-3'>
+                          <div className='col-sm-3 d-none'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -99,7 +99,7 @@ const Report = () => {
                             </div>
                           </div>
 
-                          <div className='col-sm-3 mt-4'>
+                          <div className='col-sm-3'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -108,14 +108,14 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Today's Sale</h6>
-                                    <h4>23,000</h4>
+                                    <h4>{report?.total_sale_today}</h4>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className='col-sm-3 mt-4'>
+                          <div className='col-sm-3'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -124,14 +124,14 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Today's Purchase</h6>
-                                    <h4>23,000</h4>
+                                    <h4>{report?.total_purchase_today}</h4>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className='col-sm-3 mt-4'>
+                          <div className='col-sm-3 mt-4 d-none'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -147,7 +147,7 @@ const Report = () => {
                             </div>
                           </div>
 
-                          <div className='col-sm-3 mt-4'>
+                          <div className='col-sm-3 mt-4 d-none'>
                             <div className='card report-card'>
                               <div className='card-body'>
                                 <div className="d-flex justify-content-center align-items-center mx-3">
@@ -181,7 +181,7 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Total Products</h6>
-                                    <h4>123,000</h4>
+                                    <h4>{report?.total_product}</h4>
                                   </div>
                                 </div>
                               </div>
@@ -197,7 +197,7 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Total Stock</h6>
-                                    <h4>23,000</h4>
+                                    <h4>{report?.total_stock}</h4>
                                   </div>
                                 </div>
                               </div>
@@ -213,7 +213,7 @@ const Report = () => {
                                   </div>
                                   <div className="flex-grow-1 mx-3">
                                     <h6>Total Low Stock</h6>
-                                    <h4>23,000</h4>
+                                    <h4>{report?.low_stock}</h4>
                                   </div>
                                 </div>
                               </div>
@@ -228,8 +228,40 @@ const Report = () => {
                                     <i className="fa-solid fa-dollar-sign text-primary fa-2x"></i>
                                   </div>
                                   <div className="flex-grow-1 mx-3">
-                                    <h6>Total Stock Value</h6>
-                                    <h4>23,000</h4>
+                                    <h6>Total Stock Value (buy)</h6>
+                                    <h4>{report?.buy_value}</h4>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className='col-sm-3'>
+                            <div className='card report-card'>
+                              <div className='card-body'>
+                                <div className="d-flex justify-content-center align-items-center mx-3">
+                                  <div className="flex-shrink-0">
+                                    <i className="fa-solid fa-dollar-sign text-primary fa-2x"></i>
+                                  </div>
+                                  <div className="flex-grow-1 mx-3">
+                                    <h6>Total Stock Value (sale WOD)</h6>
+                                    <h4>{report?.sale_value}</h4>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className='col-sm-3'>
+                            <div className='card report-card'>
+                              <div className='card-body'>
+                                <div className="d-flex justify-content-center align-items-center mx-3">
+                                  <div className="flex-shrink-0">
+                                    <i className="fa-solid fa-dollar-sign text-primary fa-2x"></i>
+                                  </div>
+                                  <div className="flex-grow-1 mx-3">
+                                    <h6>Possible Profit</h6>
+                                    <h4>{report?.possible_profit}</h4>
                                   </div>
                                 </div>
                               </div>

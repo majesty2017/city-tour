@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -68,6 +69,12 @@ class Product extends Model
     final public function storeProduct(array $input): Builder|Model
     {
         return self::create($this->prepareData($input));
+    }
+
+    public function getAllProduct($columns = ['*']): Collection
+    {
+        $products = self::query()->select($columns)->get();
+        return collect($products);
     }
 
     /**

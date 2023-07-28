@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -40,6 +41,12 @@ class Order extends Model
             $query->orderBy($input['order_by'] ?? 'id', $input['direction'] ?? 'asc');
         }
         return $query->paginate($per_page);
+    }
+
+    public function getOrdersReport(array $columns = ['*'])
+    {
+        $orders = DB::table('orders')->select($columns)->get();
+        return collect($orders);
     }
 
     final public function visitor(): BelongsTo
