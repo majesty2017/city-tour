@@ -41,8 +41,8 @@ class UserResource extends JsonResource
             'nid_photo'           => ImageManager::prepareImageUrl(User::USER_IMAGE_THUMB_PATH, $this->nid_photo),
             'nid_photo_full'      => ImageManager::prepareImageUrl(User::USER_IMAGE_PATH, $this->nid_photo),
             'created_by'          => $this->user?->name,
-            'created_at'          => $this->created_at->toDayDateTimeString(),
-            'updated_at'          => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet',
+            'created_at'          => $this->created_at ? $this->created_at->toDayDateTimeString() : '',
+            'updated_at'          => $this->updated_at ? $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet' : null,
         ];
     }
 }

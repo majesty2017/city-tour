@@ -31,7 +31,7 @@ class OrderController extends Controller
             DB::beginTransaction();
             $order = (new Order())->placeOrder($request->all());
             DB::commit();
-            return response()->json(['message' => 'Ticket sold successfully!']);
+            return response()->json(['message' => 'Ticket sold successfully!', 'order_id' => $order->id]);
         } catch (\Throwable $e) {
             info('ORDER_PLACE_FAILED', ['message' => $e->getMessage(), $e]);
             DB::rollBack();
@@ -47,7 +47,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load(['visitor', 'payment_method', 'user', 'order_details']);
+        $order->load(['visitor', 'payment_method', 'user:id,name', 'order_details', 'transactions']);
         return new OrderDetailResource($order);
     }
 

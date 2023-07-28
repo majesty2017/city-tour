@@ -62,6 +62,11 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     /**
      *
      */
@@ -74,6 +79,7 @@ class Order extends Model
         $order = self::query()->create($order_data['order_data']);
         (new OrderDetail())->storeOrderDetail($order_data['order_details'], $order);
         (new Transaction())->storeTransaction($input, $order);
+        return $order;
     }
 
     /**

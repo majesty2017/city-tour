@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Manager\PriceManager;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderDetail extends Model
 {
@@ -41,10 +44,47 @@ class OrderDetail extends Model
           'discount_percent' => $product->discount_percent,
           'discount_fixed' => $product->discount_fixed,
           'price' => $product->price,
+          'sale_price' => PriceManager::calculate_selling_price(
+              $product->price,
+              $product->discount_percent,
+              $product->discount_fixed,
+              $product->discount_start,
+              $product->discount_end
+          )['price'],
           'sku' => $product->sku,
           'supplier_id' => $product->supplier_id,
           'quantity' => $product->quantity,
           'photo' => $product->primary_photo?->photo,
         ];
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function sub_category(): BelongsTo
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

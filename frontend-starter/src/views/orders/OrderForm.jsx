@@ -52,13 +52,14 @@ const OrderForm = () => {
   const [order, setOrder] = useState({})
   const [visitors, setVisitors] = useState([])
   const [changeInput, setChangeInput] = useState({quantity: 1})
+  const navigate = useNavigate()
 
 
   const getVisitors = async () => {
     setLoading(true)
     await axiosClient.get(`visitors?&search=${visitorInput}`).then(res => {
       setLoading(false)
-      setVisitors(res.data)
+      setVisitors(res.data.data)
     }).catch(err => {
       setLoading(false)
       console.log(err)
@@ -162,6 +163,7 @@ const OrderForm = () => {
       setModalShowOrderConfirmation(false)
       setLoading(false)
       toastAlert(res.data.message)
+      navigate(`/orders/${res.data.order_id}/details`)
     }).catch(err => {
       setLoading(false)
       toastAlert('Check Ticket Availabity')
@@ -257,13 +259,13 @@ const OrderForm = () => {
 
 
     return (
-        <DefaultLayout title={'Create Order'}>
+        <DefaultLayout title={'Sell Ticket'}>
           <section className="content">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
                   <div className="card">
-                    <CardHeader isForm title={'Create Order'} link='/orders' />
+                    <CardHeader isForm title={'Sell Ticket'} link='/orders' />
                     {/* /.card-header */}
                     <div className="card-body">
                       <div className="row">

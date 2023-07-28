@@ -9,6 +9,7 @@ export {default as Order} from "./orders/Order";
 export {default as OrderDetails} from "./orders/OrderDetails";
 export {default as OrderForm} from "./orders/OrderForm";
 
+export { default as Report } from './reports/Report'
 export { default as SaleManager } from './hr/sale-managers/SaleManager'
 
 export { default as Shop } from './shops/Shop'

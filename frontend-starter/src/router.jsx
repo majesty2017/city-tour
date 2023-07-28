@@ -20,7 +20,7 @@ import {
   ProductAttribute,
   ProductAttributeForm,
   ProductForm,
-  Profile,
+  Profile, Report,
   SaleManager,
   Shop,
   ShopForm,
@@ -71,6 +71,11 @@ const router = createBrowserRouter([
       {
         path: '/orders',
         element: <Order/>
+      },
+
+      {
+        path: '/reports',
+        element: <Report/>
       },
       {
         path: '/orders/:id/details',

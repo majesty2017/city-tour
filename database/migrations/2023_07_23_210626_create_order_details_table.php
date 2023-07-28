@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->decimal('cost')->nullable();
             $table->decimal('price')->nullable();
+            $table->decimal('sale_price')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('discount_percent')->nullable();
             $table->integer('discount_fixed')->nullable();

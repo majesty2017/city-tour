@@ -51,7 +51,6 @@ const Order = () => {
     let searchQuery = `&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
     await axiosClient.get(`orders?page=${pageNumber}${searchQuery}`).then(res => {
       setLoading(false)
-      console.log(res.data)
       setOrders(res.data.data)
       setItemsCountPerPage(res.data.meta.per_page)
       setStartFrom(res.data.meta.from)
@@ -80,7 +79,7 @@ const Order = () => {
           <div className="row">
             <div className="col-12">
               <div className="card">
-                <CardHeader title='Ticket List' link='/orders/create' />
+                <CardHeader title='Ticket List' label='Sell Ticket' link='/orders/create' />
                 <div className="card-body">
                   <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
                     <div className="row">

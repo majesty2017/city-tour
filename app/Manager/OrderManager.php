@@ -7,7 +7,6 @@ use Carbon\Carbon;
 
 class OrderManager
 {
-    private const ORDER__PREFIX = 'WLI';
 
     /**
      * @param int $min
@@ -15,9 +14,9 @@ class OrderManager
      * @param string|null $prefix
      * @return string
      */
-    public static function generateOrderNumber(int $min = 100000, int $max = 999999, string $prefix = null): string
+    public static function generateOrderNumber(int $min = 100000, int $max = 999999): string
     {
-        return $prefix . mt_rand($min, $max) ?? self::ORDER__PREFIX . mt_rand($min, $max);
+        return env('ORDER__PREFIX') . mt_rand($min, $max);
     }
 
     public static function handle_order_data(array $input)

@@ -32,11 +32,28 @@ class Transaction extends Model
         return self::query()->create($this->prepareData($input, $order));
     }
 
+    public function visitor()
+    {
+        return $this->belongsTo(Visitor::class);
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function payment_method()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
     public function prepareData(array $input, $order)
     {
         return [
           'order_id' => $order?->id ?? 0 ,
-          'trx_id' => OrderManager::generateOrderNumber(1000000000, 9999999999, 'TRX'),
+          'trx_id' => OrderManager::generateOrderNumber(1000000000, 9999999999),
           'visitor_id' => $input['order_summary']['visitor_id'] ?? 0,
           'payment_method_id' => $input['order_summary']['payment_method_id'],
           'amount' => $input['order_summary']['paid_amount'],
